@@ -1,0 +1,332 @@
+.show-hide-report {
+  padding: 0 0 1.3em 0 !important;
+  text-align: right;
+  width: 20px;
+}
+.show-hide-report i {
+  font-size: 18px;
+  position: relative;
+  top: 3px;
+  cursor: pointer;
+}
+.show-hide-report i:hover {
+  color: #0067f4;
+}
+
+.hide {
+  display: none !important;
+}
+
+.files img {
+  height: 22px;
+  margin-right: 0.8em;
+  filter: grayscale(100);
+}
+.files a {
+  opacity: 1;
+  transition: 0.2s;
+}
+.files a:hover img {
+  filter: grayscale(0);
+}
+.files a.off {
+  opacity: 0.6;
+}
+
+table.resume .total {
+  color: #0067f4;
+}
+table.resume td {
+  vertical-align: initial;
+  padding-right: 2em;
+  font-size: 12px;
+}
+
+.ws.toc-checkbox-column {
+  width: 76px;
+}
+.ws.toc-checkbox-column button {
+  transform: translateY(12px);
+}
+/* .ws.toc-checkbox-item button {
+  transform: translateY(3px);
+} */
+
+.ws.toc-checkbox-item i {
+  transform: translateY(3px);
+  margin-left: 6px;
+}
+
+.ws i {
+  width: 24px;
+  height: 24px;
+  color: #909295;
+}
+.ws span i {
+  width: 20px;
+  height: 20px;
+}
+.ws.files {
+  max-width: 6vw;
+}
+
+.tocRow {
+  min-height: 66px;
+  transition: background-color 0.1s linear;
+}
+.tocRow.selected {
+  background-color: #f8f9fa !important;
+}
+.tocRow:hover {
+  background-color: #f8f9fa !important;
+}
+.tocRow:hover .toc-dragger {
+  visibility: initial;
+}
+.tocRow td {
+  vertical-align: middle;
+}
+
+.toc-checkbox {
+  border: 0px;
+  overflow: hidden;
+}
+.toc-checkbox.active i {
+  color: #0067f4;
+  mix-blend-mode: multiply;
+}
+
+.toc-edit-delete.active i {
+  color: #d60037;
+  mix-blend-mode: multiply;
+}
+
+.tocRow .toc-dragger {
+  z-index: 20;
+  cursor: move;
+}
+
+.tocRow.selected.active .toc-dragger {
+  pointer-events: none;
+  /* 
+    When Multi select is happening, remove the pointer event so you click *through* the handle.
+    This is to stop the interference of the single reorder sortable
+    */
+}
+
+.toc-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-bottom: 50px;
+}
+
+.toc-table button,
+.toc-buttons button {
+  border: 0px;
+  cursor: pointer;
+  background-color: transparent;
+  z-index: 2;
+}
+
+.toc-buttons .toc-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  float: right;
+  padding: 0px;
+  font-size: 13px;
+  margin: 0px 30px 0px 0px;
+  transition: 0.3s;
+  color: #909295;
+}
+.toc-buttons .toc-button:hover {
+  color: #0067f4;
+}
+.toc-buttons a.toc-button:hover i {
+  color: #0067f4;
+}
+.toc-buttons .toc-button i {
+  font-size: 16px;
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+button.toc-button.delete-chapters {
+  color: #c4183c;
+}
+
+.hidden {
+  visibility: hidden;
+  /* display: none !important; */
+}
+
+.display-none {
+  display: none;
+}
+
+p.total {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.project-information-box.toc {
+  display: none;
+}
+
+.main-project-navigation.toc {
+  margin-top: 1rem;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+tr input {
+  border: solid 1px transparent;
+  padding: 0.2em 0.8em;
+  border-radius: 4px;
+  width: 100%;
+  z-index: 2;
+  padding-left: 0.8em;
+  margin-left: -0.8em;
+}
+
+.toc-content tr.active input:enabled {
+  border: solid 1px var(--primary);
+}
+
+tr.active input:enabled.is-invalid,
+.wrap-field-label input.is-invalid {
+  border-color: #c4183c;
+}
+
+.edit-file-form {
+  margin-bottom: 22px;
+}
+
+.deanta-modal-body p.deanta-modal-preview {
+  color: var(--secondary);
+}
+
+.deanta-modal-body p.deanta-modal-preview span {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+.chapter-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 10vw;
+}
+.tocRow:hover .chapter-title {
+  overflow: visible;
+  white-space: normal;
+}
+
+.single-selected .ws-edit,
+.multiple-selected .ws-edit {
+  opacity: 1;
+}
+
+/* Edit Column Title - Normal State */
+.toc-table .ws-edit {
+  /* visibility: hidden; */
+  opacity: 0;
+  transition: ease 0.2s opacity;
+}
+
+/* Edit Column Title - Hover State */
+.toc-table:hover .ws-edit {
+  /* visibility: visible; */
+  opacity: 1;
+}
+
+.toc-edit
+
+/* Edit Section of Row - Normal State */
+.toc-table .toc-edit > span {
+  /* visibility: hidden; */
+  opacity: 0;
+  transition: ease 0.2s opacity;
+}
+
+/* Edit Section of Row - Hover State */
+.toc-table .tocRow:hover .toc-edit > span,
+.toc-table .tocRow.selected .toc-edit > span {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: inline-block !important;
+}
+
+.toc-table.multiple-selected .tocRow .toc-edit > span,
+.toc-table.multiple-selected .ws-edit {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+#content-tab-1 {
+  /* When Content Reports is active */
+  /* 550px is "magic number" of the height of all other content on the page - Not ideal */
+  overflow: auto;
+  max-height: calc(100vh - 550px);
+}
+
+/*////////////
+
+// Fix for TOC area - min height so I've redone layout in Flexbox.
+
+////////////*/
+
+.toc-content {
+  max-height: calc(100vh - 285px);
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-content #content-tab-1 {
+  overflow: auto;
+  max-height: unset;
+}
+
+.toc-content .resume {
+  background: white;
+  width: 100%;
+  display: flex;
+  padding-top: 1px;
+  padding-left: 50px;
+  transform: translateY(40px);
+}
+
+.toc-content .resume p {
+  padding-bottom: 0;
+  border: 2px solid red;
+}
+
+.toc-content .container-content-page {
+  height: 100%;
+  overflow: auto;
+}
+
+.toc-content #content-tab-1 {
+  height: auto;
+  overflow: auto;
+  height: calc(100% - 5rem);
+}
+
+.toc-content > .row.mt-4 {
+  overflow: auto;
+  margin-top: 0px !important;
+  overflow: auto;
+  margin-top: 0px !important;
+  height: 100%;
+  margin-bottom: -40px;
+}
+
+.toc-content .col-sm-12 {
+  height: 100%;
+  overflow: auto;
+}

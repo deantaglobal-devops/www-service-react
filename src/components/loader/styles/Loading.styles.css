@@ -1,0 +1,32 @@
+#loading-container {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background: #ffffffe3;
+  z-index: 9999999999999;
+  text-align: center;
+  /* display: none; */
+}
+
+#loading-container.ss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 500px;
+  min-width: 200px;
+}
+
+#loading-container.ss .loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#loading-container.ss .loader p {
+  margin-top: 1rem;
+  position: relative;
+}

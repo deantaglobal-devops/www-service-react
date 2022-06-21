@@ -1,0 +1,12 @@
+.input-group-seach-bar {
+  width: 100% !important;
+}
+
+.input-group-navbar {
+  min-width: 7.5rem;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100% !important;
+}

@@ -1,0 +1,208 @@
+nav.navbar {
+    position: relative;
+    background-color: var(--white);
+}
+
+.main-navbar__search {
+    width: 100%;
+    position: relative;
+}
+
+.main-navbar__search .input-group {
+    padding-left: 1rem;
+    background-color: var(--white);
+}
+
+.main-navbar__search .input-group-prepend {
+    padding-left: 1rem;
+}
+
+.main-navbar__search > .results {
+    visibility: hidden;
+    position: absolute;
+
+    top: 50%;
+    left: -1px;
+    width: calc(100% + 2px);
+    opacity: 0;
+
+    min-height: 60px;
+    background-color: var(--white);
+
+    transition: opacity ease 0.2s, top ease 0.2s;
+
+    padding: 16px 3.5rem;
+    border: 1px solid var(--lines);
+    border-radius: 0px 0px 13px 13px;
+}
+
+.main-navbar__search:focus-within > .results,
+.main-navbar__search > .results:focus-within,
+.main-navbar__search:focus > .results,
+.main-navbar__search > .results:hover,
+.main-navbar__search.active > .results{
+    /* only display results when focused on search bar */
+    top: 100%;
+    visibility: visible;
+    opacity: 1;
+    max-height: 20vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.main-navbar__search > .results li {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-navbar__search > .results a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 34px;
+    width: 100%;
+}
+
+.main-navbar__search > .results li:hover a {
+    text-decoration: none;
+}
+
+.main-navbar__search > .results li:hover a .title,
+.main-navbar__search > .results li a:focus .title {
+    color: var(--blue);
+}
+
+.main-navbar__search > .results li a:focus {
+    background-color: var(--light);
+}
+
+.main-navbar__search > .results .title {
+    padding: 0;
+    margin: 0;
+
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 24px;
+    color: var(--dark);
+}
+
+.main-navbar__search > .results .projectType {
+    font-size: 10px;
+    line-height: 12px;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-weight: normal;
+}
+
+.main-navbar__search .input-group .material-icons-outlined {
+
+    color: var(--secondary);
+    width: 50px;
+    position: relative;
+    height: 100%;
+   
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+}
+
+.main-navbar__search .input-group{
+    padding-left: 0 !important;
+}
+
+.main-navbar__search .input-group .clear-search {
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 0;
+    background-color: transparent;
+    margin-right: 1rem;
+    color: var(--secondary);
+    font-size: 20px;
+    align-self: center;
+    min-height: 36px;
+    min-width: 36px; 
+    height: auto;  
+
+    transition: color ease .2s;
+}
+
+.main-navbar__search .input-group .clear-search:hover,
+.main-navbar__search .input-group .clear-search:focus{
+    color: var(--primary);
+}
+
+.main-navbar__search .input-group .clear-search:focus{
+    border: 1px dashed;
+    border-radius: 9rem;
+}
+
+.main-navbar__search .input-group .navbar-search {
+    height: 100%;
+    padding-left: 0 !important ;
+}
+
+
+@supports (display: grid) {
+    /* Progressive enhancement for grid support */
+    .main-navbar__search .input-group .material-icons-outlined {
+        grid-column: 1 / span 1;
+        grid-row: 1;
+    }
+
+    .main-navbar__search .input-group .clear-search {
+        grid-column: 3 / span 1;
+        grid-row: 1;
+    }    
+
+    .main-navbar__search .input-group{
+        display: grid;
+        grid-template-columns: min-content 1fr min-content;
+    }
+
+    .main-navbar__search .input-group .navbar-search {
+        grid-column: 1 / -1;
+        grid-row: 1;
+       width: 100%;
+        padding-left: 3.5rem !important;  
+    }
+}
+
+.main-navbar__search .clear-search[title~="Loading"]{
+    transform: rotateY(180deg);
+}
+
+.main-navbar__search .clear-search[title~="Loading"] .material-icons{
+    -webkit-animation: rotate-center 0.6s linear infinite reverse both;
+            animation: rotate-center 0.6s linear infinite reverse both;
+            color: var(--primary);
+            
+}
+
+@-webkit-keyframes rotate-center {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+    }
+  }
+  @keyframes rotate-center {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+    }
+  }
+  

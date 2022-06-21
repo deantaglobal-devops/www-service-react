@@ -1,0 +1,523 @@
+html {
+}
+body {
+  font-family: Roboto;
+  /* background: url('/assets/images/bglogin.png') no-repeat center center fixed; */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+/* .main-content {
+  background-color: transparent;
+  margin: auto;
+} */
+.tooltip {
+  font-family: Roboto;
+}
+.row-login {
+  display: block;
+}
+/* .card {
+  width: 375px;
+} */
+.auth-form .card-body-login {
+  box-shadow: none;
+}
+.btn-login {
+  width: 294px;
+}
+
+.auth-form__meta a {
+  font-size: 0.75em;
+}
+#errorMsg {
+  text-align: center;
+  margin-top: 10px;
+  font-size: small;
+  color: #b90d0d;
+}
+.auth-form__logo2 {
+  width: 90px;
+}
+.active {
+  color: black;
+}
+#showPassword {
+  cursor: pointer;
+}
+.btn-accent {
+  color: #fff;
+}
+.form-control {
+  font-weight: 400;
+}
+.is-valid {
+  border: 1px solid #00c851 !important;
+}
+.signinbtn {
+  text-transform: none !important;
+  /* height: 56px; */
+  font-size: 16px;
+  letter-spacing: -0.35px;
+  /* line-height: 24px; */
+}
+@media all and(-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS styles go here */
+  #password,
+  #username {
+    height: 35px;
+  }
+}
+
+img.inline-logo {
+  margin-bottom: 3px !important;
+  width: 145px;
+}
+
+.card-login {
+  border-radius: 13.22px;
+  box-shadow: 0 1px 0 0 rgba(90, 97, 105, 0.11),
+    0 3px 6px 0 rgba(90, 97, 105, 0.12), 0 8px 8px 0 rgba(90, 97, 105, 0.06),
+    0 6px 51px 0 rgba(90, 97, 105, 0.1);
+}
+
+.card-login-text {
+  border-radius: 13.22px;
+  box-shadow: 0 1px 0 0 rgba(90, 97, 105, 0.11),
+    0 3px 3px 0 rgba(90, 97, 105, 0.12), 0 8px 8px 0 rgba(90, 97, 105, 0.06),
+    0 6px 6px 0 rgba(90, 97, 105, 0.1);
+}
+
+.text-box-right {
+  font-size: 25px;
+  letter-spacing: -0.35px;
+  line-height: 35px;
+  color: black;
+}
+
+.text-box-right-lanstad {
+  font-size: 40px;
+}
+.text-box-right-lanstad-subtext {
+  font-size: 20px;
+  font-style: italic;
+  color: #666666;
+}
+.text-box-check {
+  color: #30b736;
+  font-size: 40px;
+}
+
+.btn-demo {
+  width: auto;
+  text-transform: none !important;
+  height: 56px;
+  font-size: 20px;
+  letter-spacing: -0.35px;
+  line-height: 24px;
+  background-color: #17c671;
+  border-color: #17c671;
+  color: white;
+}
+
+#deantaRational > table:nth-child(1) tr:nth-child(1) > td:nth-child(1) {
+  color: black;
+  font-size: 1.24rem;
+}
+
+.text-box-footer {
+  color: #474a4d;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.field-mandatory {
+  border: 1px solid red !important;
+}
+
+#spinner {
+  display: none;
+}
+
+.reset-password {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset-password form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.reset-password form button {
+  align-self: center;
+  width: auto;
+}
+
+@media screen and (min-width: 769px) {
+  .reset-password form button {
+    align-self: flex-end;
+  }
+}
+
+.reset-password h2 {
+  font-family: Roboto;
+  color: var(--gray-dark);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.auth-form__meta {
+  justify-content: space-between;
+}
+
+button.forgot-password {
+  border: 0;
+  background-color: transparent;
+  font-size: 0.75em;
+  font-weight: 400;
+  color: #818ea3;
+  padding: 0;
+  cursor: pointer;
+}
+
+button.forgot-password:focus {
+  outline: 1px dotted !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+.row-login {
+  margin: 0;
+  padding: 0;
+}
+
+#mainContainer {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr;
+  min-height: 100vh;
+}
+
+.deantaRational_wrapper,
+#deantaRational,
+.page-header {
+  /* padding: 1rem; */
+
+  grid-row: 1 / -1;
+  grid-column: 1 / span 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and/**/ (max-width: 600px) {
+  #mainContainer {
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .deantaRational_wrapper,
+  #deantaRational,
+  .page-header {
+    grid-row: 2 / span 1;
+    grid-column: 1 / span 1;
+  }
+}
+
+.sidebar {
+  grid-row: 1 / -1;
+  grid-column: 2 / -1;
+}
+
+@media only screen and/**/ (max-width: 600px) {
+  .sidebar {
+    grid-row: 1 / span 1;
+    grid-column: 1 / span 1;
+  }
+}
+
+.card-body.shadow {
+  /* height: 100%; */
+  /* background-color: var(--white); */
+  /* align-self: center; */
+}
+
+#loginForm .card-body.shadow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-box-right {
+  font-size: 25px;
+  letter-spacing: -0.35px;
+  line-height: 35px;
+  color: black;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.deantaRational_wrapper > div:nth-child(1) > div:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-items: center;
+}
+
+#text-box-right-inner-form {
+  margin: 0 auto;
+}
+
+.deantaRational_wrapper > div:nth-child(1) > div:nth-child(2),
+#text-box-right-inner-form {
+  width: 100% !important;
+}
+
+p.confirmation-message {
+  font-weight: normal;
+}
+
+.deantaRational_wrapper .card.card-login-text {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* New Password */
+
+.password-field label {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+input#password ~ button {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  height: calc(100% - 2px);
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--dark-grey);
+  transition: color 0.3s ease-in-out;
+}
+
+input#password ~ button:focus,
+input#password ~ button:hover {
+  color: var(--primary);
+}
+input#password ~ button:focus {
+  border: 1px dashed var(--primary);
+}
+
+input#password ~ button i {
+  font-size: 1.3rem;
+}
+
+input#password ~ button i:after {
+  content: "";
+  width: 20px;
+  height: 10px;
+  background: pink;
+}
+
+.password-field label span {
+  position: absolute;
+  transform: translate(8px, -7px);
+  font-size: 10px;
+  background: white;
+  padding: 0 5px;
+}
+
+.password-reset .input-group {
+  margin-bottom: 1rem;
+}
+
+#leftSide {
+  max-width: calc(100% - 400px);
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  #leftSide {
+    display: block;
+  }
+}
+
+#rightSide {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  /* height: 100%; */
+  background-color: var(--white);
+  width: 100%;
+}
+
+@media screen and (min-width: 992px) {
+  #rightSide {
+    min-width: 400px;
+  }
+}
+
+.card-body-login {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* height: calc(100% - 68px); */
+  height: calc(100% - 68px);
+}
+
+@media screen and (min-width: 769px) {
+  .card-body-login {
+    height: 100%;
+  }
+}
+
+.background {
+  width: 100%;
+  /* position: fixed; */
+  height: 100%;
+
+  /* brand/indigo-dye */
+
+  background: #074973;
+  mix-blend-mode: normal;
+  opacity: 0.52;
+  object-fit: cover !important;
+}
+
+.contentContainer {
+  position: absolute;
+  width: 100%;
+  max-width: 96%;
+  height: 100%;
+  max-height: 90%;
+  top: 30px;
+  left: 20px;
+  z-index: 2;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.52;
+  background-color: #074973;
+}
+
+.messageContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.messageContainer strong {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 72px;
+  line-height: 120%;
+  color: #ffffff;
+  width: 70%;
+}
+/*reducing font size to make contents fit in webpage in case of window resizing*/
+@media screen and (max-width: 992px) {
+  .messageContainer strong {
+    font-size: 46px;
+  }
+}
+.messageContainer span {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 137.5%;
+  width: 70%;
+  /* or 44px */
+
+  color: #ffffff;
+
+  opacity: 0.63;
+  padding-top: 2rem;
+}
+/*reducing font size to make contents fit in webpage in case of window resizing*/
+@media screen and (max-width: 992px) {
+  .messageContainer span {
+    font-size: 16px;
+  }
+}
+#deantaRationalContainer {
+  overflow: hidden;
+}
+
+video {
+  object-fit: cover;
+  /* width: 100vw;
+  height: 100vh; */
+  /* position: fixed; */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* size and positioning of the whole deanta logo */
+.deanta-logo {
+  /* z-index: 2; */
+  /* position: absolute; */
+  width: 172px;
+  /* top: 40px; */
+  /* left: 40px; */
+  /* margin-left: 12px; */
+}
+
+.deanta-logo-right {
+  transition: all 0.25s;
+}
+
+.deanta-logo-right-animated {
+  transition: all 0.25s;
+  transform: translateX(1%);
+}
+
+.deanta-logo-left {
+  transition: all 0.25s;
+}
+
+.deanta-logo-left-animated {
+  transition: all 0.25s;
+  transform: translateX(-1%);
+}
+
+.login-container {
+  height: 100vh;
+}

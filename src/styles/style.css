@@ -1,0 +1,992 @@
+@import url("https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+
+BODY {
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+.background-white {
+  background-color: white !important;
+}
+
+.content-select-options.content-select-options-show {
+  display: block;
+}
+
+select#client.deanta-selector-hidden,
+select#role.deanta-selector-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  visibility: hidden;
+}
+
+.deanta-selector {
+  cursor: pointer;
+}
+
+.deanta-selector + span.material-icons {
+  cursor: pointer;
+  position: absolute;
+  right: 0px;
+  font-size: 16px;
+  transform: translate(-60%, 50%);
+}
+
+.deanta-selector-options {
+  display: none;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.deanta-selector-options.visible {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  background-color: var(--white);
+  border: 1px solid #e8ecef;
+  box-sizing: border-box;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: -2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--dark);
+
+  max-height: 20vh;
+  overflow-y: auto;
+}
+
+.deanta-selector-option {
+  text-transform: capitalize;
+  margin: 0px 11px 0px;
+  padding: 4px 0px;
+}
+
+.deanta-selector-option:not(:last-child) {
+  border-bottom: 1px solid var(--lines);
+}
+
+.deanta-selector-option.selected {
+  background-color: var(--lines);
+}
+
+/* Lanstad Toasts*/
+
+.arrow-status button i {
+  pointer-events: none;
+}
+
+div.deanta-toast-alert {
+  --top-left-spacing: 61px;
+
+  box-shadow: 0px 1px 7px rgba(32, 37, 42, 0.34);
+  min-height: 40px;
+  height: auto;
+  color: white;
+  position: fixed;
+  top: var(--top-left-spacing);
+  right: 0px;
+  left: var(--top-left-spacing);
+  z-index: 1000;
+  width: calc(100vw - var(--top-left-spacing));
+  padding-right: 1em;
+  padding-left: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+div.deanta-toast-alert.login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+
+@media only screen and (max-width: 768px) {
+  div.deanta-toast-alert {
+    width: 100%;
+    left: 0;
+  }
+}
+
+div.deanta-toast-alert > i {
+  margin-right: 1rem;
+}
+
+div.deanta-toast-alert.category-warning {
+  position: relative;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  font-size: 80%;
+  color: var(--dark);
+  box-shadow: none;
+}
+
+div.deanta-toast-alert.category-warning.hidden {
+  position: absolute;
+}
+
+div.deanta-toast-alert.category-warning .deanta-toast-text {
+  margin-left: 10px;
+}
+
+div.deanta-toast-alert .deanta-toast-text {
+  margin-bottom: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: inherit;
+}
+
+div.deanta-toast-alert button {
+  background: transparent;
+  border: none;
+  display: flex;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+div.deanta-toast-alert.success {
+  background-color: var(--success);
+  border-radius: 0 0 0 0.25rem;
+  color: white;
+}
+
+div.deanta-toast-alert.warning {
+  background-color: var(--warning);
+  color: var(--dark);
+}
+
+div.deanta-toast-alert.fail {
+  background-color: var(--danger);
+  color: white;
+}
+div.deanta-toast-alert.success button,
+div.deanta-toast-alert.fail button {
+  color: white;
+}
+
+div.deanta-toast-alert > i.hidden {
+  display: none !important;
+}
+
+/* Lanstad Input */
+.wrap-field-label input.is-invalid,
+.invite-form-section input.is-invalid,
+.options-email input.is-invalid {
+  border-color: #c4183c !important;
+}
+
+/* Lanstad Modal */
+
+.sliderContent #deanta-modal {
+  position: absolute;
+  padding: 2rem;
+}
+
+.deanta-modal {
+  background: rgba(249, 249, 249, 0.89);
+  position: fixed;
+  top: 0px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 99999 !important;
+}
+
+.deanta-modal-body {
+  font-size: 12px;
+  line-height: 137.5%;
+  color: var(--dark);
+  font-weight: normal;
+
+  margin-top: 0;
+  overflow: visible;
+  height: auto;
+}
+
+/* Overflow fix for userList on small screens */
+#messaging-room + .deanta-modal .deanta-modal-body {
+  /* 20rem is for the padding around the box. Not a fan of this "magic number" */
+  max-height: calc(100vh - 20rem);
+  overflow: auto;
+}
+
+#messaging-room + .deanta-modal #memberListModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#messaging-room + .deanta-modal #userList {
+  width: calc(100% - 1rem);
+}
+
+#messaging-room + .deanta-modal .member-list {
+  width: 100%;
+}
+
+.deanta-modal-paragraph {
+  margin-bottom: 10px;
+}
+
+.deanta-modal-footer {
+  margin-top: 28px;
+}
+
+.deanta-modal button {
+  border: 0px;
+  background-color: transparent;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.deanta-modal-dialog {
+  background: rgba(255, 255, 255, 0.89);
+  box-shadow: 0px 1px 7px rgba(32, 37, 42, 0.34);
+  border-radius: 4px;
+  margin: 85px 93px;
+  max-height: 435px;
+  min-width: 283px;
+}
+
+.deanta-modal-dialog-slider {
+  margin: 0;
+
+  background: rgba(255, 255, 255, 0.89);
+  box-shadow: 0px 1px 7px rgba(32, 37, 42, 0.34);
+  border-radius: 4px;
+
+  width: 100%;
+  max-width: 340px;
+  min-width: 200px;
+  max-height: 100%;
+
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+.deanta-modal-long {
+  width: 30vw;
+}
+
+.deanta-modal-content {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+
+  overflow: auto;
+  overflow: visible;
+
+  position: relative;
+  height: calc(100% - 0px);
+  height: auto;
+}
+
+.deanta-modal-header {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: -5px;
+  background: var(--white);
+}
+
+.deanta-modal-header button {
+  position: absolute;
+  right: -10px;
+  top: 0px;
+}
+
+.deanta-modal-title {
+  font-size: 17.6px;
+  line-height: 26px;
+  color: var(--dark);
+}
+
+.deanta-modal-invalid-text {
+  color: #c4183c;
+}
+
+/* Lanstad buttons */
+
+.main-content-container .deanta-button {
+  cursor: pointer;
+  background-color: transparent;
+  border: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+}
+
+.main-content-container .deanta-button-full {
+  background-color: var(--blue);
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--white);
+  margin-left: 24px;
+}
+
+.main-content-container .deanta-button-outlined,
+.deanta-button-container .deanta-button-outlined {
+  background-color: var(--white);
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--blue);
+  margin-left: 24px;
+}
+
+button.deanta-button-outlined:disabled {
+  cursor: not-allowed;
+  border: 1px solid #ccc;
+  color: #aaa;
+  background: #f8f8f8;
+}
+button.deanta-button-outlined:disabled:hover {
+  border: 1px solid #ccc;
+  color: #aaa;
+  background: #f8f8f8;
+}
+
+button.deanta-button-outlined.loading:disabled {
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  color: #fff;
+  cursor: progress;
+}
+
+.deanta-button-container .deanta-button-outlined.deanta-button-disabled {
+  opacity: 0.65;
+  border-color: var(--gray);
+  color: var(--gray);
+  cursor: not-allowed;
+}
+
+.deanta-button-container .deanta-button-outlined.deanta-button-disabled:hover {
+  background-color: var(--white);
+  opacity: 0.65;
+  border-color: var(--gray);
+  color: var(--gray);
+  cursor: not-allowed;
+}
+
+.deanta-button-container .deanta-button-outlined {
+  margin-left: 12px;
+}
+
+#memberListModal button.member-add:hover {
+  color: var(--blue) !important;
+}
+
+.main-content-container .deanta-button-outlined:hover,
+.deanta-button-container .deanta-button-outlined:hover {
+  color: var(--white);
+  background-color: var(--blue);
+  border-color: var(--blue);
+}
+
+.deanta-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.deanta-button-container .deanta-button-loading:hover {
+  cursor: not-allowed;
+  background-color: var(--white);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.deanta-button-container .deanta-button-loading .material-icons,
+.options-template-loading .material-icons-outlined,
+.loading-attachment .material-icons-outlined,
+.sign-up-button .material-icons-outlined {
+  padding-right: 0px;
+  margin-right: 5px;
+  -webkit-animation: rotate-center 0.6s linear infinite both;
+  animation: rotate-center 0.6s linear infinite both;
+  color: var(--primary);
+}
+
+.sign-up-button .material-icons-outlined {
+  font-size: inherit;
+  color: inherit;
+  margin-right: 0px;
+}
+
+.options-template-loading .material-icons-outlined,
+.sign-up-button .material-icons-outlined {
+  top: 55%;
+}
+
+.sign-up-button .material-icons-outlined {
+  margin-left: 5px;
+}
+
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+div.deanta-button-container span.deanta-more-buttons-dots {
+  color: var(--primary);
+  margin-left: 10px;
+  transform: translateY(50%);
+}
+
+/* Lanstad Invite User Form*/
+
+#inviteNewUserForm {
+  max-width: 234px;
+}
+
+#inviteNewUserForm h4 {
+  font-size: 12px;
+  line-height: 137.5%;
+  color: var(--dark);
+  margin-bottom: 0px;
+  margin-top: 18px;
+}
+
+#inviteNewUserForm .invite-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#inviteNewUserForm .invite-button button {
+  margin-top: 15px;
+}
+
+.invite-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.invite-form-section .client-wrapper {
+  z-index: 1;
+}
+
+.invite-form label {
+  transform: translate(6px, 14px);
+  background-color: var(--white);
+  font-size: 10px;
+  line-height: 12px;
+  max-width: fit-content;
+  position: relative;
+  z-index: 2;
+  padding: 0px 4px;
+}
+
+.invite-form select,
+.invite-form input,
+.invite-form div.deanta-selector {
+  border: 1px solid var(--lines);
+  border-radius: 4px;
+  background-color: transparent;
+  padding: 8px;
+  width: 100%;
+  height: 33px;
+  font-size: 12px;
+  line-height: 137.5%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: var(--dark);
+  font-weight: 400;
+}
+.invite-form div.deanta-selector {
+  text-transform: capitalize;
+  min-height: 33px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 4px;
+}
+
+.deanta-selector-box {
+  display: flex;
+  background-color: var(--lines);
+  border-radius: 5px;
+  height: 25px;
+  padding: 5px 5px;
+  margin-right: 5px;
+  margin-bottom: 4px;
+  z-index: 1;
+  font-weight: 400;
+}
+
+.invite-form select {
+  cursor: pointer;
+  background: url('data:image/svg+xml;utf8,<svg fill="lightslategrey" xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>')
+    no-repeat right var(--white);
+  background-position-x: 97%;
+}
+
+/* Lanstad User List and File List*/
+#userList li,
+#fileList li {
+  list-style: none;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.user-search,
+.file-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1em 0 0.5em;
+}
+
+.user-search i,
+.file-search i {
+  color: var(--lines);
+  z-index: 123123;
+  font-size: 15px;
+}
+
+.user-search input,
+.file-search input {
+  border: none;
+  color: var(--lines);
+  padding: 0 0 0 1.15em;
+  font-size: 12px;
+  pointer-events: all !important;
+}
+
+.user-list,
+.file-list {
+  overflow-y: auto;
+  width: 100%;
+  margin-left: 0;
+  padding: 3px;
+  min-height: 160px;
+  max-height: 200px;
+}
+
+.user-list ul,
+.file-search ul,
+.file-list ul {
+  width: 100%;
+  padding: 0px;
+}
+
+.file-milestone {
+  font-size: 10px;
+  line-height: 12px;
+  color: #909295;
+  margin-top: 18px;
+}
+
+.file-task-list {
+  padding-left: 0px;
+}
+
+.user-card {
+  box-shadow: 0 1px 7px -2px var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1em;
+  margin-bottom: 0.5em;
+  border-radius: 4px;
+  text-decoration: none;
+  border: solid 1px transparent;
+  width: 100%;
+  font-size: 13px;
+}
+
+.user-card.active {
+  border-color: var(--primary);
+}
+
+.user-card-image {
+  padding-right: 12px;
+}
+
+.user-card-image img {
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.user-card-name {
+  color: var(--dark);
+  font-size: 12px;
+  text-transform: capitalize;
+  font-weight: 400;
+  margin: 0;
+}
+
+.user-card-role {
+  color: var(--secondary);
+  font-size: 9px;
+  font-weight: 400;
+  margin: 0;
+}
+
+#userList .save-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#userList .save-button button {
+  margin-top: 15px;
+}
+
+/* Lanstad Loader */
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loader .brand {
+  -webkit-animation: load8 3s infinite linear;
+  animation: load8 3s infinite linear;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.loader p {
+  margin-top: 10px;
+  color: #909295;
+  font-size: 10px;
+  margin-bottom: 0px;
+}
+
+@-moz-document url-prefix() {
+  .loader p {
+    margin-top: 110px;
+  }
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#loading-wrapper {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background: #ffffffe3;
+  z-index: 9999;
+  text-align: center;
+  display: none;
+}
+
+#loading-wrapper.loading-slider {
+  position: relative;
+  display: block;
+}
+
+#loading-wrapper {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.load-min {
+  min-height: 500px;
+  min-width: 200px;
+}
+
+.load-fit {
+  height: auto;
+  z-index: -1 !important;
+}
+
+#loading-wrapper.ss .loader {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#loading-wrapper.ss .loader p {
+  margin-top: 1rem;
+}
+
+#fileList #loading-wrapper.ss {
+  display: flex;
+  min-height: 200px !important;
+}
+
+.login-container-height {
+  height: calc(100% - 30px);
+}
+
+/* Lanstad Nav Dropdown */
+.main-navbar .dropdown-menu button.dropdown-item {
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.main-navbar .dropdown-menu button.dropdown-item i {
+  font-size: 15px;
+  margin-right: 7.5px;
+  display: flex;
+  align-self: center;
+}
+
+.asset-hide {
+  display: none;
+}
+
+.error-msg {
+  display: none;
+  color: var(--danger);
+}
+
+.error-msg.show {
+  display: block !important;
+  color: var(--danger);
+}
+
+.arrow-pos {
+  right: 18px !important;
+}
+
+/* Lanstad profile and sign-up forms */
+#profile-area .iconPlusInput.email ~ .validation-error,
+.general-forms .iconPlusInput ~ .validation-error,
+.iconPlusInput.email ~ .existing-email-error,
+.invite-form-section .validation-error,
+.invite-form-section .existing-email-error,
+.invite-form-section .validation-error,
+.general-forms .input-group .validation-error,
+.options-email .validation-error {
+  display: none;
+}
+
+.invite-form-section .validation-error.is-invalid,
+.options-email .validation-error.is-invalid {
+  display: block;
+  color: var(--danger);
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+#profile-area .iconPlusInput.email ~ .validation-error.is-invalid,
+.general-forms .iconPlusInput ~ .validation-error.is-invalid,
+.iconPlusInput.email ~ .existing-email-error.is-invalid,
+.invite-form-section .validation-error.is-invalid,
+.invite-form-section .existing-email-error.is-invalid,
+.general-forms .input-group .validation-error.is-invalid {
+  display: block;
+  color: var(--danger);
+  margin-left: 40px;
+  margin-top: -16px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.general-forms .iconPlusInput ~ .validation-error.is-invalid,
+.iconPlusInput.email ~ .existing-email-error.is-invalid,
+.general-forms .input-group .validation-error.is-invalid {
+  margin-top: 0.5px;
+}
+
+.invite-form-section .validation-error.is-invalid,
+.invite-form-section .existing-email-error.is-invalid {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.general-forms .iconPlusInput.name ~ .validation-error.is-invalid {
+  margin-left: 0px;
+}
+
+.form-control.second_input.is-invalid {
+  width: 100%;
+}
+
+.invalid-feedback-show,
+.cstm-error {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.default-input-text-invalid {
+  border-color: #c4183c !important;
+}
+
+.general-forms .input-group .validation-error.is-invalid {
+  margin-left: 12px;
+}
+
+.invite-form-section .validation-error.is-invalid,
+.invite-form-section .existing-email-error.is-invalid {
+  margin-bottom: 0px;
+}
+
+.invite-form-section {
+  position: relative;
+}
+
+.general-forms .spinner {
+  position: absolute;
+  top: -34px;
+  left: 0;
+  transition: ease opacity 0.2s;
+  border: 2px solid var(--blue);
+  border-right-color: transparent;
+  opacity: 0;
+}
+
+.general-forms .spinner.loading {
+  opacity: 1;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+.page-header > div.text-sm-left {
+  display: flex;
+  flex-direction: column;
+  flex-basis: auto;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.page-header h2 {
+  max-width: auto;
+  width: auto;
+
+  line-clamp: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  white-space: unset !important;
+}
+
+.pro-editor .page-header h2 {
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+}
+
+.page-header .align-items-right.mr-auto {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.page-header:not(.dashboard-header, .calendar-header)
+  .align-items-right.mr-auto {
+  /* flex-shrink: unset; */
+  flex-shrink: 123;
+}
+
+.page-header [aria-label="Page actions"] {
+  display: flex;
+}
+
+/* label#addBccField {
+  display: inline-block;
+  margin-top: 6%;
+} */
+
+.acceptOptionsBtn {
+  position: absolute;
+  bottom: 7%;
+  right: 2%;
+  background: none;
+  border: 1px solid;
+  color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.acceptOptionsBtn:hover {
+  color: white;
+  font-weight: 500;
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.greyoutmodal {
+  backdrop-filter: grayscale(1);
+}

@@ -1,0 +1,6 @@
+.dropdown-item:focus,
+.dropdown-item:hover,
+.dropdown-item:active {
+  background-color: transparent !important;
+  color: var(--primary) !important;
+}

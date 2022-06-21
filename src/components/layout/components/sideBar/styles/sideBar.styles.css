@@ -1,0 +1,56 @@
+:root {
+  --lanstad-blue: #5d819d;
+  --beau-blue-mod: #afbdcb;
+}
+​
+/**  --------------------------------------------------- */
+/**  -------------------LOGO ANIMATION ----------------- */
+/** -----------------------------------------------------*/
+​
+.logomark {
+  margin-left: 16px;
+}
+
+/** basic coloring */
+#anstad path {
+  fill: var(--lanstad-blue);
+}
+
+#letter-L {
+  fill: var(--lanstad-blue);
+}
+#rectangle-481,
+#rectangle-483,
+#rectangle-485 {
+  fill: var(--beau-blue-mod);
+}
+#rectangle-482,
+#rectangle-484 {
+  fill: var(--lanstad-blue);
+}
+
+/* anstad part animation */
+
+.anstad-default {
+  transition: all 0.2s ease-in-out;
+
+  transform: translateX(-100%);
+}
+
+.anstad-animate {
+  transition: all 0.2s ease-in-out;
+
+  transform: translateX(0px) !important;
+}
+
+/*- rectangles part animation */
+
+.rectangles-group-default {
+  transition: all 0.2s ease-in-out;
+}
+
+.rectangles-group-animate {
+  transform: translateX(+100%);
+
+  opacity: 0;
+}

@@ -1,0 +1,204 @@
+.main-content-container {
+  position: relative;
+}
+
+#side-slider-container {
+  --spacing: 1.5rem;
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 2px;
+  font-weight: normal;
+  --slideTransitionTime: 0.4s;
+}
+
+#side-slider-container .sliderContent {
+  box-sizing: border-box;
+  width: 100%;
+  --sidebar-width: 40vw;
+  max-width: var(--sidebar-width);
+  min-width: 600px;
+  height: calc(100% - 60px);
+
+  position: fixed;
+  top: calc(60px + var(--spacing));
+  right: 0;
+
+  z-index: 999;
+
+  background: var(--white);
+  margin-top: calc(var(--spacing) * -1);
+
+  padding: var(--spacing);
+
+  display: none;
+  flex-direction: column;
+
+  /* overflow-y: hidden; */
+}
+
+#side-slider-container.open .sliderContent {
+  display: flex;
+  flex-direction: column;
+
+  animation-name: slideIn;
+  animation-duration: var(--slideTransitionTime);
+  animation-iteration-count: 1;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(var(--sidebar-width));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#side-slider-container.closed .sliderContent {
+  display: flex;
+  flex-direction: column;
+
+  animation-name: slideOut;
+  animation-duration: var(--slideTransitionTime);
+  animation-iteration-count: 1;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--sidebar-width));
+  }
+}
+#side-slider-container .sliderContent {
+  max-width: 90vw;
+  min-height: 700px;
+}
+#side-slider-container .sliderContent.sliderContent-small {
+  --sidebar-width: 340px;
+}
+
+#side-slider-container .sliderContent.sliderContent-big {
+  --sidebar-width: 60vw;
+}
+
+#side-slider-container .sliderContent .header-details h2 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+#side-slider-container .sliderContent .content {
+  height: 100%;
+  max-height: calc(100% - 39px);
+  position: relative;
+}
+
+#side-slider-container .sliderContent header button {
+  border: 1px dashed transparent;
+  border-radius: 10rem;
+  background-color: transparent;
+
+  width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+}
+
+#side-slider-container .sliderContent header button:focus {
+  border-color: var(--blue);
+}
+
+#side-slider-container .backdrop {
+  background: #ffffffc9;
+
+  z-index: 10;
+  width: 100%;
+  height: calc(100% + 76px);
+  position: fixed;
+
+  top: calc(var(--spacing) * -1);
+  left: calc(var(--spacing) * -1);
+
+  opacity: 0;
+  transition: opacity var(--slideTransitionTime) ease;
+}
+
+#side-slider-container.open .backdrop {
+  opacity: 1;
+}
+
+#side-slider-container.closed .backdrop {
+  opacity: 0;
+}
+
+.configuration-link {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+}
+
+.icon-draggable {
+  padding: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  cursor: move;
+  font-size: 18px !important;
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  left: -15px;
+  z-index: 9999;
+  user-select: none;
+  transition: 400ms all ease;
+}
+
+.icon-draggable:active {
+  transform: translateY(-50%) scale(1.15);
+  background: var(--blue);
+}
+
+.icon-draggable i {
+  color: white;
+  font-size: 18px !important;
+}
+
+.icon-draggable.showtooltip::after {
+  opacity: 0;
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  padding: 4px;
+  background: #212529;
+}
+
+.icon-draggable.showtooltip::before {
+  opacity: 0;
+  content: "This button allow you resize this modal";
+  position: absolute;
+  left: -175px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px;
+  background: #212529;
+  border-radius: 4px;
+  color: #fff;
+  z-index: 10000;
+  font-size: 16px;
+  max-width: 150px;
+  font-size: 12px;
+}
+
+.icon-draggable.showtooltip:hover::before,
+.icon-draggable.showtooltip:hover::after {
+  opacity: 1;
+}

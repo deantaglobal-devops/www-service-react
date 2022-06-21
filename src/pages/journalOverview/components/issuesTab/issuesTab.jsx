@@ -1,0 +1,270 @@
+import { useState } from "react";
+import { api } from "../../../../services/api";
+import LinkArticleList from "../../../../components/linkArticleList";
+import SlideDrawer from "../../../../components/sliderDrawer/sliderDrawer";
+import EditIssue from "./Modals/editIssue/editIssue";
+
+export function IssuesTab(props) {
+  const [issues, setIssues] = useState(props?.issues);
+  const [issuesProps, setIssuesProps] = useState({});
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [issueData, setIssueData] = useState([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
+
+  const handleArticleOnClick = async (issueId, volumeNum, issueNum) => {
+    await api
+      .get(`/project/journal/${props?.project?.projectId}/issues/${issueId}`)
+      .then((response) => {
+        drawerToggleClickHandler();
+
+        const newData = {
+          issuesList: response.data,
+          projectId: props?.project?.projectId,
+          issueId,
+          volumeNum,
+          issueNum,
+        };
+
+        setIssuesProps(newData);
+      });
+  };
+
+  const drawerToggleClickHandler = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const backdropClickHandler = () => {
+    setDrawerOpen(false);
+    setIssuesProps([]);
+  };
+
+  const getIssue = async (issueId) => {
+    const bodyRequest = {
+      issueId,
+    };
+
+    await api.post("/get/issueinfo", bodyRequest).then((response) => {
+      setIssueData(response.data.issue[0]);
+      setOpenEditModal(true);
+    });
+  };
+
+  const convertDate = (date) => {
+    let today = new Date(date);
+
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+    const yyyy = today.getFullYear();
+
+    today = `${dd}/${mm}/${yyyy}`;
+
+    return today;
+  };
+
+  const closeModal = () => {
+    setOpenEditModal(false);
+  };
+
+  const handleDeleteIssue = (issueId) => {
+    const removeIssue = issues?.filter((issue) => issue.issue_id !== issueId);
+    setIssues(removeIssue);
+  };
+
+  const updateIssue = (issueUpdated) => {
+    const newIssues = issues.map((issue) => {
+      if (issue.issue_id === issueUpdated.issueId) {
+        const newIssue = {
+          ISSN: issueUpdated?.ISSN_update,
+          end_date: issueUpdated?.end_date_update,
+          end_time: issueUpdated?.end_time_update,
+          issue_id: issueUpdated?.issueId,
+          issue_image: issueUpdated?.issue_image,
+          issue_num: issueUpdated?.issue_num_update,
+          project_id: issueUpdated?.project_id,
+          publish_month: issueUpdated?.publish_month_update,
+          receive_date: issueUpdated?.start_date_update,
+          start_time: issueUpdated?.start_time_update,
+          volume_num: issueUpdated?.volume_num_update,
+        };
+        return newIssue;
+      }
+
+      return issue;
+    });
+
+    setIssues(newIssues);
+  };
+
+  const handleIssue = (fileName, issueId, projectId) => {
+    if (fileName !== "" && issueId !== "") {
+      const issueUpdated = issues?.map((issue) => {
+        if (issue.issue_id == issueId) {
+          return {
+            ...issue,
+            issue_image: fileName,
+          };
+        }
+        return issue;
+      });
+      setIssues(issueUpdated);
+    }
+  };
+
+  return (
+    <>
+      {openEditModal && (
+        <EditIssue
+          show={openEditModal}
+          handleClose={() => closeModal()}
+          issueData={issueData}
+          handleDeleteIssue={(issue_id) => handleDeleteIssue(issue_id)}
+          updateIssue={(issueUpdated) => updateIssue(issueUpdated)}
+        />
+      )}
+      <SlideDrawer
+        show={drawerOpen}
+        SliderHeader="Manage Issue"
+        close={() => backdropClickHandler()}
+      >
+        {Object.keys(issuesProps).length > 0 &&
+          issuesProps.constructor === Object && (
+            <LinkArticleList
+              ISSUE_PROPS={issuesProps}
+              handleIssue={handleIssue}
+            />
+          )}
+      </SlideDrawer>
+      {props?.permissions?.journals?.issues?.view && (
+        <div
+          className={
+            props.navTag === "Issues"
+              ? "issues-list body-tab-content active"
+              : "issues-list body-tab-content"
+          }
+        >
+          <div className="row">
+            <div className="issues-wrapper">
+              {/* flip-card-container */}
+              {issues?.map((issue) => {
+                return (
+                  // flip-card
+                  <div className="flip-card-container" key={issue.issue_id}>
+                    <div className="card card-small pl-4 pb-4 pr-4 card-rotating flip-card-front">
+                      <div className="card-body p-0">
+                        <div className="row mt-4 pb-0">
+                          <div className="col-sm-12 col-lg-3 pr-0">
+                            {issue?.issue_image ? (
+                              <a>
+                                <img
+                                  alt="project thumb"
+                                  className="project-thumb-list"
+                                  id={`img-${issue.issue_id}`}
+                                  src={`${
+                                    import.meta.env.VITE_URL_API_SERVICE
+                                  }/file/src/?path=/epublishing/${
+                                    props?.project?.projectId
+                                  }/projectAssets/${
+                                    issue?.issue_image
+                                  }&storage=blob`}
+                                />
+                              </a>
+                            ) : (
+                              <a>
+                                <img
+                                  alt="projet thumb"
+                                  src="/assets/images/covers/generic.png"
+                                  className="project-thumb-list"
+                                />
+                              </a>
+                            )}
+                          </div>
+                          <div className="col-lg-9">
+                            <div className="project-card-details">
+                              <h3>
+                                <a>
+                                  Volume {issue.volume_num}, Issue{" "}
+                                  {issue.issue_num} — {issue.publish_month}
+                                </a>
+                              </h3>
+                              <div className="flex-list-blocks">
+                                <div className="list-info-singular">
+                                  <label>ISSN</label>
+                                  <p>{issue.ISSN}</p>
+                                </div>
+                                <div className="list-info-singular">
+                                  <label>RECEIVED DATE</label>
+                                  {/* <p>{issue.receive_date}</p> */}
+                                  <p>{convertDate(issue?.receive_date)}</p>
+                                </div>
+                                <div className="list-info-singular">
+                                  <label>TARGET DATE</label>
+                                  <p>{convertDate(issue?.end_date)}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card-footer p-0">
+                        <div className="project-card-details">
+                          <div className="progress-status">
+                            <div className="label-bar-status">
+                              <label>
+                                85% completed — Target Date: 12/12/2020
+                              </label>
+                            </div>
+                            <div className="progress progress-sm">
+                              <div
+                                className="progress-bar bg-success"
+                                role="progressbar"
+                                style={{ width: `${85}%` }}
+                                aria-valuenow="85"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                              />
+                            </div>
+                          </div>
+                          <div className="actions-available">
+                            {props?.permissions?.journals?.articles?.edit && (
+                              <a
+                                onClick={() =>
+                                  handleArticleOnClick(
+                                    issue.issue_id,
+                                    issue.volume_num,
+                                    issue.issue_num,
+                                  )
+                                }
+                                className="action-bottom"
+                              >
+                                <i className="material-icons-outlined">
+                                  attachment
+                                </i>{" "}
+                                Articles
+                              </a>
+                            )}
+                            {props?.permissions?.journals?.issues?.edit && (
+                              <a
+                                onClick={() => getIssue(issue.issue_id)}
+                                className="action-bottom"
+                                // href="#"
+                                data-toggle="modal"
+                                data-target="#edit-issue"
+                              >
+                                <i className="material-icons-outlined">edit</i>{" "}
+                                Edit
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

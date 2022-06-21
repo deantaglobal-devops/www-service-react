@@ -1,0 +1,671 @@
+#profile-area .content-details {
+  overflow-y: auto;
+}
+
+#profile-area .header-details {
+  margin-bottom: 3rem;
+}
+
+#profile-area {
+  /* padding: 1rem; */
+}
+
+#profile-area .iconPlusInput button {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+#profile-area .material-icons-outlined {
+  color: var(--gray);
+}
+
+#profile-area button.editAll {
+  display: none;
+  border: 0;
+  padding: 0;
+  background: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#profile-area:focus-within button.editAll,
+#profile-area:hover button.editAll {
+  display: block;
+  cursor: pointer;
+}
+
+#profile-area button.editallSave {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#profile-area button.editallRemove {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: 0;
+  position: absolute;
+  top: 0;
+  right: -25px;
+}
+
+#profile-area button.hide {
+  display: none !important;
+}
+
+/* #image-details {
+    --sidebar-width: 340px;
+    max-width: var(--sidebar-width);
+} */
+
+/* #image-details::before {
+    width: calc(100% - var(--sidebar-width)) !important;
+} */
+
+#profile-area h2,
+#profile-area .h2 {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+#profile-area h2.currentValue {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+#profile-area h2.currentValue button {
+  position: absolute;
+  display: flex;
+  left: calc(100% - 20px);
+  transform: translateX(25px);
+}
+
+#profile-area h2.currentValue i {
+  opacity: 0;
+  display: none;
+  right: 0px;
+  transition: 0.2s opacity ease;
+  color: var(--gray);
+}
+
+#profile-area h2.currentValue:hover i,
+#profile-area .nameSection:hover h2.currentValue i {
+  opacity: 1;
+  display: inline;
+}
+
+#profile-area h3,
+#profile-area #profile-area .h3 {
+  font-size: 12px;
+  line-height: 1;
+  color: var(--dark);
+  font-weight: normal;
+}
+
+#profile-area .profilePhoto {
+  border-radius: 99em;
+  position: relative;
+  overflow: hidden;
+  width: 138px;
+  height: 138px;
+  margin-bottom: 1rem;
+}
+
+#profile-area .profilePhoto::after {
+  content: "";
+  background-color: var(--secondary);
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  transform: scale(0.98);
+  overflow: auto;
+  border-radius: 50%;
+}
+
+#profile-area .profilePhoto .material-icons-outlined {
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: white;
+  background: rgba(33, 37, 41, 0.4);
+}
+
+#profile-area .profilePhoto:hover .material-icons-outlined {
+  opacity: 1;
+  cursor: pointer;
+}
+
+#profile-area .profilePhoto img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.profilePhoto:hover::before {
+  opacity: 0;
+  display: none;
+}
+
+.profilePhoto .material-icons-outlined {
+  transform: scale(1.75);
+}
+
+#profile-area .client .default-input-select,
+#profile-area .client .current-value {
+  font-weight: bold !important;
+}
+
+#profile-area .editable-hidden .wrap-field-label {
+  margin-bottom: 0;
+}
+
+#profile-area .editable-hidden .wrap-field-label input[type="text"] {
+  border-color: rgba(255, 255, 255, 0);
+}
+#profile-area .editable-hidden input[type="text"]:hover,
+#profile-area .editable-hidden .wrap-field-label:hover input[type="text"],
+#profile-area
+  .editable-hidden
+  .wrap-field-label.editAllActive
+  input[type="text"] {
+  border-color: var(--lines);
+}
+
+#profile-area .editable-hidden label,
+#profile-area .content-select-input i {
+  opacity: 0;
+}
+#profile-area .editable-hidden label:hover,
+#profile-area .editable-hidden .wrap-field-label:hover label,
+#profile-area .editable-hidden .wrap-field-label:hover .content-select-input i,
+#profile-area .editable-hidden .wrap-field-label.editAllActive label {
+  opacity: 1;
+}
+
+#profile-area .editable-hidden .wrap-field-label input:focus,
+#profile-area .editable-hidden .wrap-field-label:hover input:focus,
+#profile-area .editable-hidden .wrap-field-label.editAllActive label {
+  border-color: var(--primary);
+}
+
+#profile-area .top {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 2rem;
+  align-items: center;
+  position: relative;
+}
+
+#profile-area .top h2,
+#profile-area .top input {
+  text-align: center;
+}
+
+#profile-area .top .client input {
+  font-weight: bold;
+}
+
+#profile-area .bottom form > div {
+  display: flex;
+
+  margin-bottom: 15px;
+}
+#profile-area .bottom form > div:last-of-type {
+  margin-bottom: 0;
+}
+
+#profile-area .bottom form > div i {
+  margin-right: 5px;
+  align-self: center;
+}
+
+#profile-area .bottom form > div .wrap-field-label {
+  width: 100%;
+}
+
+#profile-area .general-forms {
+  width: 100%;
+}
+
+#profile-area .nameSection {
+  display: flex;
+  flex-direction: column;
+}
+
+#profile-area .nameSection .wrap-field-label div.inputWrapper {
+  opacity: 1;
+  display: inline;
+  position: relative;
+}
+
+#profile-area .nameSection .saveCloseIcons {
+  display: flex;
+  position: relative;
+  visibility: visible;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+#profile-area .nameSection .editNameReveal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#profile-area .nameSection .default-input-text {
+  text-align: left;
+}
+
+#profile-area .nameSection .wrap-field-label .inputWrapper {
+  margin-bottom: 10px;
+}
+#profile-area .nameSection .wrap-field-label:last-of-type .inputWrapper {
+  margin-bottom: 0px;
+}
+
+#profile-area
+  .editable-hidden
+  .nameSection
+  .wrap-field-label
+  input[type="text"],
+#profile-area
+  .editable-hidden
+  .nameSection
+  .wrap-field-label
+  input[type="tel"] {
+  border: solid 1px var(--lines);
+  border: solid 1px transparent;
+
+  box-sizing: border-box;
+  box-shadow: none;
+  border-radius: 4px;
+  border-color: var(--lines);
+}
+
+#profile-area .editable-hidden .nameSection .wrap-field-label label.label-form {
+  opacity: 1;
+}
+
+#profile-area .nameSection .wrap-field-label div.inputWrapper,
+#profile-area .nameSection .wrap-field-label div.inputWrapper,
+#profile-area .nameSection .wrap-field-label div.inputWrapper,
+#profile-area .nameSection .wrap-field-label div.inputWrapper {
+  display: flex;
+  opacity: 1 !important;
+}
+
+#profile-area .iconPlusInput:focus-within .currentValue,
+#profile-area .iconPlusInput:hover .currentValue {
+  display: none;
+}
+
+#profile-area .iconPlusInput .editNoActive:focus-within .currentValue,
+#profile-area .iconPlusInput .editlNoActive:hover .currentValue {
+  display: block;
+}
+
+#profile-area .nameSection .editable-hidden .wrap-field-label label,
+#profile-area
+  .nameSection
+  .editable-hidden
+  .wrap-field-label
+  .content-select-input
+  i {
+  opacity: 1 !important;
+}
+
+#profile-area
+  .nameSection
+  .editable-hidden
+  .wrap-field-label
+  input[type="text"],
+#profile-area
+  .nameSection
+  .editable-hidden
+  .wrap-field-label
+  input[type="tel"] {
+  border-color: var(--lines) !important;
+}
+
+#profile-area .nameSection button {
+  cursor: pointer;
+  display: flex;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+/* Redoing the positioning of the input label */
+#profile-area .wrap-field-label {
+  overflow: visible;
+  position: relative;
+  width: 100%;
+}
+
+#profile-area .wrap-field-label label.label-form {
+  position: relative;
+  color: var(--secondary);
+  font-size: 10px;
+  margin: 0;
+  display: inline-block;
+  background: white;
+  top: 9px;
+  left: 8px;
+  z-index: 9;
+  padding: 0 4px;
+  width: auto;
+}
+
+#profile-area .wrap-field-label input[type="text"] {
+  border: solid 1px var(--lines);
+  border-radius: 4px;
+  width: 100%;
+  background: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none !important;
+  padding: 8px 10px 5px;
+  font-size: 12px;
+  color: var(--dark);
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  font-weight: 400;
+}
+
+#profile-area .hoverActive p,
+#profile-area .wrap-field-label.editAllActive:hover p {
+  opacity: 0;
+}
+
+#profile-area .hoverActive div.inputWrapper,
+#profile-area .wrap-field-label:hover div.inputWrapper,
+#profile-area .wrap-field-label:focus div.inputWrapper,
+#profile-area .wrap-field-label:focus-within div.inputWrapper,
+#profile-area .wrap-field-label:active div.inputWrapper {
+  display: flex;
+  opacity: 1;
+}
+
+#profile-area .hoverActive div.inputWrapper .currentValue,
+#profile-area .wrap-field-label:hover div.inputWrapper .currentValue,
+#profile-area .wrap-field-label:focus div.inputWrapper .currentValue,
+#profile-area .wrap-field-label:focus-within div.inputWrapper .currentValue,
+#profile-area .wrap-field-label:active div.inputWrapper .currentValue {
+  display: none;
+}
+
+#profile-area .editable-hidden .editAllActive input[type="text"],
+#profile-area .editable-hidden .editAllActive input[type="tel"] {
+  padding-right: 60px;
+}
+
+#profile-area .wrap-field-label p.currentValue {
+  font-size: 12px;
+  padding: 8px 10px 5px;
+  font-weight: 400;
+  margin: 0;
+  border: solid 1px transparent;
+}
+
+#profile-area .wrap-field-label div.inputWrapper {
+  -webkit-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+  display: none;
+  opacity: 0;
+  /* position: absolute; */
+  top: 0;
+  width: 100%;
+}
+
+#profile-area .editAllActive div.inputWrapper,
+#profile-area .wrap-field-label:hover div.inputWrapper {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+#profile-area .wrap-field-label label.label-form {
+  position: absolute;
+  opacity: 1;
+  background-color: white;
+  top: -7px;
+  opacity: 0;
+}
+
+#profile-area .hoverActive label.label-form {
+  opacity: 1 !important;
+}
+
+#profile-area .wrap-field-label input[type="text"],
+#profile-area .wrap-field-label input[type="tel"] {
+  background: white;
+}
+
+#profile-area .iconPlusInput:focus-within input,
+#profile-area .iconPlusInput:focus-within .inputWrapper,
+#profile-area .iconPlusInput:focus-within .inputWrapper label,
+#profile-area .iconPlusInput:focus-within .inputWrapper .saveCloseIcons,
+#profile-area .iconPlusInput:focus-within .inputWrapper .saveCloseIcons button {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+#profile-area .saveCloseIcons {
+  opacity: 1;
+  position: relative;
+  right: 0;
+  top: 0;
+  display: flex;
+  height: auto;
+  color: var(--gray);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+#profile-area .saveCloseIcons i {
+  color: var(--gray);
+}
+
+#profile-area .saveCloseIcons button {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  display: flex;
+  height: 100%;
+}
+
+/* 
+Dropdown Styles Only
+*/
+#profile-area fieldset.dropdown label,
+#profile-area fieldset.dropdown i {
+  opacity: 1;
+}
+
+#profile-area fieldset.dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#profile-area fieldset.dropdown div.DdWrapper {
+  position: relative;
+  width: 100%;
+  padding-right: 1rem;
+}
+
+#profile-area fieldset.dropdown label {
+  opacity: 0;
+  background: var(--white);
+  position: absolute;
+  top: -7px;
+  left: 7px;
+  z-index: 2;
+  font-size: 10px;
+  padding: 0 4px;
+  color: var(--secondary);
+}
+
+#profile-area fieldset.dropdown select,
+#profile-area .general-forms div.companySection {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  -webkit-appearance: none;
+  background-position-x: calc(100% - 10px);
+  font-weight: 400;
+  padding: 8px 10px 5px 10px;
+  font-size: 12px;
+  color: var(--dark);
+  text-align: center;
+  text-align-last: center;
+}
+
+#profile-area fieldset.dropdown select.clientSelect {
+  font-weight: bold;
+}
+
+#profile-area fieldset.dropdown select option {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--dark);
+  font-family: var(--font-family-sans-serif);
+}
+
+#profile-area fieldset label,
+#profile-area fieldset.dropdown:hover .inputWrapper label {
+  /* Only visible on hover */
+  opacity: 1;
+}
+
+#profile-area fieldset.dropdown select,
+#profile-area fieldset.dropdown:hover .inputWrapper select {
+  /* Only visible on hover */
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: var(--lines);
+
+  /* Use SVG code directly as a background image */
+  background: url('data:image/svg+xml;utf-8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" /><path fill="%23909295" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>')
+    no-repeat #fff;
+  background-position-x: calc(100% - 5px);
+  background-position-y: center;
+}
+#profile-area .nameSection .editNameReveal.hide,
+.hide {
+  display: none !important;
+}
+.sliderContent {
+  /* overflow: auto; */
+}
+.saveIconRemove {
+  display: none !important;
+}
+
+#image-details .general-infos input.off {
+  border-color: var(--lines);
+  padding: 0.4em 0.7em;
+}
+
+#image-details .general-infos {
+  display: flex;
+  flex-direction: column;
+}
+
+.sliderContent .button-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.sliderContent .button-group button {
+  /* border: 1px solid blue; */
+  margin-right: 10px;
+}
+.sliderContent .button-group button:last-of-type {
+  margin-right: 0px;
+}
+
+#profile-area .bottom input[type="tel"] {
+  border: solid 1px transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  box-sizing: border-box;
+  box-shadow: none;
+  border-radius: 4px;
+  min-height: 33px;
+  border-color: var(--lines);
+  font-size: 12px;
+  /* color:  */
+  padding: 8px 10px 5px;
+  color: var(--dark);
+  width: 100%;
+}
+
+#profile-area .spinner {
+  position: absolute;
+  /* top: 0; */
+  top: -34px;
+  left: 0;
+  transition: ease opacity 0.2s;
+  border: 2px solid var(--blue);
+  border-right-color: transparent;
+  opacity: 0;
+}
+
+#profile-area .spinner.saving {
+  /* border: 1px solid orange; */
+  opacity: 1;
+}
+
+#profile-area .spinner.saved {
+  /* border: 1px solid green; */
+  opacity: 0;
+}
