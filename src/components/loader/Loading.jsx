@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/loading.styles.css';
+import './styles/Loading.styles.css';
 
 export default function Loading({ loadingText }) {
   return (
