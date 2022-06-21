@@ -1,6 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
-import './styles/modal.css';
+import "./styles/modal.css";
 
 export default function Modal({
   displayModal,
@@ -18,7 +16,7 @@ export default function Modal({
   handleButton3Modal = () => {},
 }) {
   const divStyle = {
-    display: displayModal ? 'block' : 'none',
+    display: displayModal ? "block" : "none",
   };
 
   return (
@@ -43,7 +41,7 @@ export default function Modal({
         <p
           className="modal-body-container"
           dangerouslySetInnerHTML={{ __html: body }}
-        ></p>
+        />
         {content && content}
         <div className="modal-footer-container">
           {button1Text && (

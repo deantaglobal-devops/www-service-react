@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from "react";
 
-import './styles/input.styles.css';
+import "./styles/input.styles.css";
 
 export default function Input({
   label,
@@ -26,15 +26,15 @@ export default function Input({
 
   return (
     <div className="wrap-field-label">
-      <label className={isFocused ? 'label-form on' : 'label-form'}>
+      <label className={isFocused ? "label-form on" : "label-form"}>
         {label}
       </label>
       <input
         ref={inputRef}
         className={
           hasError
-            ? 'default-input-text form-control default-input-text-invalid'
-            : 'default-input-text form-control'
+            ? "default-input-text form-control default-input-text-invalid"
+            : "default-input-text form-control"
         }
         type="text"
         name={name}
@@ -46,7 +46,7 @@ export default function Input({
         onBlur={handleInputBlur}
         {...rest}
       />
-      <div className={hasError ? 'invalid-feedback-show' : 'invalid-feedback'}>
+      <div className={hasError ? "invalid-feedback-show" : "invalid-feedback"}>
         {titleError}
       </div>
     </div>

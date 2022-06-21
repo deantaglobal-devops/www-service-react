@@ -1,5 +1,4 @@
-import React from 'react';
-import './styles/Loading.styles.css';
+import "./styles/Loading.styles.css";
 
 export default function Loading({ loadingText }) {
   return (
@@ -11,10 +10,10 @@ export default function Loading({ loadingText }) {
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             style={{
-              margin: 'auto',
-              background: 'none',
-              display: 'block',
-              shapeRendering: 'auto',
+              margin: "auto",
+              background: "none",
+              display: "block",
+              shapeRendering: "auto",
             }}
             width="80px"
             height="80px"
@@ -338,6 +337,6 @@ export default function Loading({ loadingText }) {
         </div>
       </div>
     </div>
-  // ENDS NEW LOADER
+    // ENDS NEW LOADER
   );
 }
