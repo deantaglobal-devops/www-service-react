@@ -224,38 +224,25 @@ class LinkArticleList extends React.Component {
     });
   }
 
-  handleGeneratePdf() {
-    fetch("/call/issue/indesign/insert", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: JSON.stringify({
-        projectId: this.state.projectId,
-        issueId: this.state.issueId,
-        chapterId: this.state.firstId,
-        volumeNo: this.state.volumeNum,
-        issueNo: this.state.issueNum,
-      }),
-    })
-      .then((res) => res.json())
-      .then(
-        (data) => {
-          this.setState({
-            deleteModal: true,
-            deleteModalTitle: "Your PDF is generating",
-            deleteModalBody:
-              "Your chapter PDF is currently being generated and this process can take up to 10 minutes depending on the file size.",
-            deleteModalFooter: "",
-            pdfDownload: "hide",
-          });
-        },
-        (error) => {
-          // Todo: should we add a fail toast to show the error?
-          console.log(error);
-        },
-      );
+  async handleGeneratePdf() {
+    const { projectId, issueId, firstId, volumeNum, issueNum } = this.state;
+    const bodyRequest = {
+      projectId,
+      issueId,
+      chapterId: firstId,
+      volumeNo: volumeNum,
+      issueNo: issueNum,
+    };
+    await api.post("/issue/indesign/insert", bodyRequest).then(() => {
+      this.setState({
+        deleteModal: true,
+        deleteModalTitle: "Your PDF is generating",
+        deleteModalBody:
+          "Your chapter PDF is currently being generated and this process can take up to 10 minutes depending on the file size.",
+        deleteModalFooter: "",
+        pdfDownload: "hide",
+      });
+    });
   }
 
   async handleDownloadPdf() {

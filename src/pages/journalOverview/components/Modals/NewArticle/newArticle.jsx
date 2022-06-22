@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { api } from "../../../../../services/api";
 import ModalForm from "../../../../../components/ModalForm/modalForm";
 import DatePicker from "../../../../../components/datePicker/datePicker";
 import Input from "../../../../../components/input/input";
@@ -90,48 +90,38 @@ export function NewArticle({ show, handleClose, projectId }) {
     if (!validation) {
       setIsLoading(true);
       // new article - form submit
-      await fetch("/call/create/new/article/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: data.title,
-          articleId: data.articleId,
-          author: data.author,
-          authorMailId: data.authorMailId,
-          authorAffiliation: data.authorAffiliation,
-          funderInformation: data.funderInformation,
-          disclosureStatement,
-          pageNumber: data.pageNumber,
-          referenceEditingStandardSet: data.referenceEditingStandardSet.id,
-          DOI: data.DOI,
-          publicationType: data.publicationType,
-          abstract: data.abstract,
-          keywords: data.keywords,
-          openAccessLicence: data.openAccessLicence,
-          volumeNumber: data.volumeNumber,
-          issueNumber: data.issueNumber,
-          startDate: data.startDate,
-          endDate: data.endDate,
-          receivedDate: data.receivedDate,
-          revisedDate: data.revisedDate,
-          acceptedDate: data.acceptedDate,
-          description,
-          projectId,
-        }),
-      })
+      const bodyRequest = {
+        title: data.title,
+        articleId: data.articleId,
+        author: data.author,
+        authorMailId: data.authorMailId,
+        authorAffiliation: data.authorAffiliation,
+        funderInformation: data.funderInformation,
+        disclosureStatement,
+        pageNumber: data.pageNumber,
+        referenceEditingStandardSet: data.referenceEditingStandardSet.id,
+        DOI: data.DOI,
+        publicationType: data.publicationType,
+        abstract: data.abstract,
+        keywords: data.keywords,
+        openAccessLicence: data.openAccessLicence,
+        volumeNumber: data.volumeNumber,
+        issueNumber: data.issueNumber,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        receivedDate: data.receivedDate,
+        revisedDate: data.revisedDate,
+        acceptedDate: data.acceptedDate,
+        description,
+        projectId,
+      };
+      await api
+        .post("/configuration/create/article", bodyRequest)
         .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
           setIsLoading(false);
-          if (data.status === "success") {
-            document.location.href = `/project/journal/${projectId}/detail/${data.lastInsertedId}`;
+          if (response.data.status === "success") {
+            document.location.href = `/project/journal/${projectId}/detail/${response.data.lastInsertedId}`;
           }
-        })
-        .catch((err) => {
-          console.log(err);
         });
     }
 
@@ -457,7 +447,10 @@ export function NewArticle({ show, handleClose, projectId }) {
               <div className="wrap-field-label">
                 <label className="label-radio">Disclosure Statement</label>
                 <div className="flex-side-closure">
-                  <label className="pure-material-radio">
+                  <label
+                    htmlFor="disclosureStatement"
+                    className="pure-material-radio"
+                  >
                     <input
                       type="radio"
                       className="project-radio"
@@ -468,7 +461,10 @@ export function NewArticle({ show, handleClose, projectId }) {
                     />
                     <span>Yes</span>
                   </label>
-                  <label className="pure-material-radio">
+                  <label
+                    htmlFor="disclosureStatement"
+                    className="pure-material-radio"
+                  >
                     <input
                       type="radio"
                       className="project-radio"
