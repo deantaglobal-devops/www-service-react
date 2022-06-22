@@ -18,11 +18,6 @@ export function DeantaLogo() {
   return (
     <div className="deanta-logo">
       <a href="https://www.deanta.com/">
-        {/* <img
-              className="mb-3 inline-logo"
-              src="assets/images/deanta-logo.svg"
-              alt="Lanstad Beta"
-            /> */}
         <svg
           width="171"
           height="41"

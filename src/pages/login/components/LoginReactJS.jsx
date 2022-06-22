@@ -4,6 +4,8 @@ import { useAuth } from "../../../hooks/Auth";
 import ForgotPassword from "./ForgotPassword";
 import Loading from "../../../components/loader/Loading";
 
+import LanstadBetaLogo from "../../../assets/lanstad_beta_logo.svg";
+
 import "../styles/LoginReactJS.styles.css";
 
 export function LoginReactJS() {
@@ -144,22 +146,10 @@ export function LoginReactJS() {
     <>
       {isLoading && <Loading />}
       <div className="rightSideContainer">
-        <div className="logoColor">
-          <img
-            className="img-fluid"
-            src="./assets/deanta_logo_color.svg"
-            alt="Lanstad"
-            style={{
-              // width: '85%',
-              width: `${146}px`,
-            }}
-          />
-        </div>
-
         <div className="card-body-login">
           <img
             className="img-fluid"
-            src="./assets/lanstad_beta_logo.svg"
+            src={LanstadBetaLogo}
             alt="Lanstad"
             style={{
               // width: '85%',

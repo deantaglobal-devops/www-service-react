@@ -4,6 +4,9 @@ import { useAuth } from "../../hooks/Auth";
 import { api } from "../../services/api";
 import Loading from "../../components/loader/Loading";
 
+import lanstadLogo from "../../assets/lanstad_v2-logo.png";
+import favIcon from "../../assets/favicon.png";
+
 import "../../styles/bootstrap/bootstrap.min.css";
 import "../../styles/shards-dashboards.1.3.1.min.css";
 import "../../styles/style.css";
@@ -95,12 +98,12 @@ export function ResetPassword() {
           <div className="card-body">
             <img
               className="auth-form__logo d-table mx-auto mb-3"
-              src="../assets/favicon.png"
+              src={favIcon}
               alt="Lanstad"
             />
             <img
               className="auth-form__logo2 d-table mx-auto mb-5"
-              src="../assets/lanstad_v2-logo.png"
+              src={lanstadLogo}
               alt="Lanstad"
             />
 

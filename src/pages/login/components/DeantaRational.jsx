@@ -41,14 +41,14 @@ export function DeantaRational() {
       {imageRandomNumber <= 3 ? (
         <img
           className="background"
-          src={`./assets/asset${
+          src={`/assets/asset${
             imageRandomNumber === 0 ? 1 : imageRandomNumber
           }.jpg`}
           alt="Lanstad background"
         />
       ) : (
         <video
-          src={`./assets/asset${imageRandomNumber}.mp4`}
+          src={`/assets/asset${imageRandomNumber}.mp4`}
           autoPlay
           muted
           loop

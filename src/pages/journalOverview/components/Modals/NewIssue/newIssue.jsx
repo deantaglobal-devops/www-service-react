@@ -6,6 +6,8 @@ import Input from "../../../../../components/input/input";
 import Dropdown from "../../../../../components/dropdown/dropdown";
 import Loading from "../../../../../components/loader/Loading";
 
+import GenericCover from "../../../../../assets/covers/generic.png";
+
 const timeDropdown = [
   {
     id: 0,
@@ -279,7 +281,11 @@ export function NewIssue({ show, handleClose, project_id }) {
                     alt="create issue"
                     className="profile-image"
                     id="CreateIssueImage"
-                    src={issueImageUpdated !== "" ? issueImageUpdated : ""}
+                    src={
+                      issueImageUpdated !== ""
+                        ? issueImageUpdated
+                        : GenericCover
+                    }
                   />
                   <i className="material-icons-outlined">add_photo_alternate</i>
                   <input

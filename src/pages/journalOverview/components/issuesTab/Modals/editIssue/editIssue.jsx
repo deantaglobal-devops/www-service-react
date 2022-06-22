@@ -8,6 +8,8 @@ import Dropdown from "../../../../../../components/dropdown/dropdown";
 import ModalForm from "../../../../../../components/ModalForm/modalForm";
 import Loading from "../../../../../../components/loader/Loading";
 
+import GenericCover from "../../../../../../assets/covers/generic.png";
+
 import "./styles/editIssue.styles.css";
 
 const timeDropdown = [
@@ -325,7 +327,7 @@ export default function EditIssue({
                             }/file/src/?path=/epublishing/${
                               data?.project_id
                             }/projectAssets/${data?.issue_image}&storage=blob`
-                          : "/assets/images/covers/generic.png"
+                          : { GenericCover }
                       }
                     />
                   ) : (

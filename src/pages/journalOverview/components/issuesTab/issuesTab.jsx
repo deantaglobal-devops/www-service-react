@@ -4,6 +4,8 @@ import LinkArticleList from "../../../../components/linkArticleList";
 import SlideDrawer from "../../../../components/sliderDrawer/sliderDrawer";
 import EditIssue from "./Modals/editIssue/editIssue";
 
+import GenericCover from "../../../../assets/covers/generic.png";
+
 export function IssuesTab(props) {
   const [issues, setIssues] = useState(props?.issues);
   const [issuesProps, setIssuesProps] = useState({});
@@ -172,7 +174,7 @@ export function IssuesTab(props) {
                               <a>
                                 <img
                                   alt="projet thumb"
-                                  src="/assets/images/covers/generic.png"
+                                  src={GenericCover}
                                   className="project-thumb-list"
                                 />
                               </a>
