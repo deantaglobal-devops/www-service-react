@@ -3,9 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-  - master
-
 variables:
   # Azure Resource Manager connection created during pipeline creation
   azureSubscription: "d417bc94-1aba-4792-8863-73d9297825f2"
