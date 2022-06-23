@@ -251,13 +251,19 @@ export default function EditIssue({
       formData.append("Issue[start_time_update]", data?.start_time);
       formData.append("Issue[end_time_update]", data?.end_time);
 
+      const token = localStorage.getItem("lanstad-token");
+
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+        headers: {
+          "Lanstad-Token": token,
+        },
         body: formData,
-        mode: "no-cors",
       };
-      const response = await fetch("/call/issue/update/submit", requestOptions);
+      const response = await fetch(
+        `${import.meta.env.VITE_URL_API_SERVICE}/issue/update`,
+        requestOptions,
+      );
       const responseData = await response.json();
 
       responseData.data = {

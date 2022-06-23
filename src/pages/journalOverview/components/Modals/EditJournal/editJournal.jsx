@@ -258,21 +258,23 @@ export function EditJournal({ show, permissions, journalData, handleClose }) {
       formData.append("Journals[projectactive]", data?.projectActive);
       formData.append("Journals[journalList]", JSON.stringify(editorList));
 
+      const token = localStorage.getItem("lanstad-token");
+
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+        headers: { "Lanstad-token": token },
         body: formData,
-        mode: "no-cors",
+        // mode: "no-cors",
       };
       const response = await fetch(
-        "/call/journal/update/submit",
+        `${import.meta.env.VITE_URL_API_SERVICE}/journal/update`,
         requestOptions,
       );
       const responseData = await response.json();
 
       if (responseData) {
         setIsLoading(false);
-        window.location.reload();
+        // window.location.reload();
       }
 
       setIsLoading(false);
