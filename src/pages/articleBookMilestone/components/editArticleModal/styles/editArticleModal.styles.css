@@ -1,0 +1,25 @@
+/* .left-side .wrap-field-label {
+  margin: 0 1vw 0.5vw 0 !important;
+} */
+
+.task-label-status {
+  font-size: 10px;
+  margin-bottom: 8px;
+  color: #909295;
+}
+
+.status-value {
+  font-size: 12px;
+}
+
+.flex-side-closure {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 30%;
+}
+
+.project-checkbox {
+  margin-top: 4px;
+  margin-right: 5px;
+}

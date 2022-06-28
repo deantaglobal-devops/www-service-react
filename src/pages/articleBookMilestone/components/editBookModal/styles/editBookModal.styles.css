@@ -1,0 +1,21 @@
+.flex-side {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.right-side .wrap-field-label {
+  margin: 0 0 0.5vw 0 !important;
+}
+
+element.style {
+}
+.wrap-field-label input[type='text'],
+.wrap-field-label input[type='mail'],
+.wrap-field-label input[type='phone'],
+.wrap-field-label input[type='tel'],
+.wrap-field-label textarea,
+.wrap-field-label select {
+  border-radius: 1px;
+}

@@ -74,7 +74,7 @@
 }
 #side-slider-container .sliderContent {
   max-width: 90vw;
-  min-height: 700px;
+  /* min-height: 700px; */
 }
 #side-slider-container .sliderContent.sliderContent-small {
   --sidebar-width: 340px;
@@ -145,32 +145,46 @@
 }
 
 .icon-draggable {
+  height: inherit;
+  font-size: 18px !important;
+  position: absolute;
+  z-index: 999;
+  left: -15px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  opacity: 0;
+  transition: 400ms all ease;
+}
+
+.icon-draggable div.tooltip-content {
   padding: 7px;
   border-radius: 50%;
   background: var(--primary);
   color: white;
   cursor: move;
   font-size: 18px !important;
-  position: absolute;
-  transform: translateY(-50%);
-  top: 50%;
-  left: -15px;
-  z-index: 9999;
   user-select: none;
   transition: 400ms all ease;
 }
 
-.icon-draggable:active {
-  transform: translateY(-50%) scale(1.15);
+.icon-draggable:hover,
+.icon-draggable.showtooltip,
+.icon-draggable div:active {
+  opacity: 1;
+}
+
+.icon-draggable div.tooltip-content:active {
+  transform: scale(1.15);
   background: var(--blue);
 }
 
-.icon-draggable i {
+.icon-draggable div.tooltip-content i {
   color: white;
   font-size: 18px !important;
 }
 
-.icon-draggable.showtooltip::after {
+.icon-draggable.showtooltip div.tooltip-content::after {
   opacity: 0;
   content: "";
   position: absolute;
@@ -181,9 +195,8 @@
   background: #212529;
 }
 
-.icon-draggable.showtooltip::before {
+.icon-draggable.showtooltip div.tooltip-content .tooltip-msgintro {
   opacity: 0;
-  content: "This button allow you resize this modal";
   position: absolute;
   left: -175px;
   top: 50%;
@@ -198,7 +211,7 @@
   font-size: 12px;
 }
 
-.icon-draggable.showtooltip:hover::before,
-.icon-draggable.showtooltip:hover::after {
+.icon-draggable.showtooltip div.tooltip-content:hover .tooltip-msgintro,
+.icon-draggable.showtooltip div.tooltip-content:hover::after {
   opacity: 1;
 }

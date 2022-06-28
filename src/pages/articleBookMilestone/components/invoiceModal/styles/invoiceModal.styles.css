@@ -1,0 +1,42 @@
+#invoice-process textarea {
+  min-height: 65px;
+}
+
+#invoice-process .cstm-label {
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 10px;
+  margin-bottom: 0;
+}
+
+#invoice-process .add-item {
+  color: #909295;
+}
+
+#invoice-process .add-item i {
+  position: relative;
+  top: 2px;
+}
+
+.invoice-icons span {
+  position: relative;
+  top: 21px;
+  color: #9d9ea1;
+  padding-left: 16px;
+}
+
+.info-flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  margin-bottom: 1.5rem !important;
+}
+
+.wrap-field-label {
+  margin: 0 0 0.5vw 0 !important;
+}
+
+.wrap-field-label input {
+  pointer-events: all !important;
+}

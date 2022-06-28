@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import NotificationCount from "../../../../components/NotificationCount/NotificationCount";
-import SliderLoading from "../../../../components/sliderLoading";
+import SliderLoading from "../../../../components/sliderLoading/SliderLoading";
 import { api } from "../../../../services/api";
 
 export function NotificationDashboard({ NOTIFICATION_CENTER_PROPS }) {

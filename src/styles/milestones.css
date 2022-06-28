@@ -1,0 +1,777 @@
+.task-details {
+  position: relative;
+}
+
+.avatar-task,
+.user-avatar {
+  max-width: 100%;
+}
+
+.user-avatar-40 {
+  object-position: center;
+  max-width: 40px;
+  max-height: 40px;
+  object-fit: cover;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.task-details input {
+  margin: 0;
+}
+
+.task-details > div {
+  overflow: hidden;
+  margin-right: 10px;
+  align-self: center;
+}
+
+.task-details .finished {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.task-details .finished button {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border: 0;
+  background: transparent;
+  box-shadow: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-details:hover .finished button {
+  opacity: 1;
+}
+
+.task-details .finished button i {
+  color: var(--secondary);
+  font-size: 18px;
+}
+
+.task-details:hover .finished button:hover i {
+  color: #0067f4;
+}
+
+.task-details.task-editing > div {
+  align-self: flex-start;
+}
+
+.milestoneRow > td {
+  vertical-align: middle;
+}
+
+.milestoneRow .m-color-col {
+  /* display: flex; */
+  width: 30px;
+  justify-content: center;
+  margin-right: 2rem;
+}
+
+.milestoneRow .circle-status {
+  margin: 0;
+}
+
+.milestone-table.editing
+  .milestoneRow
+  .content-datepicker
+  i.material-icons-outlined,
+.task-editing .content-datepicker i.material-icons-outlined {
+  background: var(--white);
+  right: 7px;
+  top: 1px;
+  padding-right: 5px;
+  padding-left: 2px;
+  height: calc(100% - 2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  border-radius: 4px;
+  pointer-events: none;
+  max-height: 27px;
+}
+
+.milestone-table.editing .milestoneRow .milestone-type-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+}
+
+.milestone-table.editing .milestone-type-col .custom-control {
+  width: 100%;
+}
+
+.milestone-table.editing .error-msg.hide {
+  display: none;
+  color: var(--danger);
+}
+
+.milestone-table.editing .milestoneRow .actions-milestone > div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dragger-column {
+  transition: opacity ease 0.2s;
+  opacity: 0;
+  border: 0px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--secondary);
+  margin-right: -0.5rem;
+  margin-left: 1rem;
+  display: flex;
+  position: absolute;
+  right: -4px;
+}
+
+.task-details:hover .dragger-column {
+  opacity: 1;
+}
+
+.ghost {
+  background-color: #f8f9fa !important;
+  border-color: var(--primary);
+}
+
+.milestoneRow {
+  transition: background-color ease 0.2s;
+}
+
+.milestone-table:not(.editing) input {
+  pointer-events: none;
+}
+
+.milestone-table #milestoneRow-1 input {
+  pointer-events: all !important;
+}
+
+.milestoneRow.active ~ .tasks-space {
+  pointer-events: all;
+}
+
+[id*='milestoneDetails'] .task-editing input {
+  pointer-events: all !important;
+  padding: 10px 10px 8px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.milestone-table .new-tasks .task-editing input {
+  pointer-events: unset;
+}
+
+.milestone-table:not(.editing) .milestoneRow:hover {
+  background: var(--light) !important;
+  cursor: pointer;
+}
+
+.milestone-table:not(.editing) .milestoneRow td.open-milestone {
+  position: relative;
+}
+
+.milestone-table:not(.editing) td.open-milestone .open-item {
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+  max-height: 94px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+}
+
+.milestone-table td.open-milestone .open-item i {
+  margin: 0;
+  border: 0px dashed var(--primary);
+  border-radius: 50vw;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.milestone-table td.open-milestone .open-item:focus i {
+  border: 1px dashed var(--primary);
+}
+
+.task-editing {
+  height: 320px;
+  height: auto;
+}
+.task-editing.task-details {
+  flex-wrap: wrap;
+}
+
+.task-editing .actions-task-col {
+  width: 40%;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 2;
+  top: 15px !important;
+}
+
+.actions-task-col {
+  position: absolute;
+  width: 100px !important;
+  top: 20px !important;
+  right: 30px !important;
+  background: var(--white);
+  z-index: 1;
+}
+
+.task-editing .messaging-col,
+.task-editing .status-col,
+.task-editing .default-toolbar {
+  display: none;
+}
+
+.edition-toolbar {
+  display: none;
+}
+
+.task-editing .edition-toolbar {
+  display: block;
+}
+
+.task-editing .taskattibutes-col {
+  margin-top: 1rem;
+  margin-left: 0px;
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.task-attribute-col .task-checkboxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 12px;
+  margin-top: 16px;
+}
+
+/* .task-attribute-col .task-checkboxes {
+    columns: 6;
+} */
+
+@media only screen and (max-width: 1000px) {
+  .task-attribute-col .task-checkboxes {
+    /* columns: 4; */
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .task-attribute-col .task-checkboxes {
+    /* columns: 3; */
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.task-material-checkbox {
+  z-index: 0;
+  display: inline-block;
+  width: 12%;
+  width: 100%;
+}
+
+.task-editing .taskattibutes-col .mr-4,
+.task-editing .taskattibutes-col .mx-4 {
+  margin-right: 0rem !important;
+}
+
+.avatar-task img {
+  width: 100%;
+  max-width: 100% !important;
+  z-index: 2;
+}
+
+.avatar-task::after {
+  content: '';
+  background-color: var(--secondary);
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  transform: scale(0.95);
+  overflow: auto;
+  border-radius: 50%;
+}
+
+.user-col {
+  width: auto;
+  min-width: 0px;
+
+  margin-right: 0 !important;
+  overflow: visible !important;
+  flex-shrink: 0;
+}
+
+/*
+Task Members Section
+*/
+
+.user-col {
+  --image-size: 34px;
+  --background-color: white;
+  min-width: calc(var(--image-size) * 3.2);
+}
+
+.task-members {
+  --border-thickness: calc(var(--image-size) * 0.075);
+
+  min-height: var(--image-size);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: var(--background-color);
+  border: 0;
+  padding: 0;
+}
+
+.task-members > div {
+  position: relative;
+
+  /* How much overlap */
+  margin-left: calc(var(--image-size) * -0.48);
+  display: inline;
+  transition: transform ease 0.2s;
+
+  border-radius: var(--image-size);
+  overflow: hidden;
+
+  background-color: var(--lines);
+}
+
+.task-members > div.empty {
+  /* border: 1px solid red !important; */
+  min-height: var(--image-size);
+  min-width: var(--image-size);
+  border-radius: var(--image-size);
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="silver" d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+  background-size: 60%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.task-members div:nth-child(1) {
+  z-index: 5;
+  margin-left: 0;
+}
+.task-members div:nth-child(2) {
+  z-index: 4;
+}
+.task-members div:nth-child(3) {
+  z-index: 3;
+}
+.task-members div:nth-child(4) {
+  z-index: 2;
+}
+.task-members div:nth-child(5) {
+  z-index: 1;
+}
+
+.task-members > div:hover {
+  transform: translateY(calc(var(--image-size) * -0.05));
+  cursor: pointer;
+}
+
+.task-members img {
+  position: relative;
+  display: block;
+
+  object-fit: cover;
+
+  height: var(--image-size);
+  width: var(--image-size);
+  min-height: var(--image-size);
+  min-width: var(--image-size);
+
+  border-radius: var(--image-size);
+  border: var(--border-thickness) var(--background-color) solid;
+}
+
+.task-members .overflow:after {
+  border: var(--border-thickness) var(--background-color) solid;
+  border-radius: var(--image-size);
+
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  pointer-events: none;
+
+  background-color: rgba(0, 0, 0, 0.45);
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z" fill="white"/></svg>');
+  background-size: 76%;
+  background-position: 66% 50%;
+  background-repeat: no-repeat;
+}
+
+/*
+    Member List Cards Wrapper
+*/
+
+[id*='taskId'] ul.member-list {
+  max-height: unset;
+  overflow: unset;
+
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+[id*='taskId'] ul.member-list.simple {
+  max-width: 200px;
+}
+
+/*
+    Member List Card Single
+
+    // Purposefully being over discriptive and using .ss class to "scope" the CSS to this component only.
+*/
+
+[id*='taskId'] ul.member-list li img {
+  --imageSize: 35px;
+  width: var(--imageSize);
+  height: var(--imageSize);
+  min-width: var(--imageSize);
+  min-height: var(--imageSize);
+
+  border-radius: var(--imageSize);
+
+  margin-right: 15px;
+  object-fit: cover;
+
+  background-color: var(--secondary);
+  overflow: hidden;
+  color: white;
+}
+
+[id*='taskId'] ul.member-list li > div {
+  display: flex;
+  flex-direction: column;
+}
+
+[id*='taskId'] ul.member-list li h3 {
+  color: var(--dark);
+  font-size: 12px;
+  line-height: unset;
+  margin-bottom: 0;
+}
+
+[id*='taskId'] ul.member-list li p.role {
+  margin-bottom: 0;
+  color: var(--secondary);
+  font-size: 9px;
+}
+
+[id*='taskId'] ul.member-list li button.remove-user {
+  opacity: 0;
+  margin-left: auto;
+  border-radius: 20vh;
+
+  border: 1px dashed transparent;
+  background-color: transparent;
+
+  transition: opacity 0.2s ease;
+  display: flex;
+}
+
+[id*='taskId'] ul.member-list li button.remove-user i {
+  position: relative !important;
+  right: unset;
+  top: unset !important;
+  transition: color 0.2s ease;
+}
+
+[id*='taskId'] ul.member-list li button.remove-user:focus i,
+[id*='taskId'] ul.member-list li button.remove-user:hover i {
+  color: var(--dark);
+}
+
+[id*='taskId'] ul.member-list li:hover button.remove-user,
+[id*='taskId'] ul.member-list li:focus-within button.remove-user {
+  opacity: 1;
+}
+
+[id*='taskId'] ul.member-list li.simple {
+  max-height: unset;
+  box-shadow: unset;
+}
+
+[id*='taskId'] .secondary-navigation {
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 2em;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+[id*='taskId'] .secondary-navigation > button {
+  border: 0;
+  background: none;
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--secondary);
+}
+
+[id*='taskId'] .secondary-navigation > button i {
+  position: relative !important;
+  top: unset !important;
+  font-size: 17px;
+  margin-right: 0.5rem;
+  right: unset;
+}
+
+button.add-task {
+  color: var(--secondary);
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-task > i {
+  font-size: 20px;
+  margin: 0 10px 0 0;
+}
+
+.add-task:hover > i {
+  color: var(--blue);
+}
+
+.popover-body .user-search .navbar-search.form-control {
+  pointer-events: initial;
+}
+
+/* .listUsers .popover {
+    min-width: 330px;
+} */
+
+/* users.css | http://www.lanstad.docker/assets/styles/users.css */
+
+#modalContainer .popover .popover-body {
+  /* overflow-x: hidden; */
+  position: relative;
+}
+
+/* Element | http://www.lanstad.docker/project/6342 */
+
+#modalContainer .popover .popover-body #userList {
+  width: 100%;
+}
+
+#modalContainer .popover .popover-body .user-list {
+  width: 100%;
+  overflow: auto;
+}
+
+#modalContainer .popover .popover-body .user-card {
+  width: 100%;
+  align-self: center;
+}
+
+#modalContainer .popover .popover-body .user-list ul {
+  padding: 0px;
+}
+
+#modalContainer .popover .popover-body .user-list {
+  padding: 3%;
+  margin-left: 0%;
+}
+
+#modalContainer .popover .popover-body .user-search i {
+  color: var(--secondary);
+  font-size: 15px;
+  z-index: 2222;
+  align-content: center;
+  justify-items: center;
+  top: unset !important;
+  left: unset !important;
+}
+
+.user-card.removing {
+  -webkit-animation: fade-out 1s ease-out both;
+  animation: fade-out 1s ease-out both;
+}
+
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+[class*='member-modal-'] input {
+  border: 1px solid red;
+  pointer-events: unset !important;
+}
+
+[class*='member-modal-'] {
+  z-index: 200;
+}
+
+[class*='member-modal-'] .container {
+  /* position: relative; */
+  /* border: 1px solid red; */
+
+  border-radius: 10px;
+  border: var(--lines) 1px solid;
+  padding: 2rem;
+  position: absolute;
+  width: auto;
+  min-width: 300px;
+
+  background-color: var(--white);
+  bottom: 40px;
+  left: 40px;
+  box-shadow: 0 1px 7px -2px var(--shadow);
+  z-index: 11;
+}
+
+[class*='member-modal-'] .container header {
+  display: flex;
+  justify-content: space-between;
+}
+
+[class*='member-modal-'] .container .user-search {
+  position: relative;
+}
+
+[class*='member-modal-'] .container .user-search > i {
+  color: var(--secondary);
+  font-size: 15px;
+  z-index: 2;
+}
+
+[class*='member-modal-'] .container .user-search > .clear-search {
+  border: 0px solid transparent;
+  background-color: transparent;
+  position: absolute;
+  min-height: 100%;
+  justify-content: stretch;
+  justify-items: stretch;
+  align-content: stretch;
+  align-items: stretch;
+  align-self: stretch;
+  padding: 0 10px !important;
+  display: flex;
+  z-index: 20;
+  right: 0;
+  cursor: pointer;
+}
+
+[class*='member-modal-'] .container .user-search > .clear-search > i {
+  position: relative !important;
+  top: unset !important;
+  left: unset !important;
+  right: unset !important;
+  color: var(--secondary);
+  align-self: center;
+}
+
+[class*='member-modal-'] .container header button.close-button {
+  transform: translate(25px, -25px);
+  position: unset;
+  right: unset;
+  top: unset !important;
+}
+
+[class*='member-modal-'] .container header button.close-button {
+  background: none;
+  border: 0;
+  font-size: 18px;
+  letter-spacing: 0;
+  color: var(--dark);
+  font-weight: 400;
+  margin: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+[class*='member-modal-'] .background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+}
+
+.project-information-box .project-card-details {
+  margin-right: 2vw;
+}
+
+input ~ div[class*='is-invalid'] {
+  display: none !important;
+  visibility: hidden;
+  padding: 0px 0;
+}
+
+.is-invalid ~ div[class*='is-invalid'] {
+  display: block !important;
+  visibility: visible;
+  padding: 10px 0;
+}
+
+.milestone-table .select-format {
+  visibility: none;
+  display: none;
+}
+
+/* Fallback for No Project Covers*/
+.project-cover-wrapper,
+.thumb-project {
+  display: block;
+
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="%23d4d4d4" d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 2v5l-1-.75L15 9V4h2zm3 12H8V4h5v9l3-2.25L19 13V4h1v12z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 35%;
+  background-position: center center;
+  background-color: var(--light);
+}
+
+.project-cover-wrapper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+}

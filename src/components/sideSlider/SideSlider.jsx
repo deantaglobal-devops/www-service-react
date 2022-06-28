@@ -4,11 +4,11 @@ export default function SideSlider(props) {
   const { SliderHeader, SliderStatus, SliderWidth } = props.SIDESLIDER_PROPS;
   const [storageSize, setStorageSize] = useState(false);
   const [size, setSize] = useState({
-    x: parseInt(localStorage.getItem("width")) || 700,
+    x: parseInt(localStorage.getItem("widthModal")) || 700,
   });
 
   useEffect(() => {
-    localStorage.getItem("width")
+    localStorage.getItem("widthModal")
       ? setStorageSize(true)
       : setStorageSize(false);
     document.addEventListener("keydown", escToClose);
@@ -23,11 +23,17 @@ export default function SideSlider(props) {
 
     document.querySelector(".sliderContent").hidden = false;
     document.removeEventListener("keydown", escToClose);
-  });
+  }, []);
 
   const updateSizeModal = (size) => {
-    localStorage.setItem("width", size);
+    localStorage.setItem("widthModal", size);
   };
+
+  function escToClose(event) {
+    if (event.keyCode === 27) {
+      closeSlider();
+    }
+  }
 
   function closeSlider() {
     document.querySelector("#side-slider-container").classList = "closed";
@@ -37,12 +43,6 @@ export default function SideSlider(props) {
       props.showSlider();
       document.querySelector("body").style.overflow = "auto";
     }, 400);
-  }
-
-  function escToClose(event) {
-    if (event.keyCode === 27) {
-      closeSlider();
-    }
   }
 
   const handler = (mouseDownEvent) => {
@@ -77,10 +77,17 @@ export default function SideSlider(props) {
         style={{ width: size.x }}
       >
         {props.draggable && (
-          <div className={`icon-draggable ${!storageSize && "showtooltip"}`}>
-            <i className="material-icons-outlined " onMouseDown={handler}>
-              switch_right
-            </i>
+          <div className={`${!storageSize && "showtooltip"} icon-draggable`}>
+            <div className="tooltip-content">
+              <i className="material-icons-outlined " onMouseDown={handler}>
+                code
+              </i>
+              {!storageSize && (
+                <span className="tooltip-msgintro">
+                  {props.toolTipMsgIntro}
+                </span>
+              )}
+            </div>
           </div>
         )}
 
@@ -88,7 +95,7 @@ export default function SideSlider(props) {
           {/* If SliderHeader exists then display */}
           {SliderHeader && <h2>{SliderHeader}</h2>}
 
-          <button type="button" onClick={() => closeSlider()} title="Close">
+          <button onClick={() => closeSlider()} title="Close">
             <i
               className="material-icons-outlined close-details"
               data-toggle="tooltip"
@@ -100,7 +107,7 @@ export default function SideSlider(props) {
           </button>
         </header>
 
-        <div className="content">{props?.children}</div>
+        <div className="content">{props.children}</div>
       </div>
 
       <div onClick={() => closeSlider()} className="backdrop" />

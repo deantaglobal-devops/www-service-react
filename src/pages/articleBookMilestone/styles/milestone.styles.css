@@ -1,0 +1,288 @@
+.skip-eproofing .Tooltip-Wrapper label {
+  margin: 0 !important;
+}
+
+/* tr.taskRow {
+  border: none !important;
+}
+
+tr.taskRow td {
+  padding: 0em 2em 0.5em 0;
+} */
+
+tr.taskRow td.m-title-col {
+  padding-left: 1em !important;
+}
+
+td.align-right {
+  text-align: right;
+}
+
+#reschedule-dates tr {
+  border: 0 !important ;
+}
+
+#reschedule-dates .datepicker {
+  font-size: 12px;
+  padding: 0.4em 0.7em 0.4em;
+}
+
+#reschedule-dates tr td {
+  padding: 1.3em 2em 0.5em 0;
+}
+
+#reschedule-dates tr.inactive {
+  opacity: 0.3;
+}
+
+td.actions-milestone a i {
+  font-size: 18px;
+}
+
+td.actions-milestone a {
+  display: inline-block;
+  margin-left: 1em;
+  color: var(--secondary);
+}
+
+.datepicker.off ~ i {
+  opacity: 0;
+}
+
+#invoice-process textarea {
+  min-height: 65px;
+}
+
+#invoice-process .cstm-label {
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 10px;
+  margin-bottom: 0;
+}
+
+#invoice-process .add-item {
+  color: #909295;
+}
+
+#invoice-process .add-item i {
+  position: relative;
+  top: 2px;
+}
+
+.hide {
+  display: none;
+}
+
+.invoice-icons span {
+  position: relative;
+  top: 21px;
+  color: #9d9ea1;
+  padding-left: 16px;
+}
+
+.cur-point {
+  cursor: pointer;
+}
+
+#loading-wrapper {
+  z-index: 99999999;
+}
+
+.new-added-item-tools span {
+  color: var(--secondary);
+}
+
+.profile-image {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.thumb-project:hover i {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.thumb-project i {
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: white;
+  background: rgba(33, 37, 41, 0.4);
+}
+.is-invalid {
+  border-color: #c4183c !important;
+}
+.is-invalid-text {
+  color: #c4183c !important;
+}
+
+.modal-body [class*="si-ch-item"] {
+  margin-bottom: 10px;
+}
+
+.modal-body ul.si-ch {
+  padding-left: 20px;
+  display: block !important;
+}
+
+.skip-eproofing {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.skip-eproofing label {
+  width: auto;
+}
+
+.modal {
+  overflow-y: auto;
+}
+.reshedule-datepicker {
+  cursor: pointer !important;
+}
+
+.thumb-project input {
+  top: 0;
+  left: 0;
+}
+
+.new-si ul.options label {
+  margin-right: 1rem;
+  color: unset;
+  width: 100%;
+}
+
+.new-si .content-select-options ul.options li:hover {
+  color: unset;
+}
+
+.content-select-options ul.options {
+  overflow-x: hidden;
+}
+
+#tooltip-black {
+  position: relative;
+  font-weight: bold;
+  font-size: 12px;
+  border: 5px solid black;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px 2px;
+  background-color: black;
+  max-width: 270px;
+  text-align: center;
+}
+
+#arrow-black,
+#arrow-black::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+}
+
+#arrow-black {
+  visibility: hidden;
+}
+
+#arrow-black::before {
+  visibility: visible;
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0px;
+  right: 0;
+  top: 50%;
+  border: 8px solid transparent;
+  border-right: 0;
+  border-left: 8px solid black;
+  transform: translate(calc(100% + 238px), -50%);
+}
+
+#tooltip-title-black {
+  font-size: 11px;
+}
+
+.slider {
+  overflow-y: hidden;
+  max-height: 190px; /* approximate max height */
+
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  height: 190px;
+}
+
+.slider.closed {
+  max-height: 0;
+}
+
+.task-material-checkbox > input {
+  top: -14px !important;
+}
+
+.task-material-checkbox > span::after {
+  top: -2px !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.file-download {
+  display: flex;
+  gap: 5px;
+}
+
+i.zipfile-download {
+  font-size: 35px;
+}
+
+.zipfile-enable {
+  color: #bec3ca;
+}
+
+.zipfile-enable:hover {
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.zipfile-disable {
+  color: #dee2e6;
+}
+
+.download-modal {
+  width: 30% !important;
+}
+
+.download-modal .singular-block-information {
+  width: 100%;
+}
+.pdf-viewer {
+  width: 100%;
+  height: 70vh;
+  overflow: hidden scroll;
+  margin-bottom: 25px;
+}
+.pdf-viewer canvas {
+  width: 100% !important;
+}
+
+.btn-float-dwn {
+  position: absolute;
+  bottom: 25px;
+}

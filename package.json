@@ -12,9 +12,16 @@
   "dependencies": {
     "@popperjs/core": "^2.11.5",
     "axios": "^0.27.1",
+    "draft-js": "^0.11.7",
+    "draft-js-export-html": "^1.4.1",
+    "draft-js-import-html": "^1.4.1",
     "jwt-decode": "^3.1.2",
+    "moment": "^2.29.3",
     "react": "^18.0.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.33.0",
+    "react-pdf": "^5.7.2",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
