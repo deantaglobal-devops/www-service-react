@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="16px" viewBox="0 0 18 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>Folder</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Books" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Book-—--Assets" transform="translate(-89.000000, -448.000000)">
+            <g id="Group-2" transform="translate(60.000000, 250.000000)">
+                <g id="Group" transform="translate(28.000000, 52.000000)">
+                    <g id="Row" transform="translate(0.000000, 125.000000)">
+                        <g id="Folder" transform="translate(0.000000, 19.000000)">
+                            <g id="folder-active">
+                                <g id="folder-24px">
+                                    <polygon id="Path" points="0 0 20 0 20 20 0 20"></polygon>
+                                    <path d="M8.33333333,3.33333333 L3.33333333,3.33333333 C2.41666667,3.33333333 1.675,4.08333333 1.675,5 L1.66666667,15 C1.66666667,15.9166667 2.41666667,16.6666667 3.33333333,16.6666667 L16.6666667,16.6666667 C17.5833333,16.6666667 18.3333333,15.9166667 18.3333333,15 L18.3333333,6.66666667 C18.3333333,5.75 17.5833333,5 16.6666667,5 L10,5 L8.33333333,3.33333333 Z" id="Shape" stroke="#0067F4" fill-rule="nonzero"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

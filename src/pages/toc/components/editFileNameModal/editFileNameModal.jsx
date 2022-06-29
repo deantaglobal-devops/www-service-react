@@ -1,4 +1,5 @@
 import React from "react";
+import { api } from "../../../../services/api";
 import Modal from "../../../../components/modal";
 import BasicButtonsSet from "../../../../components/basicButtonsSet";
 import Dropdown from "../../../../components/dropdown/dropdown";
@@ -187,30 +188,23 @@ export default class EditFileName extends React.Component {
           },
           async () => {
             const newFileName = `${this.state.clientCode}_${this.state.serialNumber}_${this.state.bookCode}_${this.state.title}`;
-            await fetch("/project/toc/updatetocchapter", {
-              method: "POST",
-              mode: "no-cors",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
+            await api
+              .post("/project/toc/updatetocchapter", {
                 projectId: this.state.projectId,
                 tocId: this.state.tocId,
                 chapterName: newFileName,
-              }),
-            })
-              .then((res) => res.json())
-              .then(
-                (data) => {
-                  // location.reload();
-                  this.props.handleUpdateData(data);
-                  this.props.handleCloseModal();
-                },
-                (error) => {
-                  this.setState({
-                    isSaving: false,
-                  });
-                  console.log(error);
-                },
-              );
+              })
+              .then((response) => {
+                // location.reload();
+                this.props.handleUpdateData(response.data);
+                this.props.handleCloseModal();
+              })
+              .catch((err) => {
+                this.setState({
+                  isSaving: false,
+                });
+                console.log(err);
+              });
           },
         );
       }

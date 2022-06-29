@@ -324,7 +324,12 @@ export function ArticleBookMilestone() {
                         {project?.projectImage !== "" && (
                           <img
                             alt="Projet"
-                            src={`/file/src/?path=/epublishing/books/${project.projectImage}&storage=blob`}
+                            // src={`/file/src/?path=/epublishing/books/${project.projectImage}&storage=blob`}
+                            src={`${
+                              import.meta.env.VITE_URL_API_SERVICE
+                            }/file/src/?path=/epublishing/books/${
+                              project.projectImage
+                            }&storage=blob`}
                           />
                         )}
                       </div>

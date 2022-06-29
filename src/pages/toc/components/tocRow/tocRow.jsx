@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { api } from "../../../../services/api";
 
 export default function TocRow({
   permissions,
@@ -23,12 +24,12 @@ export default function TocRow({
     handleChapterSelected(chapter.id);
   };
 
-  const handleDownload = (e, filePath, _fileName, _fileExtension) => {
+  const handleDownload = async (e, filePath) => {
     e.preventDefault();
 
-    // We need to review it. Stop using this landtad file to download things
-    const fileName = `${_fileName}.${_fileExtension}`;
-    Lanstad.File.download(filePath, fileName);
+    await api.get(`/file/get?filePath=${filePath}`).then((response) => {
+      console.log("response.data", response.data);
+    });
   };
 
   return (
@@ -179,7 +180,7 @@ export default function TocRow({
             !!parseInt(permissions?.toc.download) && (
               <a
                 onClick={(e) => {
-                  handleDownload(e, file.link, chapter.name, file.format);
+                  handleDownload(e, file.link);
                 }}
                 key={file.link}
                 href="#"
@@ -188,7 +189,7 @@ export default function TocRow({
                 data-src-format={file.format}
                 className="download-chapter"
               >
-                <img src={`/assets/images/icons/files/${file.format}.svg`} />
+                <img src={`/assets/icons/${file.format}.svg`} />
               </a>
             )
           );

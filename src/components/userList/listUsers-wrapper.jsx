@@ -5,6 +5,7 @@ Doing this because props need to be passed in by the data attributes of the elem
 
 */
 import React from "react";
+import { api } from "../../services/api";
 import ListUsers from "./listUsers";
 import ListUsersPortal from "./listUsersPortal";
 
@@ -37,17 +38,16 @@ class ListUsersWrapper extends React.Component {
     this.closeModal();
   }
 
-  getTaskUsers() {
-    return fetch(`/call/task/${this.props.taskid}/users`)
-      .then((res) => res.json())
-      .then(
-        (result) => result,
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-          return [];
-        },
-      );
+  async getTaskUsers() {
+    const responseData = await api
+      .get(`/task/${this.props.taskid}/users/get`)
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
+
+    return responseData;
   }
 
   async componentDidMount() {

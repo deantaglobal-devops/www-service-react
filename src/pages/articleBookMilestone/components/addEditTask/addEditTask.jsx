@@ -959,7 +959,6 @@ export default function AddEditTask({
               <div className="task-wip-options">
                 <span>WIP</span>
                 <a
-                  href="#"
                   onClick={() => confirmReject(task.taskId)}
                   data-toggle="tooltip"
                   data-placement="top"
@@ -968,7 +967,6 @@ export default function AddEditTask({
                   <i className="material-icons-outlined">close</i>
                 </a>
                 <a
-                  href="#"
                   onClick={() =>
                     changeTaskStatus("hold", `${task.taskId}`, "9")
                   }
@@ -979,7 +977,6 @@ export default function AddEditTask({
                   <i className="material-icons-outlined">pause</i>
                 </a>
                 <a
-                  href="#"
                   onClick={() =>
                     confirmFinish(
                       task.taskId,
@@ -1002,7 +999,6 @@ export default function AddEditTask({
                 <div className="task-wip-options">
                   <span>HOLD</span>
                   <a
-                    href="#"
                     onClick={() => confirmReject(task.taskId)}
                     data-toggle="tooltip"
                     data-placement="top"
@@ -1011,7 +1007,6 @@ export default function AddEditTask({
                     <i className="material-icons-outlined">close</i>
                   </a>
                   <a
-                    href="#"
                     onClick={() =>
                       changeTaskStatus("start", `${task.taskId}`, "6")
                     }
@@ -1022,7 +1017,6 @@ export default function AddEditTask({
                     <i className="material-icons-outlined">play_arrow</i>
                   </a>
                   <a
-                    href="#"
                     onClick={() =>
                       confirmFinish(
                         task.taskId,

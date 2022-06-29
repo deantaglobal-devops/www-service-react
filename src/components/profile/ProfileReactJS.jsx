@@ -523,7 +523,7 @@ export function Profile(props) {
               <img
                 alt={`${data.name}'s Profile`}
                 src={
-                  data.avatar !== ""
+                  data?.avatar !== ""
                     ? `${import.meta.env.VITE_URL_API_SERVICE}/file/src/?path=${
                         data.avatar
                       }`

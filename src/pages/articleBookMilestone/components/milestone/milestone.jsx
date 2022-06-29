@@ -183,20 +183,16 @@ export default function Milestone({
   };
 
   const getTaskMemberList = async (_taskId) => {
-    return await fetch(`/call/task/${_taskId}/users`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          return result;
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-          return [];
-        },
-      );
+    const responseData = await fetch(`/task/${_taskId}/users/get`)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
 
-    // add this taskMemberList to state so we can use it on the render
+    return responseData;
   };
 
   const _handleHover = (event, id) => {

@@ -522,7 +522,7 @@ fieldset.dropdown select {
 }
 
 .tif-background {
-  background-image: url("/assets/images/icons/files/tiff.svg");
+  background-image: url("/assets/icons/tiff.svg");
   background-repeat: no-repeat;
   background-size: 25%;
   background-position: center;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../services/api";
 import TaskMembersPreviewSingle from "./taskMembersPreviewSingle";
 
 export default function TaskMembersPreview({
@@ -38,18 +39,15 @@ export default function TaskMembersPreview({
   }, [taskMemberListProps]);
 
   const getTaskMemberList = async (_taskId) => {
-    const _taskMemberList = await fetch(`/call/task/${_taskId}/users`)
-      .then((res) => res.json())
-      .then(
-        (result) => result,
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-          return [];
-        },
-      );
+    const taskMemberListResponse = await api
+      .get(`/task/${_taskId}/users/get`)
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
 
-    setTaskMemberList(_taskMemberList);
+    setTaskMemberList(taskMemberListResponse);
     // add this taskMemberList to state so we can use it on the render
   };
 

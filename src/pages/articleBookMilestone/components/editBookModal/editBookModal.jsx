@@ -464,14 +464,19 @@ export function EditBookModal({
     formData.append("materialanalysis", materialAnalysisReportFile);
     formData.append("marFlag", materialAnalysisReportUpdated ? 0 : 1);
 
-    await fetch("/call/project/update/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const token = localStorage.getItem("lanstad-token");
+
+    await fetch(
+      `${import.meta.env.VITE_URL_API_SERVICE}/call/project/update/submit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: formData,
       },
-      mode: "no-cors",
-      body: formData,
-    })
+    )
       .then((res) => res.json())
       .then(
         (msg) => {

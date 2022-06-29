@@ -152,7 +152,7 @@ export function EditorText({ ...props }) {
   }
 
   const uploadFiles = () => {
-    fileList.length > 0 &&
+    fileList?.length > 0 &&
       fileList?.map((item) => {
         const fileUpload = {
           name: item.name,
@@ -166,25 +166,28 @@ export function EditorText({ ...props }) {
         dataBody.append("taskId", props.taskId);
         dataBody.append("attachment", item);
 
-        fetch("/call/file/upload/attachment", {
-          method: "POST",
-          mode: "no-cors",
-          body: dataBody,
-        })
-          .then((res) => res.json())
-          .then(
-            (response) => {
-              fileUpload.file_path = response.filePath;
-              fileUpload.upload = "uploaded";
-              fileUpload.error = "";
+        const token = localStorage.getItem("lanstad-token");
+
+        fetch(
+          `${import.meta.env.VITE_URL_API_SERVICE}/file/upload/attachment`,
+          {
+            method: "POST",
+            body: dataBody,
+            headers: {
+              "Lanstad-Token": token,
             },
-            (err) => {
-              console.log(err);
-              fileUpload.error = "Error uploading file";
-            },
-          )
+          },
+        )
+          .then((response) => {
+            fileUpload.file_path = response.filePath;
+            fileUpload.upload = "uploaded";
+            fileUpload.error = "";
+          })
           .finally(() => {
             setProgressUpload(fileUpload);
+          })
+          .catch((err) => {
+            console.log(err);
           });
       });
   };

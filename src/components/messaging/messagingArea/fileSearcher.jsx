@@ -91,27 +91,18 @@ class FileSearcher extends React.Component {
     this.setState({ loading: true });
     const newAttachments = await Promise.all(
       attachments.map(async (att) => {
-        const newFilePath = await fetch("/call/file/attachment/move", {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify({
+        const newFilePath = await api
+          .post("/file/attachment/move", {
             taskId: this.props.taskId,
             assetPath: att.file_path,
-          }),
-        })
-          .then((res) => res.json())
-          .then(
-            (response) => {
-              return response.filePath;
-            },
-            (error) => {
-              // Todo: How are we going to show the errors
-              console.log(error);
-            },
-          )
+          })
+          .then((response) => {
+            return response.data.filePath;
+          })
           .finally(() => {
             this.setState({ loading: false });
-          });
+          })
+          .catch((err) => console.log(err));
         return { id: att.id, name: att.name, file_path: newFilePath };
       }),
     );

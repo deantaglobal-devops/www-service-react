@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { api } from "../../../../services/api";
 import TocRow from "../tocRow/tocRow";
 import EditFileName from "../editFileNameModal/editFileNameModal";
 import Modal from "../../../../components/Modal/modal";
 import { Tooltip } from "../../../../components/tooltip/tooltip";
 
 import Dropdown from "../../../../components/dropdown/dropdown";
-import Loading from "../../../../components/loader/loading";
+import Loading from "../../../../components/loader/Loading";
+
+import "./styles/tocContent.styles.css";
 
 export default function TocContent(props) {
   const [tocData, setTocData] = useState(
@@ -19,7 +22,9 @@ export default function TocContent(props) {
   const [chapterName, setChapterName] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [bodyModal, setBodyModal] = useState("");
-  const [chapterNumber, setChapterNumber] = useState(props.project.chap_count);
+  const [chapterNumber, setChapterNumber] = useState(
+    props?.project?.chap_count,
+  );
   const [newElement, setNewElement] = useState({ id: 0, value: "" });
   const [modalAction, setModalAction] = useState("");
   const [chaptersSelected, setChaptersSelected] = useState([]);
@@ -61,51 +66,42 @@ export default function TocContent(props) {
   }, [selectAllChapters]);
 
   const saveOrder = async (chapterUpdate) => {
-    const formData = new FormData();
-    formData.append("projectId", props?.project.projectId);
-
+    let bodyRequest = { projectId: props?.project.projectId };
+    const orderArray = [];
     chapterUpdate.map((chapter, index) => {
-      formData.append(`chapterData[${index}][id]`, chapter.id);
-      formData.append(`chapterData[${index}][orderId]`, index + 1);
+      orderArray.push({ id: chapter.id, orderId: index + 1 });
     });
 
-    await fetch("/project/toc/reordertocchapter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // Ordering the chapter
-          const chapterOrdered = [];
+    bodyRequest = {
+      ...bodyRequest,
+      chapterData: orderArray,
+    };
 
-          chapterUpdate?.map((chapter) => {
-            Object.values(result?.tocList)?.map((resultChapter) => {
-              if (chapter.id == resultChapter.tocId) {
-                const newChaterObject = {
-                  ...chapter,
-                  number: resultChapter.orderId,
-                  startPage: resultChapter.endPage,
-                };
+    await api
+      .post("/project/toc/reordertocchapter", bodyRequest)
+      .then((response) => {
+        // Ordering the chapter
+        const chapterOrdered = [];
 
-                chapterOrdered.push(newChaterObject);
-              }
-            });
+        chapterUpdate?.map((chapter) => {
+          Object.values(response?.data?.tocList)?.map((resultChapter) => {
+            if (chapter.id == resultChapter.tocId) {
+              const newChaterObject = {
+                ...chapter,
+                number: resultChapter.orderId,
+                startPage: resultChapter.endPage,
+              };
+
+              chapterOrdered.push(newChaterObject);
+            }
           });
+        });
 
-          setTocData(chapterOrdered);
+        setTocData(chapterOrdered);
 
-          // return result;
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+        // return result;
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleCreateNewChapter = async () => {
@@ -149,36 +145,37 @@ export default function TocContent(props) {
       }
     }
 
-    const formData = new FormData();
-    formData.append("projectId", props?.project.projectId);
-    formData.append("lastRowFlag", lastRowFlag);
-    formData.append("chapterName", chapterName);
-    formData.append("RowOrderId", RowOrderId);
-    formData.append("chapterType", type);
     setIsLoading(true);
-    await fetch("/project/toc/createtocchapter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoading(false);
-          setNewElement({ id: 0, value: "" });
-          setOpenEditChapterModal(false);
-          setChapterNumber(result.chap_count);
-          const data = result.chapters;
-          setTocData(data);
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+
+    const bodyRequest = {
+      projectId: props?.project.projectId,
+      lastRowFlag,
+      chapterName,
+      RowOrderId,
+      chapterType: type,
+    };
+    await api
+      .post("/project/toc/createtocchapter", bodyRequest)
+      .then(async () => {
+        await api
+          .get(`/project/${props?.project.projectId}/toc`)
+          .then((response) => {
+            setIsLoading(false);
+            setNewElement({ id: 0, value: "" });
+            setOpenEditChapterModal(false);
+            setChapterNumber(response.data.chap_count);
+            setTocData(response.data.chapters);
+          })
+          .catch((err) => {
+            setIsLoading(false);
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+    setIsLoading(false);
   };
 
   const onDragEnd = (result) => {
@@ -239,50 +236,49 @@ export default function TocContent(props) {
   };
 
   const confirmationHandleDeleteModal = async () => {
-    const formData = new FormData();
-    formData.append("projectId", props?.project.projectId);
+    let bodyRequest = {
+      projectId: props?.project.projectId,
+    };
+
+    const chapterArray = [];
 
     if (deleteMultipleChapters) {
-      chaptersSelected.map((chapter) => formData.append("tocId[]", chapter));
+      chaptersSelected.map((chapter) => {
+        chapterArray.push(chapter);
+      });
+
+      bodyRequest = {
+        ...bodyRequest,
+        tocId: chapterArray,
+      };
     } else {
-      formData.append("tocId[]", chapterId);
+      bodyRequest = {
+        ...bodyRequest,
+        tocId: [chapterId],
+      };
     }
 
-    await fetch("/project/toc/deletetocchapter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          let chapterUpdate = [];
+    await api
+      .post("/project/toc/deletetocchapter", bodyRequest)
+      .then(() => {
+        let chapterUpdate = [];
 
-          if (deleteMultipleChapters) {
-            // removing ids from tocData
-            chapterUpdate = tocData.filter(
-              (chapter) => !chaptersSelected.includes(chapter.id),
-            );
-          } else {
-            chapterUpdate = tocData.filter(
-              (chapter) => chapter.id !== chapterId,
-            );
-          }
+        if (deleteMultipleChapters) {
+          // removing ids from tocData
+          chapterUpdate = tocData.filter(
+            (chapter) => !chaptersSelected.includes(chapter.id),
+          );
+        } else {
+          chapterUpdate = tocData.filter((chapter) => chapter.id !== chapterId);
+        }
 
-          setChaptersSelected([]);
-          setTocData(chapterUpdate);
-          selectDeleteModal();
-          saveOrder(chapterUpdate);
-          // return result;
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+        setChaptersSelected([]);
+        setTocData(chapterUpdate);
+        selectDeleteModal();
+        saveOrder(chapterUpdate);
+        // return result;
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleChapterSelected = (_chapterId) => {
@@ -435,7 +431,7 @@ export default function TocContent(props) {
                       : "table table-striped table-borderless table-oversize toc-table"
                   }
                 >
-                  <thead>
+                  <thead className="table-head">
                     <tr>
                       {!!parseInt(props?.permissions?.toc?.edit) && (
                         <th
@@ -586,7 +582,7 @@ export default function TocContent(props) {
                       </th>
                     </tr>
                   </thead>
-                  {tocData.length > 0 && (
+                  {tocData?.length > 0 && (
                     <DragDropContext onDragEnd={onDragEnd}>
                       <Droppable droppableId="column-1">
                         {(provided, snapshot) => (
