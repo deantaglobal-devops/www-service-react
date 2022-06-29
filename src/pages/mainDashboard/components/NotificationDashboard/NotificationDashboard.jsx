@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import NotificationCount from "../../../../components/NotificationCount/NotificationCount";
 import SliderLoading from "../../../../components/sliderLoading/SliderLoading";
 import { api } from "../../../../services/api";
@@ -102,9 +103,9 @@ export function NotificationDashboard({ NOTIFICATION_CENTER_PROPS }) {
     <>
       <div className="d-flex">
         <h6 className="dashboard-box-head-line special">
-          <a href="/notification" style={{ color: "unset" }}>
+          <Link to="/notification" style={{ color: "unset" }}>
             Your Notifications
-          </a>
+          </Link>
         </h6>
       </div>
       {loading ? (
@@ -120,16 +121,16 @@ export function NotificationDashboard({ NOTIFICATION_CENTER_PROPS }) {
               if (Array.isArray(item)) {
                 return item.map((notification, index) => (
                   <li key={index}>
-                    <a href="/notification">
+                    <Link to="/notification">
                       <p>{notification.title}</p>
-                    </a>
+                    </Link>
                   </li>
                 ));
               }
             }),
             notificationsData.map((item) => (
               <li key={item.id}>
-                <a href={`/notification?project_id=${item.id}`}>
+                <Link to={`/notification/${item.id}`}>
                   <p>
                     {item.chaptherId !== "0"
                       ? `${item.abbreviation} ${item.chapterNo}`
@@ -142,7 +143,7 @@ export function NotificationDashboard({ NOTIFICATION_CENTER_PROPS }) {
                       />
                     </span>
                   )}
-                </a>
+                </Link>
               </li>
             )))
           }

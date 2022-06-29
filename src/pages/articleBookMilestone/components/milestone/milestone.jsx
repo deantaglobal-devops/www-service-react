@@ -1186,6 +1186,7 @@ export default function Milestone({
                           <i className="material-icons-outlined ">close</i>
                         </a>{" "}
                         <a
+                          href="#"
                           onClick={(e) => createMilestoneInformation(e)}
                           className="save-milestone save-icon"
                           data-toggle="tooltip"
@@ -1264,6 +1265,7 @@ export default function Milestone({
               {!!parseInt(permissions.milestones.edit) && (
                 <>
                   <a
+                    href="#"
                     onClick={(event) => milestoneReschedule(event)}
                     className={
                       editMilestone
@@ -1289,6 +1291,7 @@ export default function Milestone({
                     Editing
                   </a>
                   <a
+                    href="#"
                     onClick={() => milestoneupdateinfo()}
                     className={
                       editMilestone

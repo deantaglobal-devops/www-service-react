@@ -1,0 +1,7 @@
+.button_group {
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: auto;
+}

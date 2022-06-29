@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import { api } from "../../../services/api";
 import Modal from "../../modal";
@@ -173,7 +174,9 @@ export default function Message({ ...props }) {
           <div className="message-body-reply">
             <p>
               In reply to{" "}
-              <a href={`#${props.message.messageIdRelated}`}>this message</a>
+              <Link to={`#${props.message.messageIdRelated}`}>
+                this message
+              </Link>
             </p>
           </div>
         )}
@@ -194,7 +197,6 @@ export default function Message({ ...props }) {
                     className="message-attachments-item"
                   >
                     <a
-                      href="#"
                       onClick={() =>
                         fileDownloadAction(
                           element.document_path,

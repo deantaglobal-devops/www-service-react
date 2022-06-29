@@ -152,6 +152,7 @@ export function JournalOverview() {
         <div className="show-hide-information-block">
           {!toggleInformation ? (
             <a
+              href="#"
               className="toggle-project-information"
               onClick={() => setToggleInformation(!toggleInformation)}
             >
@@ -160,6 +161,7 @@ export function JournalOverview() {
             </a>
           ) : (
             <a
+              href="#"
               className="toggle-project-information"
               onClick={() => setToggleInformation(!toggleInformation)}
             >
@@ -222,6 +224,7 @@ export function JournalOverview() {
       <div className="nav-tags mt12">
         {permissions?.journals?.articles?.view && (
           <a
+            href="#"
             className={navTag === "Articles" ? "active" : ""}
             onClick={() => setNavTag("Articles")}
           >
@@ -230,6 +233,7 @@ export function JournalOverview() {
         )}
         {issues.length > 0 && permissions?.journals?.issues?.view && (
           <a
+            href="#"
             className={navTag === "Issues" ? "active" : ""}
             onClick={() => setNavTag("Issues")}
           >

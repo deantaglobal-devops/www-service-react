@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { api } from "../services/api";
 import Modal from "./modal";
 import BasicButtonsSet from "./basicButtonsSet";
@@ -432,14 +433,13 @@ class LinkArticleList extends React.Component {
                         <React.Fragment key={index}>
                           <tr className="taskRow">
                             <td>
-                              <a
-                                href={url}
-                                className="no-style"
-                                target="_blank"
+                              <Link
+                                to={url}
                                 rel="noreferrer"
+                                className="no-style"
                               >
                                 {article.chapterTitle}
-                              </a>
+                              </Link>
                             </td>
                             <td className="ws">{article.doi}</td>
                             <td>{article.author}</td>

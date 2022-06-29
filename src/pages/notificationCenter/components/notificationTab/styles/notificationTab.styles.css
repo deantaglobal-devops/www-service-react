@@ -1,0 +1,31 @@
+.notificationTab {
+  --border-color: var(--lan-lines);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.75rem;
+  width: 100%;
+  min-width: 260px;
+}
+.notificationTab > div {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  color: #909295;
+}
+.notificationTab > div time {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 10px;
+  font-family: var(--font-family-sans-serif);
+}
+.notificationTab > div p {
+  margin: 0px;
+  color: #909295;
+  font-size: 14px;
+  text-align: left;
+}

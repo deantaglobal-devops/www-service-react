@@ -38,6 +38,7 @@ export default function BriefViewer({
                 <Page pageNumber={pageNumber} />
               </Document>
               <a
+                href="#"
                 className="btn-float-dwn"
                 onClick={() => Lanstad.File.download(file, fileName)}
               >

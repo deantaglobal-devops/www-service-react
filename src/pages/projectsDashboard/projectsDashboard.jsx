@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/Auth";
 import UserPagination from "../../components/pagination/pagination";
@@ -164,9 +164,12 @@ export function ProjectsDashboard() {
           >
             Active
           </a>
-          <a href={projectType === "books" ? "/lst/books" : "/lst/journals"}>
+          <Link
+            to={projectType === "books" ? "/lst/books" : "/lst/journals"}
+            style={{ color: "unset" }}
+          >
             Report
-          </a>
+          </Link>
         </div>
 
         {filterValues && (

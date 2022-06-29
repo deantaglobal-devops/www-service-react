@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { api } from "../../../../services/api";
 import ModalForm from "../../../../components/ModalForm/modalForm";
 
 export default function SpecialInstructionsModal({
@@ -57,14 +58,8 @@ export default function SpecialInstructionsModal({
       return si;
     });
 
-    await fetch("/call/checklist/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: JSON.stringify({
-        checklistId: valueUpdated[0].checklist_id,
+    await api
+      .post(`/checklist/${valueUpdated[0].checklist_id}/update`, {
         checklistTitle:
           valueUpdated[0].checklist_name === "" &&
           valueUpdated[0].checklist_name_neg === ""
@@ -72,23 +67,17 @@ export default function SpecialInstructionsModal({
             : valueUpdated[0].checklist_name !== ""
             ? valueUpdated[0].checklist_name
             : valueUpdated[0].checklist_name_neg,
-      }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // location.reload();
-          setProjectData({
-            ...projectData,
-            special_instruction: newSpecialInstructionsData,
-          });
-          setSpecialInstructionsData(newSpecialInstructionsData);
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+      })
+      .then(() => {
+        setProjectData({
+          ...projectData,
+          special_instruction: newSpecialInstructionsData,
+        });
+        setSpecialInstructionsData(newSpecialInstructionsData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     setIsEditable({ id: 0, editable: false });
   };
@@ -96,28 +85,17 @@ export default function SpecialInstructionsModal({
   const handleDelete = async (e, id) => {
     e.preventDefault();
 
-    await fetch(`/call/checklist/${id}/delete`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          const valueUpdated = specialInstructionsData.filter(
-            (si) => si.checklist_id !== id,
-          );
+    await api
+      .get(`/checklist/${id}/delete`)
+      .then(() => {
+        const valueUpdated = specialInstructionsData.filter(
+          (si) => si.checklist_id !== id,
+        );
 
-          setProjectData({ ...projectData, special_instruction: valueUpdated });
-          setSpecialInstructionsData(valueUpdated);
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+        setProjectData({ ...projectData, special_instruction: valueUpdated });
+        setSpecialInstructionsData(valueUpdated);
+      })
+      .catch((err) => console.log(err));
 
     setIsEditable({ id: 0, editable: false });
   };
@@ -125,33 +103,32 @@ export default function SpecialInstructionsModal({
   const handleAddNew = async (e) => {
     e.preventDefault();
 
-    const _milestones = await fetch(`/call/project/${projectId}/taskslist`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          if (result.milestones) {
-            return result.milestones;
-          }
-          if (result.articles) {
-            const filteredMilestoneList = [];
+    const milestonesResponse = await api
+      .get(`/project/${projectId}/explain`)
+      .then((response) => {
+        if (response.data.milestones) {
+          return response.data.milestones;
+        }
+        if (response.data.articles) {
+          const filteredMilestoneList = [];
 
-            result.articles.forEach((article) => {
-              if (article.articleId == chapterId) {
-                filteredMilestoneList.push(article.milestones);
-              }
-            });
+          response.data.articles.forEach((article) => {
+            if (article.articleId == chapterId) {
+              filteredMilestoneList.push(article.milestones);
+            }
+          });
 
-            return filteredMilestoneList;
-          }
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-          return [];
-        },
-      );
+          return filteredMilestoneList;
+        }
 
-    setMilestones(_milestones);
+        return response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
+
+    setMilestones(milestonesResponse);
     setIsAddNew(true);
   };
 
@@ -189,30 +166,17 @@ export default function SpecialInstructionsModal({
   const handleSaveNewSpecialInstructions = async (e) => {
     e.preventDefault();
 
-    await fetch("/call/checklist/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: JSON.stringify({
-        projectId,
-        taskId: addNewSpecialInstructionsData.taskId.join(","),
-        content: addNewSpecialInstructionsData.content,
-        isChecklist: false,
-        chapterId: chapterId !== undefined ? chapterId : "0",
-      }),
+    await fetch("/checklist/add", {
+      projectId,
+      taskId: addNewSpecialInstructionsData.taskId.join(","),
+      content: addNewSpecialInstructionsData.content,
+      isChecklist: false,
+      chapterId: chapterId !== undefined ? chapterId : "0",
     })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          location.reload();
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+      .then(() => {
+        location.reload();
+      })
+      .catch((err) => console.log(err));
 
     setIsAddNew(false);
     setAddNewSpecialInstructionsData({ content: "", taskId: [] });

@@ -156,7 +156,7 @@ export function IssuesTab(props) {
                         <div className="row mt-4 pb-0">
                           <div className="col-sm-12 col-lg-3 pr-0">
                             {issue?.issue_image ? (
-                              <a>
+                              <a href="#">
                                 <img
                                   alt="project thumb"
                                   className="project-thumb-list"
@@ -171,7 +171,7 @@ export function IssuesTab(props) {
                                 />
                               </a>
                             ) : (
-                              <a>
+                              <a href="#">
                                 <img
                                   alt="projet thumb"
                                   src={GenericCover}
@@ -183,7 +183,7 @@ export function IssuesTab(props) {
                           <div className="col-lg-9">
                             <div className="project-card-details">
                               <h3>
-                                <a>
+                                <a href="#">
                                   Volume {issue.volume_num}, Issue{" "}
                                   {issue.issue_num} — {issue.publish_month}
                                 </a>
@@ -229,6 +229,7 @@ export function IssuesTab(props) {
                           <div className="actions-available">
                             {props?.permissions?.journals?.articles?.edit && (
                               <a
+                                href="#"
                                 onClick={() =>
                                   handleArticleOnClick(
                                     issue.issue_id,
@@ -246,6 +247,7 @@ export function IssuesTab(props) {
                             )}
                             {props?.permissions?.journals?.issues?.edit && (
                               <a
+                                href="#"
                                 onClick={() => getIssue(issue.issue_id)}
                                 className="action-bottom"
                                 // href="#"

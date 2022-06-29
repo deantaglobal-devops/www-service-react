@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../../../services/api";
 import AvatarProfile from "./components/avatarProfile/avatarProfile";
 import BellNotifications from "./components/bellNotifications/bellNotifications";
@@ -188,10 +189,10 @@ export function NavBar({
             <ul className="results shadow">
               {searchData?.map((data) => (
                 <li key={data.id}>
-                  <a href={`${origin}/${data.url}`}>
+                  <Link to={`${origin}/${data.url}`}>
                     <p className="title">{data.project_title}</p>
                     <span className="projectType">{data.project_type}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -215,6 +216,7 @@ export function NavBar({
         </ul>
         <nav className="nav">
           <a
+            href="#"
             className="nav-link nav-link-icon toggle-sidebar d-sm-inline d-md-none text-center border-left"
             data-toggle="collapse"
             data-target=".header-navbar"
@@ -253,6 +255,7 @@ export function NavBar({
               <p>
                 Please refresh this page or visit{" "}
                 <a
+                  href="#"
                   onClick={() => {
                     signOut();
                   }}

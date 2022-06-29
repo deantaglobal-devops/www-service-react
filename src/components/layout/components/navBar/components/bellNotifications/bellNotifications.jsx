@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../../../../../services/api";
 import { useAuth } from "../../../../../../hooks/Auth";
 
@@ -47,9 +48,9 @@ export default function BellNotifications() {
 
   return (
     <li className="nav-item border-right  notifications-dropdown">
-      <a
+      <Link
+        to="/notification"
         className="nav-link nav-link-icon text-center"
-        href="/notification"
         role="button"
         id="notificationBellLink"
       >
@@ -59,7 +60,7 @@ export default function BellNotifications() {
           </i>
           <span className="badge badge-pill badge-danger" />
         </div>
-      </a>
+      </Link>
     </li>
   );
 }

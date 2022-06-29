@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { createPopper } from "@popperjs/core";
 import { Tooltip } from "../../../../components/tooltip/tooltip";
 
@@ -87,20 +88,20 @@ export function ArticlesTab({ permissions, navTag, articles, project }) {
                       direction="bottom-title-large"
                       content={article.chapterTitle}
                     >
-                      <a
-                        href={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
+                      <Link
+                        to={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
                         className="no-style short-text-3"
                       >
                         {article.chapterTitle}
-                      </a>
+                      </Link>
                     </Tooltip>
                   ) : (
-                    <a
-                      href={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
+                    <Link
+                      to={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
                       className="no-style short-text-3"
                     >
                       {article.chapterTitle}
-                    </a>
+                    </Link>
                   )}
                 </td>
                 <td className="ws">{article.doi}</td>

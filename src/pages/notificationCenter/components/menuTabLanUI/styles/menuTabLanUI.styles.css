@@ -1,0 +1,14 @@
+.icon-text {
+  font-size: 14px;
+  color: #909295;
+  font-family: var(--font-family-sans-serif);
+  cursor: pointer;
+}
+
+.active {
+  background-color: var(--light);
+}
+
+.icon-text-bold {
+  color: #0067f4;
+}

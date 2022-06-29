@@ -1,0 +1,59 @@
+.button {
+  /* --primary-color: var(--lan-blue);
+  --secondary-color: var(--lan-white); */
+  --spacing: 10px;
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  margin: 0;
+  padding: var(--spacing) calc(var(--spacing) * 2);
+  border: 1px solid;
+  border-radius: 4px;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+.button:not(:disabled):hover,
+.button:not(:disabled):focus {
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+}
+.button:not(:disabled):focus {
+  outline: 2px dashed var(--primary-color);
+}
+.button.small {
+  --spacing: 5px;
+  min-height: unset;
+}
+.button.red {
+  --primary-color: var(--lan-red);
+  --secondary-color: var(--lan-white);
+}
+.button.green {
+  --primary-color: var(--lan-green);
+  --secondary-color: var(--lan-white);
+}
+.button.grey {
+  --primary-color: var(--lan-secondary);
+  --secondary-color: var(--lan-white);
+}
+.button:disabled {
+  cursor: not-allowed;
+  background-color: var(--lan-placeholder);
+}
+.button.icon {
+  --size: 18px;
+}
+.button.icon i {
+  margin-right: var(--spacing);
+  height: 12px;
+}
+.button.icon i:only-child {
+  margin: 0 !important;
+}
+.button.icon.iconRight i {
+  order: 2;
+  margin: unset;
+  margin-left: var(--spacing);
+}

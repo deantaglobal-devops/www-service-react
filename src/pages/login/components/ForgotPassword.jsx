@@ -62,7 +62,7 @@ class ForgotPassword extends React.Component {
 
       return api
         .post("/send", body)
-        .then((response) => {
+        .then(() => {
           this.showConfirmationStatus();
           this.setState({ isLoading: false });
         })

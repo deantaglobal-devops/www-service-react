@@ -10,6 +10,12 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@fullcalendar/core": "^5.11.0",
+    "@fullcalendar/daygrid": "^5.11.0",
+    "@fullcalendar/interaction": "^5.11.0",
+    "@fullcalendar/list": "^5.11.0",
+    "@fullcalendar/react": "^5.11.1",
+    "@fullcalendar/timegrid": "^5.11.0",
     "@popperjs/core": "^2.11.5",
     "axios": "^0.27.1",
     "draft-js": "^0.11.7",

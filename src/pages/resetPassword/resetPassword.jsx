@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/Auth";
 import { api } from "../../services/api";
 import Loading from "../../components/loader/Loading";
@@ -148,7 +148,7 @@ export function ResetPassword() {
               <p>This password reset link has expired.</p>
               <p>
                 If you'd still like to reset your password, you can do so on the
-                <a href="/login">log in page</a>.
+                <Link to="/login">log in page</Link>.
               </p>
             </div>
             <div className="expired" id="statusmsg" style={{ display: "none" }}>
@@ -157,7 +157,7 @@ export function ResetPassword() {
               </p>
               <p>
                 Please use the link to Login
-                <a href="/login">log in page</a>.
+                <Link to="/login">log in page</Link>.
               </p>
             </div>
           </div>

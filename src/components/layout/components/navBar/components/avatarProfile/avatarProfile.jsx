@@ -52,7 +52,6 @@ export default function AvatarProfile({ go2ProfileArea, permissions }) {
     >
       <a
         className="nav-link dropdown-toggle text-nowrap avatar-top"
-        href="#"
         role="button"
         aria-expanded={isDropdownOpen ? "true" : "false"}
       >

@@ -540,7 +540,7 @@ export function EditJournal({ show, permissions, journalData, handleClose }) {
 
                 <div className="secondary-navigation">
                   <a
-                    // href="#"
+                    href="#"
                     className="add-si"
                     onClick={(e) => handleAddNew(e)}
                   >

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+.icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  /* Default is 24px, can set a size if required using CSS Variables */
+  font-size: var(--size, 24px);
+  pointer-events: none;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon.loading {
+  animation: rotate-center calc(var(--timing) * 5) linear infinite reverse both;
+}
+@keyframes rotate-center {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

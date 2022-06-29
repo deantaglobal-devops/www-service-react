@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Editor,
   EditorState,
@@ -240,14 +241,14 @@ export function EditorText({ ...props }) {
   function Link({ entityKey, contentState, children }) {
     const { url, linkText } = contentState.getEntity(entityKey).getData();
     return (
-      <a
+      <Link
+        to={url}
         style={{ color: "blue", fontStyle: "italic" }}
-        href={url}
         target="_blank"
         rel="noreferrer"
       >
         {linkText || children}
-      </a>
+      </Link>
     );
   }
 

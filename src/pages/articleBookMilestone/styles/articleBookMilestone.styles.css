@@ -1,14 +1,16 @@
+@import url(https://use.fontawesome.com/releases/v5.0.6/css/all.css);
+
 .skip-eproofing .Tooltip-Wrapper label {
   margin: 0 !important;
 }
 
-/* tr.taskRow {
+tr.taskRow {
   border: none !important;
 }
 
 tr.taskRow td {
-  padding: 0em 2em 0.5em 0;
-} */
+  padding: 0em 2em 0.5em 0 !important;
+}
 
 tr.taskRow td.m-title-col {
   padding-left: 1em !important;
@@ -16,6 +18,27 @@ tr.taskRow td.m-title-col {
 
 td.align-right {
   text-align: right;
+}
+
+#reschedule-dates {
+  overflow: hidden scroll;
+  height: 80vh;
+  position: relative;
+}
+
+#reschedule-dates .modal-header {
+  position: sticky;
+  z-index: 122;
+  top: -1;
+  background: #fff;
+}
+
+#reschedule-dates .modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding-top: 10px !important;
+  z-index: 123;
 }
 
 #reschedule-dates tr {
@@ -285,4 +308,172 @@ i.zipfile-download {
 .btn-float-dwn {
   position: absolute;
   bottom: 25px;
+}
+
+.flex {
+  display: flex;
+  position: relative;
+}
+
+.flex.dir-row {
+  flex-direction: row;
+}
+
+.flex.dir-col {
+  flex-direction: column;
+}
+
+.flex .w-20 {
+  flex-basis: 20%;
+  align-self: center;
+}
+
+.flex .w-15 {
+  flex-basis: 15%;
+  align-self: center;
+}
+
+.flex .w-40 {
+  flex-basis: 40%;
+  align-self: center;
+}
+
+.flex .flex-head {
+  width: 100%;
+  gap: 10px;
+  position: sticky;
+  padding: 7px 0 7px;
+  top: 25px;
+  background: #fff;
+  z-index: 110;
+}
+
+.flex .flex-head h5 {
+  color: var(--secondary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.flex .flex-subhead {
+  gap: 10px;
+  padding: 6px 0;
+  width: 100%;
+  position: sticky;
+  top: 63px;
+  z-index: 10;
+  background: #fff;
+}
+
+.flex .flex-list {
+  gap: 10px;
+  padding: 6px 0;
+  width: 100%;
+}
+
+.flex .flex-list > *,
+.flex .flex-subhead > * {
+  font-size: 12px;
+  margin: 0;
+}
+
+.space-first {
+  padding-left: 25px;
+  position: relative;
+  transition: 350ms all ease;
+}
+
+.space-first::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 1px;
+  background: #eee;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.flex-list:hover .space-first::before {
+  background: var(--blue) !important;
+}
+
+.flex-list:hover .space-first {
+  color: var(--blue);
+}
+
+.flex-list:hover {
+  background: #eeeeee70;
+}
+
+div.changed-task {
+  background: #edf2fe !important;
+}
+
+.changed-task .space-first::before {
+  background-color: var(--blue) !important;
+}
+
+.datepicker-hover.changed-task {
+  font-weight: 700 !important;
+  color: var(--blue);
+}
+
+.old-date {
+  text-decoration: line-through;
+  opacity: 0.3;
+}
+
+.space-first::before {
+  content: "";
+  position: absolute;
+  padding: 3px;
+  border-radius: 50%;
+  background: #ccc;
+  top: 50%;
+  left: 11px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.line-three {
+  position: relative;
+  padding: 0 0 35px;
+}
+
+.line-three::after {
+  content: "";
+  width: 1px;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  height: calc(100% - 95px);
+  background: #eee;
+}
+
+.datepicker-hover {
+  padding: 4px 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 12px;
+  background: transparent;
+  transition: 350ms all ease;
+}
+
+.datepicker-hover::after {
+  opacity: 0;
+}
+
+.datepicker-hover:hover,
+.datepicker-hover:focus-within,
+.datepicker-hover:active {
+  padding: 4px 7px;
+  border: 1px solid var(--blue);
+}
+
+.datepicker-hover:hover::after,
+.datepicker-hover:active::after,
+.datepicker-hover:focus-within::after {
+  opacity: 1;
 }
