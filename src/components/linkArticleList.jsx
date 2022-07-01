@@ -253,19 +253,25 @@ class LinkArticleList extends React.Component {
       issueId,
       chapterId: firstId,
     };
-    await api.post("/issue/pdf/download", bodyRequest).then((response) => {
-      const { status } = response.data;
-      const fileName = response.data.pdfName;
-      const filePath = response.data.pdfName;
-      if (status === "success" && fileName !== "" && filePath !== "") {
-        // Strip out "illegal" characters. Bug fix for Windows
-        // fileName = fileName.replace(/([^a-z0-9\s]+(?=.*\.))/gi, "-");
-        // document.location.href = `/download/file/?filePath=${filePath}&fileName=${fileName}`;
+    await api
+      .post("/issue/pdf/download", bodyRequest)
+      .then(async (response) => {
+        const { status } = response.data;
+        const fileName = response.data.pdfName;
+        const filePath = response.data.pdfName;
+        if (status === "success" && fileName !== "" && filePath !== "") {
+          // Strip out "illegal" characters. Bug fix for Windows
+          // fileName = fileName.replace(/([^a-z0-9\s]+(?=.*\.))/gi, "-");
+          // document.location.href = `/download/file/?filePath=${filePath}&fileName=${fileName}`;
 
-        console.log("response", response.data);
-        // Lanstad.File.download(filePath, fileName);
-      }
-    });
+          await api.get(`/file/get?path=${filePath}`).then((response) => {
+            const a = document.createElement("a"); // Create <a>
+            a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
+            a.download = response.data.file_name; // File name Here
+            a.click(); // Downloaded file
+          });
+        }
+      });
   }
 
   handleCoverUpload(action) {

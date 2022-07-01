@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/Auth";
@@ -32,6 +32,7 @@ export function ArticleBookMilestone() {
 
   const { user, permissions } = useAuth();
   const { projectId, chapterId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (chapterId) {
@@ -77,6 +78,15 @@ export function ArticleBookMilestone() {
       });
     setIsLoading(false);
   }
+
+  const handleDownload = async (filePath) => {
+    await api.get(`/file/get?path=${filePath}`).then((response) => {
+      const a = document.createElement("a"); // Create <a>
+      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
+      a.download = response.data.file_name; // File name Here
+      a.click(); // Downloaded file
+    });
+  };
 
   const downloadFileNew = (fileURL, fileName) => {
     // for non-IE
@@ -225,7 +235,7 @@ export function ArticleBookMilestone() {
                 <button
                   type="button"
                   className="btn btn-outline-primary ml-2"
-                  onClick={() => window.history.back()}
+                  onClick={() => navigate(-1)}
                 >
                   Back
                 </button>
@@ -453,10 +463,7 @@ export function ArticleBookMilestone() {
                                       <a
                                         href="#"
                                         onClick={() => {
-                                          Lanstad.File.download(
-                                            project.pmbriefLink,
-                                            project.pmbrief,
-                                          );
+                                          handleDownload(project.pmbriefLink);
                                         }}
                                       >
                                         Project Manager Brief

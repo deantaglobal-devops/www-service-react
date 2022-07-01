@@ -229,7 +229,6 @@ export function IssuesTab(props) {
                           <div className="actions-available">
                             {props?.permissions?.journals?.articles?.edit && (
                               <a
-                                href="#"
                                 onClick={() =>
                                   handleArticleOnClick(
                                     issue.issue_id,
@@ -247,7 +246,6 @@ export function IssuesTab(props) {
                             )}
                             {props?.permissions?.journals?.issues?.edit && (
                               <a
-                                href="#"
                                 onClick={() => getIssue(issue.issue_id)}
                                 className="action-bottom"
                                 // href="#"

@@ -58,18 +58,13 @@ class ListUsersWrapper extends React.Component {
     }
 
     // Fetch Project Members
-    const projectMemberList = await fetch(
-      `/call/project/${this.props.projectid}/users`,
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => result,
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-          return [];
-        },
-      );
+    const projectMemberList = await api
+      .get(`/project/${this.props.projectid}/users`)
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
 
     this.setState({
       // add this to state so we can use it on the render

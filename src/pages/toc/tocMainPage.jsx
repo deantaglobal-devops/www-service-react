@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/Auth";
 import { api } from "../../services/api";
 import Layout from "../../components/layout/Layout";
@@ -12,6 +12,7 @@ export function TocMainPage() {
 
   const { user, permissions } = useAuth();
   const { projectId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Lanstad — TOC";
@@ -50,7 +51,7 @@ export function TocMainPage() {
             <button
               type="button"
               className="btn btn-outline-primary ml-2"
-              onClick={() => window.history.back()}
+              onClick={() => navigate(-1)}
             >
               Back
             </button>

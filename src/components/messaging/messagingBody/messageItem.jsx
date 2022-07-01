@@ -45,8 +45,13 @@ export default function Message({ ...props }) {
     setAttachmentsList(attachments !== undefined ? attachments : []);
   }
 
-  function fileDownloadAction(filePath, fileName) {
-    Lanstad.File.download(filePath, fileName);
+  async function fileDownloadAction(filePath, fileName) {
+    await api.get(`/file/get?path=${filePath}`).then((response) => {
+      const a = document.createElement("a"); // Create <a>
+      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
+      a.download = response.data.file_name; // File name Here
+      a.click(); // Downloaded file
+    });
   }
 
   return (
@@ -197,6 +202,7 @@ export default function Message({ ...props }) {
                     className="message-attachments-item"
                   >
                     <a
+                      href="#"
                       onClick={() =>
                         fileDownloadAction(
                           element.document_path,

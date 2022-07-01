@@ -627,6 +627,15 @@ function messagingArea({ ...props }) {
     setTextareaRows(markers);
   };
 
+  const handleDownload = async (filePath) => {
+    await api.get(`/file/get?path=${filePath}`).then((response) => {
+      const a = document.createElement("a"); // Create <a>
+      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
+      a.download = response.data.file_name; // File name Here
+      a.click(); // Downloaded file
+    });
+  };
+
   return (
     <div className="messaging-body" id="messaging-body">
       <div id="composerArea">
@@ -674,10 +683,7 @@ function messagingArea({ ...props }) {
                             className="name"
                             onClick={() =>
                               attachment.file_path &&
-                              Lanstad.File.download(
-                                attachment.file_path,
-                                attachment.name,
-                              )
+                              handleDownload(attachment.file_path)
                             }
                           >
                             {attachment.name ?? attachment.document_name}
@@ -717,12 +723,7 @@ function messagingArea({ ...props }) {
                         <div className="attachments-uploaded-card">
                           <span
                             className="name"
-                            onClick={() =>
-                              Lanstad.File.download(
-                                attachment.file_path,
-                                attachment.name,
-                              )
-                            }
+                            onClick={() => handleDownload(attachment.file_path)}
                           >
                             {attachment.name}
                           </span>

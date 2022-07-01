@@ -1,0 +1,339 @@
+.files img {
+  height: 22px;
+  filter: grayscale(100);
+}
+
+.icon-line {
+  height: 20px;
+  margin-right: 0.8em;
+  filter: grayscale(100);
+  position: relative;
+  top: -3px;
+}
+
+tr td:first-child,
+tr td:first-child input {
+  cursor: pointer;
+}
+
+tr.editing td:first-child input {
+  cursor: auto;
+}
+
+.files a {
+  transition: 0.3s;
+}
+
+.files a:hover img,
+tr:hover .icon-line {
+  filter: grayscale(0);
+}
+
+.files a.off {
+  opacity: 0.6;
+}
+
+tr:hover td,
+tr:hover td input {
+  color: #0067f4;
+}
+
+.hide {
+  display: none;
+}
+
+p.table-label {
+  text-transform: uppercase;
+  margin: 2em 0 0;
+  font-size: 9px;
+  text-align: left;
+  display: inline-block;
+  background: var(--lines);
+  opacity: 1;
+  padding: 0.5em 0.8em;
+  line-height: 1;
+  border-radius: 10px;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+p.history-label {
+  margin: 0;
+  font-size: 9px;
+  text-align: left;
+  display: inline-block;
+  opacity: 1;
+  line-height: 1;
+  color: var(--secondary);
+  font-weight: 400;
+}
+
+p.table-label.latest {
+  background: var(--primary);
+  color: white;
+}
+
+.assets-list-table td:last-child {
+  opacity: 0;
+}
+
+.assets-list-table tr:hover td:last-child {
+  opacity: 1;
+}
+
+.assets-list-table th:last-child,
+.assets-list-table td:last-child {
+  padding-right: 0 !important;
+  text-align: right;
+}
+
+.assets-list-table td:last-child a {
+  display: inline-block;
+}
+
+.assets-list-table th:last-child a i,
+.assets-list-table td:last-child a i {
+  color: var(--secondary);
+  font-size: 18px;
+}
+
+.assets-list-table th:last-child a:hover i,
+.assets-list-table td:last-child a:hover i {
+  color: var(--primary);
+}
+
+.assets-list-table tr {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.assets-list-table tr.off {
+  opacity: 0.6;
+}
+
+.assets-list-table thead tr th > i {
+  font-size: 20px;
+}
+
+.assets-head-table {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  min-height: 24px;
+  line-height: 0;
+}
+.assets-head-table > i {
+  font-size: 20px;
+}
+
+.assets-head-table:hover > i {
+  cursor: pointer;
+}
+
+tr.editing,
+tr.editing td {
+  opacity: 1 !important;
+}
+
+tr input {
+  border: solid 1px transparent;
+  padding: 0.2em 0.8em;
+  border-radius: 4px;
+  width: 90%;
+}
+
+tr.editing input {
+  border: solid 1px var(--lines);
+  color: var(--secondary);
+}
+
+a.cancel-file,
+a.save-file {
+  display: none !important;
+}
+
+tr.editing td a.cancel-file,
+tr.editing td a.delete-file,
+tr.editing td a.save-file {
+  display: inline-block !important;
+}
+
+tr.editing td a.edit-file,
+tr.editing td a.update-file,
+tr.editing td a.history-file,
+tr.editing td a.download-file {
+  display: none;
+}
+
+tr.revisions-title {
+  border: 0 !important;
+}
+
+tr.revisions {
+  border: 0 !important;
+  box-shadow: 0 1px 7px -2px var(--shadow);
+  border-radius: 4px;
+}
+
+tr.revisions td,
+tr.revisions td:last-child {
+  padding: 1.3em !important;
+}
+
+tr.revisions.off {
+  opacity: 1 !important;
+}
+
+tr.spacer td {
+  padding: 0.4em 0;
+}
+
+tr.spacer.end td {
+  padding: 0.4em 0 2em;
+}
+
+tr.spacer {
+  border: 0 !important;
+  opacity: 0 !important;
+}
+
+tr.active-assets td:last-child,
+tr.active-assets {
+  opacity: 1;
+}
+
+tr.active-assets td a.active-assets i {
+  color: var(--primary);
+}
+
+tr.cursor-default,
+tr.cursor-default td {
+  cursor: default !important;
+  opacity: 1 !important;
+}
+
+/* 
+Multiple Selection
+*/
+
+.secondary-navigation.nav-top {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.secondary-navigation.nav-top.active-assets {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.select-all {
+  width: 100px;
+}
+
+input.select-all {
+  transform: translateY(5px);
+}
+
+.select-asset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 57px;
+}
+
+.select-asset label,
+.select-all label {
+  margin-bottom: unset;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-asset label span,
+.select-all label span {
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  display: inline-block;
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
+
+.select-asset input {
+  margin-left: unset;
+  margin-bottom: unset;
+  width: auto;
+}
+
+.asset-info span,
+.asset-options span {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 45px;
+}
+
+.asset-options-revision span {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 45px;
+}
+
+.asset-options span div {
+  cursor: pointer;
+}
+
+.asset-options span {
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+.asset-date {
+  display: flex;
+}
+
+.modal-content {
+  width: auto;
+}
+
+.bread-crumbs > i:last-child {
+  display: none;
+}
+
+.tooltip-set {
+  font-size: 17px;
+  margin: 0 5px;
+  transition: 400ms ease all;
+  color: #909295;
+}
+
+.tooltip-set:hover {
+  color: var(--primary);
+}
+
+.assets-head-table--assets {
+  color: var(--lan-blue);
+}
+
+.search-asset {
+  position: relative;
+}
+
+.search-asset .search-icon {
+  position: absolute;
+  right: 7px;
+  font-size: 15px;
+  top: 24px;
+  color: var(--placeholder);
+}
+
+.head-actions {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}

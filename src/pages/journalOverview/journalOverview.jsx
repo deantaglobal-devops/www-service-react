@@ -231,7 +231,7 @@ export function JournalOverview() {
             Articles
           </a>
         )}
-        {issues.length > 0 && permissions?.journals?.issues?.view && (
+        {issues?.length > 0 && permissions?.journals?.issues?.view && (
           <a
             href="#"
             className={navTag === "Issues" ? "active" : ""}

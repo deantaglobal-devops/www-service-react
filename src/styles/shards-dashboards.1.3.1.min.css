@@ -5654,7 +5654,7 @@ button.list-group-item-dark.active {
 }
 
 .content-details {
-  padding: 6em 2em 2em;
+  padding: 0em 2em;
   overflow-y: auto;
   height: 100%;
 }

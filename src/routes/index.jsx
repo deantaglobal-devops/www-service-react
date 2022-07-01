@@ -13,6 +13,8 @@ import { ArticleBookMilestone } from "../pages/articleBookMilestone/articleBookM
 import { Notification } from "../pages/notificationCenter/notificationCenter";
 import { Calendar } from "../pages/calendar/calendar";
 import { TocMainPage } from "../pages/toc/tocMainPage";
+import { AssetsMainPage } from "../pages/assets/assetsMainPage";
+import { GalleryMainPage } from "../pages/gallery/gallery";
 
 export function LanstadRoutes() {
   return (
@@ -55,6 +57,23 @@ export function LanstadRoutes() {
 
         {/* TOC */}
         <Route path="/project/toc/:projectId" element={<TocMainPage />} />
+
+        {/* Assets */}
+        <Route path="/project/assets/:projectId" element={<AssetsMainPage />} />
+        <Route
+          path="/project/assets/:projectId/detail/:chapterId"
+          element={<AssetsMainPage />}
+        />
+
+        {/* Gallery */}
+        <Route
+          path="/project/gallery/:projectId"
+          element={<GalleryMainPage />}
+        />
+        <Route
+          path="/project/gallery/:projectId/detail/:chapterId"
+          element={<GalleryMainPage />}
+        />
       </Route>
     </Routes>
   );
