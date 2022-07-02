@@ -208,11 +208,11 @@ fieldset.dropdown:hover select {
   border: 1px solid;
   border-radius: 5px;
   border-color: var(--lines);
-  background: url(
+  /* background: url(
       data:image/svg + xml;utf-8,
       <svgfill="none"xmlns="http://www.w3.org/2000/svg"height="24"viewBox="0 0 24 24"width="24"><pathd="M0 0h24v24H0V0z"/><pathfill="%23909295"d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
     )
-    no-repeat #fff;
+    no-repeat #fff; */
   background-position-x: calc(100% - 5px);
   background-position-y: center;
 }
