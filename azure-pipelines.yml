@@ -8,10 +8,10 @@ variables:
   azureSubscription: "a175f562-8ef3-464c-af0f-cd8764a315b2"
 
   # Web app name
-  webAppName: "webapp-staging-react-www"
+  webAppName: "webapp-staging-www-react-01"
 
   # Environment name
-  environmentName: "webapp-staging-react-www"
+  environmentName: "webapp-staging-www-react-01"
 
   # Agent VM image name
   vmImageName: "ubuntu-latest"
@@ -63,7 +63,7 @@ stages:
             deploy:
               steps:
                 - task: AzureWebApp@1
-                  displayName: "Azure Web App Deploy: webapp-staging-react-www"
+                  displayName: "Azure Web App Deploy: webapp-staging-www-react-01"
                   inputs:
                     azureSubscription: $(azureSubscription)
                     appType: webAppLinux
