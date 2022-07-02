@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 
-// we need to have it before any fullcalendar import
-import "@fullcalendar/react/dist/vdom";
-
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
@@ -347,20 +344,23 @@ export function Calendar() {
   function createStatusButton(buttonText, element, id) {
     const elemToBeAdd = element;
 
-    const span = document.createElement("span");
-    span.setAttribute("class", "calendar_buttons_wrapper");
-    span.setAttribute("id", `buttons_wrapper${id}`);
+    // There's any button element already created inside the element
+    if (elemToBeAdd.querySelector(`#buttons_wrapper${id}`) === null) {
+      const span = document.createElement("span");
+      span.setAttribute("class", "calendar_buttons_wrapper");
+      span.setAttribute("id", `buttons_wrapper${id}`);
 
-    const button = document.createElement("button");
-    button.setAttribute("class", "btn calendar_button");
-    button.onclick = () => {
-      handleOnClick(buttonText, id);
-    };
-    button.setAttribute("id", `buttons_wrapper${id}`);
-    button.innerHTML = buttonText;
+      const button = document.createElement("button");
+      button.setAttribute("class", "btn calendar_button");
+      button.onclick = () => {
+        handleOnClick(buttonText, id);
+      };
+      button.setAttribute("id", `buttons_wrapper${id}`);
+      button.innerHTML = buttonText;
 
-    span.appendChild(button);
-    elemToBeAdd.appendChild(span);
+      span.appendChild(button);
+      elemToBeAdd.appendChild(span);
+    }
   }
 
   function handleTaskStatus(info) {
@@ -516,7 +516,14 @@ export function Calendar() {
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         firstDay={1}
         events={calendarData}
-        datesSet={(date) => handleDateEvents(date)}
+        datesSet={(date) => {
+          // putting time out because if we remove it we start getting an error
+          // from React, saying it got the maximum rendering value for the component
+          // https://github.com/fullcalendar/fullcalendar-react/issues/185
+          setTimeout(() => {
+            handleDateEvents(date);
+          }, 50);
+        }}
         headerToolbar={{
           left: "prev,next title",
           // center: 'title',

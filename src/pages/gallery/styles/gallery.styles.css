@@ -116,8 +116,7 @@ img.thumb-img.no-preview {
   padding: 2.5em 4em;
 }
 
-.project-card-details-gallery,
-.wrap-field-label {
+.project-card-details-gallery {
   width: 57%;
   float: left;
   margin: 0 0 0 3%;

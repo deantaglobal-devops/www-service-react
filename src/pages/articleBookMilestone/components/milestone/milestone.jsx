@@ -639,11 +639,7 @@ export default function Milestone({
                     Progress
                   </th>
                   <th
-                    className={
-                      toggleProgressButton && !editMilestone
-                        ? "show-hide-progress active"
-                        : "show-hide-progress"
-                    }
+                    className="show-hide-progress"
                     onClick={() =>
                       setToggleProgressButton(!toggleProgressButton)
                     }
