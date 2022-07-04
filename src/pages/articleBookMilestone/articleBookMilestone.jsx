@@ -257,7 +257,6 @@ export function ArticleBookMilestone() {
             <div className="show-hide-information-block">
               {!toggleInformation ? (
                 <a
-                  href="#"
                   className="toggle-project-information"
                   onClick={() => setToggleInformation(!toggleInformation)}
                 >
@@ -266,7 +265,6 @@ export function ArticleBookMilestone() {
                 </a>
               ) : (
                 <a
-                  href="#"
                   className="toggle-project-information"
                   onClick={() => setToggleInformation(!toggleInformation)}
                 >

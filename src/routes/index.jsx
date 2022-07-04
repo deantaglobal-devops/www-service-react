@@ -15,6 +15,7 @@ import { Calendar } from "../pages/calendar/calendar";
 import { TocMainPage } from "../pages/toc/tocMainPage";
 import { AssetsMainPage } from "../pages/assets/assetsMainPage";
 import { GalleryMainPage } from "../pages/gallery/gallery";
+import { ProEditorPage } from "../pages/proEditor/proEditor";
 
 export function LanstadRoutes() {
   return (
@@ -73,6 +74,13 @@ export function LanstadRoutes() {
         <Route
           path="/project/gallery/:projectId/detail/:chapterId"
           element={<GalleryMainPage />}
+        />
+
+        {/* Pro-Editor */}
+        <Route path="/vxe/:projectId" element={<ProEditorPage />} />
+        <Route
+          path="/vxe/:projectId/detail/:chapterId"
+          element={<ProEditorPage />}
         />
       </Route>
     </Routes>

@@ -81,7 +81,9 @@ export function MainDashboard() {
       .then((response) => {
         setDashboardData(response[0]?.data || []);
         setNotificationsData(response[1]?.data || []);
-        setCalendarData(response[2]?.data);
+
+        // getting only the first 3 activities for today
+        setCalendarData(response[2]?.data.slice(0, 3));
 
         setIsLoading(false);
       })

@@ -152,7 +152,6 @@ export function JournalOverview() {
         <div className="show-hide-information-block">
           {!toggleInformation ? (
             <a
-              href="#"
               className="toggle-project-information"
               onClick={() => setToggleInformation(!toggleInformation)}
             >
@@ -161,7 +160,6 @@ export function JournalOverview() {
             </a>
           ) : (
             <a
-              href="#"
               className="toggle-project-information"
               onClick={() => setToggleInformation(!toggleInformation)}
             >
