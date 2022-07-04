@@ -16,6 +16,7 @@ import { TocMainPage } from "../pages/toc/tocMainPage";
 import { AssetsMainPage } from "../pages/assets/assetsMainPage";
 import { GalleryMainPage } from "../pages/gallery/gallery";
 import { ProEditorPage } from "../pages/proEditor/proEditor";
+import { Users } from "../pages/users/users";
 
 export function LanstadRoutes() {
   return (
@@ -32,40 +33,32 @@ export function LanstadRoutes() {
       <Route element={<PrivateRoutes />}>
         {/* Main Dashboard */}
         <Route path="/dashboard" element={<MainDashboard />} />
-
         {/* Projects Dashboard */}
         <Route path="/dashboard/:projectType" element={<ProjectsDashboard />} />
-
         {/* Calendar */}
         <Route path="/calendar" element={<Calendar />} />
-
         {/* Notification Center */}
         <Route path="/notification" element={<Notification />} />
         <Route path="/notification/:projectId" element={<Notification />} />
-
         {/* Journal Overview */}
         <Route
           path="/project/journal/list/:projectId"
           element={<JournalOverview />}
         />
-
         {/* Milestone - books and Journals */}
         <Route path="/project/:projectId" element={<ArticleBookMilestone />} />
         <Route
           path="/project/journal/:projectId/detail/:chapterId"
           element={<ArticleBookMilestone />}
         />
-
         {/* TOC */}
         <Route path="/project/toc/:projectId" element={<TocMainPage />} />
-
         {/* Assets */}
         <Route path="/project/assets/:projectId" element={<AssetsMainPage />} />
         <Route
           path="/project/assets/:projectId/detail/:chapterId"
           element={<AssetsMainPage />}
         />
-
         {/* Gallery */}
         <Route
           path="/project/gallery/:projectId"
@@ -75,12 +68,17 @@ export function LanstadRoutes() {
           path="/project/gallery/:projectId/detail/:chapterId"
           element={<GalleryMainPage />}
         />
-
         {/* Pro-Editor */}
         <Route path="/vxe/:projectId" element={<ProEditorPage />} />
         <Route
           path="/vxe/:projectId/detail/:chapterId"
           element={<ProEditorPage />}
+        />
+        {/* Users */}
+        <Route path="/project/users/:projectId" element={<Users />} />
+        <Route
+          path="/project/users/:projectId/detail/:chapterId"
+          element={<Users />}
         />
       </Route>
     </Routes>

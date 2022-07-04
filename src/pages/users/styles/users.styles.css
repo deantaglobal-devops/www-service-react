@@ -1,0 +1,102 @@
+.listUsers {
+  left: -30px;
+  top: -35px;
+}
+
+.listUsers .popover {
+  transform: translateY(-90%);
+}
+
+/* {# // little arrow placement #} */
+.bs-popover-right .arrow,
+.bs-popover-auto[x-placement^="right"] .arrow {
+  bottom: 20px;
+}
+
+.setUser.active {
+  border-color: var(--primary) !important;
+}
+
+.container-users .secondary-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 2em;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+.listUsers .popover {
+  transform: translate(200px, -90%);
+}
+
+.container-users .secondary-navigation > button {
+  border: 0;
+  background: none;
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--secondary);
+}
+
+.container-users .secondary-navigation > button:hover {
+  color: var(--blue);
+}
+
+.container-users .secondary-navigation > button > .material-icons-outlined {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.main-content-container .deanta-button-outlined {
+  margin-left: 10px;
+}
+
+@supports (display: grid) {
+  .users-on-project {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    align-items: stretch;
+  }
+
+  .users-on-project .content-user {
+    width: auto;
+    margin: 0;
+  }
+
+  .users-on-project .user-avatar {
+    min-width: 35px;
+    max-height: 35px;
+  }
+}
+
+/* Unset Modal Overflow Bug Fix | START */
+#modalContainer.unsetClass .popover .popover-body {
+  position: unset !important;
+}
+
+#modalContainer.unsetClass .listUsers .popover {
+  min-width: unset !important;
+}
+
+#modalContainer.unsetClass .popover .popover-body {
+  height: unset !important;
+  overflow: unset !important;
+  padding: unset !important;
+  margin: unset !important;
+  width: unset !important;
+  overflow-x: unset !important;
+}
+
+#modalContainer.unsetClass .listUsers .popover.with-scroll .popover-body {
+  height: unset !important;
+  overflow-y: unset !important;
+  padding: unset !important;
+}
+
+#modalContainer.unsetClass .listUsers .popover {
+  min-width: unset;
+}
+/* Unset Modal Overflow Bug Fix | END */
