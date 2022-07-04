@@ -270,7 +270,7 @@ export function Users() {
               <button
                 type="button"
                 className="btn btn-outline-primary ml-2"
-                onClick={() => window.history.back()}
+                onClick={() => navigate(-1)}
               >
                 Back
               </button>
@@ -288,92 +288,92 @@ export function Users() {
         {chapter ? (
           <nav className="main-project-navigation">
             {!!parseInt(permissions?.milestones?.view) && (
-              <a
-                href={`/project/journal/${project?.projectId}/detail/${chapter?.chapter_id}`}
+              <Link
+                to={`/project/journal/${project?.projectId}/detail/${chapter?.chapter_id}`}
               >
                 <i className="material-icons-outlined">view_day</i> Milestones
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.vxe?.view) && (
-              <a
-                href={`/vxe/${project?.projectId}/detail/${chapter?.chapter_id}`}
+              <Link
+                to={`/vxe/${project?.projectId}/detail/${chapter?.chapter_id}`}
               >
                 <i className="material-icons-outlined">format_shapes</i>
                 PRO Editor
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.assets?.view) && (
-              <a
-                href={`/project/assets/${project?.projectId}/detail/${chapter.chapter_id}`}
+              <Link
+                to={`/project/assets/${project?.projectId}/detail/${chapter.chapter_id}`}
               >
                 <i className="material-icons-outlined">folder</i>
                 Assets
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.gallery?.view) && (
-              <a
-                href={`/project/gallery/${project?.projectId}/detail/${chapter.chapter_id}`}
+              <Link
+                to={`/project/gallery/${project?.projectId}/detail/${chapter.chapter_id}`}
               >
                 <i className="material-icons-outlined">collections</i>
                 Gallery
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.books?.users?.view) && (
-              <a
-                href={`/project/users/${project?.projectId}/detail/${chapter.chapter_id}`}
+              <Link
+                to={`/project/users/${project?.projectId}/detail/${chapter.chapter_id}`}
                 className="active"
               >
                 <i className="material-icons-outlined">group</i> Users
-              </a>
+              </Link>
             )}
           </nav>
         ) : (
           <nav className="main-project-navigation">
             {!!parseInt(permissions?.milestones?.view) && (
-              <a href={`/project/${project?.projectId}`}>
+              <Link to={`/project/${project?.projectId}`}>
                 <i className="material-icons-outlined">view_day</i> Milestones
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.toc?.view) && project?.isbn10 == 1 && (
-              <a href={`/project/toc/${project?.projectId}`}>
+              <Link to={`/project/toc/${project?.projectId}`}>
                 <i className="material-icons-outlined">toc</i>
                 TOC
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.vxe?.view) && (
-              <a href={`/vxe/${project?.projectId}`}>
+              <Link to={`/vxe/${project?.projectId}`}>
                 <i className="material-icons-outlined">format_shapes</i>
                 PRO Editor
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.assets?.view) && (
-              <a href={`/project/assets/${project?.projectId}`}>
+              <Link to={`/project/assets/${project?.projectId}`}>
                 <i className="material-icons-outlined">folder</i>
                 Assets
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.gallery?.view) && (
-              <a href={`/project/gallery/${project?.projectId}`}>
+              <Link to={`/project/gallery/${project?.projectId}`}>
                 <i className="material-icons-outlined">collections</i>
                 Gallery
-              </a>
+              </Link>
             )}
 
             {!!parseInt(permissions?.books?.users?.view) && (
-              <a
-                href={`/project/users/${project?.projectId}`}
+              <Link
+                to={`/project/users/${project?.projectId}`}
                 className="active"
               >
                 <i className="material-icons-outlined">group</i> Users
-              </a>
+              </Link>
             )}
           </nav>
         )}

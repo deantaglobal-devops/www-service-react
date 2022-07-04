@@ -194,8 +194,7 @@ button.forgot-password:focus {
 }
 
 .deantaRational_wrapper,
-#deantaRational,
-.page-header {
+#deantaRational {
   /* padding: 1rem; */
 
   grid-row: 1 / -1;

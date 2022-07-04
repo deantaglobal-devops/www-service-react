@@ -17,6 +17,7 @@ import { AssetsMainPage } from "../pages/assets/assetsMainPage";
 import { GalleryMainPage } from "../pages/gallery/gallery";
 import { ProEditorPage } from "../pages/proEditor/proEditor";
 import { Users } from "../pages/users/users";
+import { LstPage } from "../pages/lst/lst";
 
 export function LanstadRoutes() {
   return (
@@ -74,12 +75,16 @@ export function LanstadRoutes() {
           path="/vxe/:projectId/detail/:chapterId"
           element={<ProEditorPage />}
         />
+
         {/* Users */}
         <Route path="/project/users/:projectId" element={<Users />} />
         <Route
           path="/project/users/:projectId/detail/:chapterId"
           element={<Users />}
         />
+
+        {/* LST */}
+        <Route path="/lst/:projectType" element={<LstPage />} />
       </Route>
     </Routes>
   );
