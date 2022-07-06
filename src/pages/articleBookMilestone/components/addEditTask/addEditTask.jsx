@@ -367,25 +367,34 @@ export default function AddEditTask({
         formData.append("taskType", task.statusType);
         formData.append("taskComplexity", task.taskComplex);
 
-        await fetch("/call/task/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: formData,
-          mode: "no-cors",
-        })
-          .then((res) => res.json())
-          .then(
-            () => {
-              setTaskEditing(false);
-              setNewTask({});
-            },
-            (error) => {
-              // Todo: How are we going to show the errors
-              console.log(error);
-            },
-          );
+        let bodyRequest = {
+          projectId: project.projectId,
+          companyId: data.companyId,
+          chapterId: chapterId !== undefined ? chapterId : "",
+          milestoneId: data.milestoneId,
+          taskName: task.taskName,
+          orderId:
+            milestoneData.tasks.length > 0 ? milestoneData.tasks.length + 5 : 1,
+          startDate: task.taskStart.value,
+          endDate: task.taskEnd.value,
+          taskType: task.statusType,
+          taskComplexity: task.taskComplex,
+        };
+
+        for (let i = 0; i < taskAttr.length; i++) {
+          bodyRequest = {
+            ...bodyRequest,
+            "taskAttr[]": taskAttr[i],
+          };
+        }
+
+        await api
+          .post("/task/assign/create", bodyRequest)
+          .then(() => {
+            setTaskEditing(false);
+            setNewTask({});
+          })
+          .catch((err) => console.log(err));
       } else {
         const bodyRequest = {
           taskId: _taskId,
@@ -566,28 +575,21 @@ export default function AddEditTask({
     }
     if (fileName !== null && filePath !== null) {
       setIsLoading(true);
-      fetch("/call/download/digital/file", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+
+      api
+        .post("/file/download/digital", {
           filePath,
           fileName,
-        }),
-        mode: "no-cors",
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            downloadFileNew(currentURL + result.filePath, result.fileName); // call function
-            setIsLoading(false);
-            return true;
-          },
-          (error) => {
-            console.log(error);
-          },
-        );
+        })
+        .then((response) => {
+          downloadFileNew(
+            currentURL + response.data.filePath,
+            response.data.fileName,
+          ); // call function
+          setIsLoading(false);
+          return true;
+        })
+        .catch((err) => console.log(err));
     }
   };
 

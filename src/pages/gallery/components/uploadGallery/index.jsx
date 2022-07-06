@@ -81,10 +81,15 @@ export default function GalleryUpload({ show, set, chapter, project }) {
       formData.append("fileName", nameFile);
       formData.append("chapterId", chapterId);
 
-      await fetch("/call/add/gallery/file", {
+      const token = localStorage.getItem("lanstad-token");
+
+      // For this endpoint we need to use fetch instead of axios.
+      // Headers is not being created properly using axios
+      await fetch("/project/gallery/upload", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Lanstad-Token": token,
         },
         mode: "no-cors",
         body: formData,
