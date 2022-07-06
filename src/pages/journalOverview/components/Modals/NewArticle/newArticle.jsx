@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../../../services/api";
 import ModalForm from "../../../../../components/ModalForm/modalForm";
 import DatePicker from "../../../../../components/datePicker/datePicker";
@@ -51,6 +52,7 @@ export function NewArticle({ show, handleClose, projectId }) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     if (e) {
@@ -120,7 +122,9 @@ export function NewArticle({ show, handleClose, projectId }) {
         .then((response) => {
           setIsLoading(false);
           if (response.data.status === "success") {
-            document.location.href = `/project/journal/${projectId}/detail/${response.data.lastInsertedId}`;
+            navigate(
+              `/project/journal/${projectId}/detail/${response.data.lastInsertedId}`,
+            );
           }
         });
     }

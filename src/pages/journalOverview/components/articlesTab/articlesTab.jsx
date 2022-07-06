@@ -71,7 +71,7 @@ export function ArticlesTab({ permissions, navTag, articles, project }) {
           </thead>
           <tbody>
             {articles?.map((article) => (
-              <tr className="taskRow" key={article.chapterID}>
+              <tr className="taskRow-journal-overview" key={article.chapterID}>
                 {/* we need to define the status names/colors */}
                 <td className="m-color-col">
                   <div

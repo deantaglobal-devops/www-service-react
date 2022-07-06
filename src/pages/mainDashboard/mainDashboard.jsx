@@ -95,9 +95,8 @@ export function MainDashboard() {
       navigate("/dashboard/books");
     } else if (type === "journal") {
       navigate("/dashboard/journals");
-      // document.location.href = "/dashboard/journals";
     } else {
-      document.location.href = "/calendar";
+      navigate("/calendar");
     }
   };
 

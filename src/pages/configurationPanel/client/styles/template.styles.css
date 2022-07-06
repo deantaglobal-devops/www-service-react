@@ -1,0 +1,607 @@
+#templatePage {
+  background: #fff;
+}
+.iconPlusInput.password {
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  min-height: 57px;
+  width: 100%;
+}
+.password-field label {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.password-field label span {
+  position: absolute;
+  transform: translate(8px, -7px);
+  font-size: 10px;
+  background: white;
+  padding: 0 5px;
+  color: var(--secondary);
+}
+input#password ~ button {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  height: calc(100% - 2px);
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--dark-grey);
+  transition: color 0.3s ease-in-out;
+}
+.iconPlusInput .material-icons-outlined {
+  margin-right: 0.5rem;
+}
+.book-sub-menu {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+.book-first-col,
+.book-second-col {
+  width: 45%;
+}
+.book-main-content {
+  width: 100%;
+  margin-left: 18px;
+}
+.book-radio-block {
+  display: flex;
+}
+.thumb-project {
+  width: 20% !important;
+}
+.general-info {
+  justify-content: unset !important;
+  margin-left: 18px;
+}
+.left-side {
+  width: 45%;
+}
+.status-flex {
+  display: flex;
+}
+
+.status-flex .pure-material-radio {
+  width: 15%;
+}
+
+.add-new-project {
+  border: 0;
+  background: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--secondary);
+}
+
+.coverImage {
+  display: block !important;
+}
+
+.coverImage .profilePhoto {
+  border-radius: 0.5em !important;
+}
+
+.coverImage form i {
+  background: #e8ecef !important;
+  color: #909295 !important;
+}
+
+.templates_milestones .notifications-configuration-panel {
+  width: fit-content !important;
+  min-width: 510px;
+  padding: 0px !important;
+}
+
+.templates_milestones {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+span.templateedit {
+  padding-top: 10px;
+}
+
+.nameEdit {
+  opacity: 0;
+}
+
+.hoveredit:hover i.nameEdit {
+  opacity: 1;
+}
+
+.config-role-container {
+  display: flex;
+  align-items: center;
+}
+
+.createrole > button,
+.button-wrapper,
+.importrole > button,
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lan-secondary);
+  background: transparent;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  cursor: pointer;
+}
+
+.importrole i,
+.createrole i {
+  font-size: 20px;
+}
+
+.button-wrapper-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-wrapper i {
+  font-size: 20px;
+}
+
+.createrole > button:hover,
+.importrole > button:hover {
+  color: var(--primary);
+}
+
+.button-wrapper i.icon-save:hover {
+  color: var(--success);
+}
+
+.journal-editor-main {
+  display: flex;
+  align-items: center;
+}
+
+.journal-editor-main > div.wrap-field-label {
+  width: 85%;
+}
+
+.journal-editor-main > a.nolink {
+  color: var(--secondary);
+}
+
+.journal-editor-main > a.nolink:hover {
+  color: var(--danger) !important;
+}
+
+.new_wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-start;
+  --spacer: 15px;
+  padding: var(--spacer);
+}
+
+.button_wrapper {
+  display: inline-flex;
+  gap: 7px;
+  margin-top: 1.3rem !important;
+}
+
+.button_wrapper > button {
+  color: #b3b3b3;
+  transition: 200ms ease all;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.material-icons-outlined.icon-configuration-panel {
+  font-size: 20px !important;
+}
+
+.disabled > i {
+  color: #ddd !important;
+  cursor: not-allowed !important;
+}
+
+.button_wrapper > button:hover,
+.buttons_actions > span:hover > i {
+  color: var(--lan-blue);
+}
+
+li span i {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+.create-role {
+  gap: 10px;
+  padding: 0 17px 4px;
+  border-top: 1px solid var(--lines);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.create-role > div.wrap-field-label {
+  margin: 0 0 0.5vw 0;
+}
+
+.new_wrapper {
+  border-top: 1px solid var(--lines);
+}
+
+.notifications-configuration-panel > div.undefined ul li {
+  border-top: 1px solid var(--lines);
+}
+
+.notifications-configuration-panel > div.undefined ul li button {
+  border: none !important;
+}
+
+.notifications-configuration-panel {
+  min-height: auto !important;
+  max-height: none !important;
+  align-items: center;
+}
+
+.lvl-1 {
+  height: 560px;
+  max-width: 258px;
+  max-width: 255px;
+  width: 100%;
+}
+
+.lvl-2 {
+  height: 500px;
+  max-width: 255px;
+  min-width: 240px;
+  width: 100%;
+}
+
+.buttons_actions {
+  display: flex;
+  padding: 7px 3px 10px 0;
+}
+
+.validation {
+  color: var(--danger);
+  font-size: 11px;
+}
+input.error_val_input {
+  border: 1px solid red !important;
+}
+
+.anim_newCreate {
+  background: var(--light);
+}
+
+.notifications-configuration-panel > div.undefined ul li button {
+  background: transparent !important;
+}
+
+.milestonelisting {
+  width: -webkit-fill-available;
+  padding-left: 40px;
+}
+
+.milestonelisting h2 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  color: var(--dark);
+  line-height: 22px;
+}
+
+.milestonelisting .secondary-navigation {
+  padding: 0 0 10px 20px;
+}
+
+.primary-navigation {
+  padding: 0 0 15px !important;
+}
+
+.modal-clients {
+  min-width: 320px;
+  padding-top: 20px;
+}
+
+.milestone-add {
+  padding: 15px;
+  background-color: #f5f6f8;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.milestone-add > div.milestoneRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+tr.milestoneRow {
+  height: 64px;
+}
+
+.item-mlstn-template {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 0;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+
+.item-mlstn-template input {
+  margin: 0;
+}
+
+.item-task-template {
+  padding: 0 !important;
+  border-bottom: 0px solid transparent !important;
+}
+
+.item-mlstn-template.heading {
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.item-task-template input {
+  pointer-events: all !important;
+}
+
+.item-mlstn-template .m-title-col {
+  width: -webkit-fill-available;
+}
+
+.item-mlstn-template .m-start-col,
+.m-due-col,
+.m-actions-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.item-task-template .m-actions-col {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.item-mlstn-template .m-actions-col {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.item-mlstn-template .m-avatar-col {
+  width: 35px;
+  max-width: 35px;
+  min-width: 35px;
+}
+
+.item-mlstn-template .m-avatar-col .avatar {
+  padding: 8px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  max-width: 35px;
+  min-width: 35px;
+  min-height: 35px;
+  max-height: 35px;
+}
+
+.actions-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.open-item {
+  all: unset;
+  padding: 6px;
+  border: 1px dashed transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 400ms all ease;
+}
+
+.open-item i {
+  font-size: 20px !important;
+}
+
+.open-item:hover {
+  border: 1px dashed var(--primary);
+}
+
+.actions-btns i:hover,
+.open-item:hover i,
+.drag-item:hover {
+  color: var(--primary);
+}
+
+.drag-item {
+  cursor: grab;
+  transition: 400ms all ease;
+}
+
+.actions-btns i {
+  cursor: pointer;
+}
+
+.milestone-add > div.milestoneRow .actions-milestone {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-self: center;
+}
+
+.custom-control.custom-radio.custom-control-inline {
+  align-items: center;
+  width: calc(50% - 16px);
+}
+
+.msg-error {
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 2;
+  width: 100%;
+}
+
+.milestone-label {
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #909295;
+}
+
+.content-date input {
+  background: #ffffff !important;
+}
+
+.taskRow {
+  width: 100%;
+  /* display: flex; */
+  gap: 15px;
+}
+
+.taskRow .milestone-type-col {
+  width: 100%;
+}
+.taskRow > .pure-material-checkbox {
+  width: calc(25% - 12px) !important;
+  margin: 0 !important;
+}
+
+.taskRow > .custom-control.custom-radio.custom-control-inline {
+  width: calc(25% - 28px) !important;
+}
+
+.taskRow > .custom-control.custom-radio.custom-control-inline > label {
+  color: var(--secondary) !important;
+}
+
+.actions-task {
+  margin: 0 !important;
+  display: flex;
+  gap: 10px;
+  width: 40%;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.task-add {
+  display: flex;
+  gap: 20px;
+}
+
+td.m-title-col {
+  padding-left: 18px;
+}
+
+.task-details > div {
+  margin-right: 0 !important;
+}
+
+.btn-icon:hover i {
+  color: var(--primary) !important;
+}
+.btn-actions {
+  width: 17% !important;
+  text-align: right !important;
+}
+.taskRow:hover .btn-actions i {
+  opacity: 1;
+}
+.btn-actions i {
+  opacity: 0;
+  transition: 300ms all ease;
+  cursor: pointer;
+}
+
+.btn-icon i {
+  cursor: pointer;
+}
+.btn-actions i:hover {
+  color: var(--primary) !important;
+}
+
+.btn-actions i {
+  padding-top: 4px;
+  cursor: pointer;
+}
+
+.tasks-space {
+  background: #eee;
+  padding: 10px 0;
+}
+
+.skeleton-parent {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin: 0.5em 3%;
+}
+.tat_date input {
+  height: 28px !important;
+  min-width: 80px !important;
+}
+
+.daysTask {
+  padding: 6px 15px;
+  margin: 0 !important;
+}
+
+.skeleton-loading {
+  background: #eee;
+  height: 52px;
+  width: 100%;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  box-shadow: 0 1px 7px -2px var(--shadow);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.m-start-col,
+.m-due-col {
+  width: 37%;
+}
+
+.taskRow .m-title-col {
+  width: 70% !important;
+}
+
+.listTask {
+  align-items: center;
+}
+
+.listTask > #task-members {
+  min-width: 0 !important;
+}

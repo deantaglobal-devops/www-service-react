@@ -1,0 +1,9 @@
+.menuTabs {
+  display: flex;
+  overflow: auto;
+}
+
+.menuTabs li {
+  flex-grow: 123;
+  min-height: min-content;
+}

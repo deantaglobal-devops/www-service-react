@@ -1,0 +1,215 @@
+.notifications {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  min-height: 70vh;
+  max-height: 500px;
+  padding: 5px;
+  width: 100%;
+  padding: 1rem;
+}
+.notifications [class*='MenuColumn_menu'] {
+  min-width: 200px;
+}
+.notifications [class*='ButtonGroup'] {
+  padding: 15px;
+}
+.notifications > div.undefined {
+  --spacing: 10px;
+  display: flex;
+  flex-direction: column;
+  /* max-width: calc(100% / 3); */
+  border: 1px solid var(--lines);
+  background-color: var(--white);
+  box-shadow: 0px 1px 0px rgba(90, 97, 105, 0.11),
+    0px 3px 6px rgba(90, 97, 105, 0.12), 0px 8px 8px rgba(90, 97, 105, 0.06),
+    0px 6px 51px rgba(90, 97, 105, 0.1);
+}
+.notifications > div.undefined h2 {
+  background-color: var(--light);
+  padding: 0 calc(var(--spacing) * 1.5);
+  margin: 0;
+  min-height: 54px;
+  position: sticky;
+  top: 0;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  color: var(--dark);
+  line-height: 22px;
+}
+.notifications > div.undefined ul {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--white);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.notifications > div.undefined ul li {
+  display: flex;
+  align-items: stretch;
+  min-width: 200px;
+}
+.notifications > div.undefined ul li:not(:last-child) button {
+  border-bottom: none;
+}
+.notifications > div.undefined ul li .second_column {
+  background-color: var(--red);
+  color: var(--white);
+  --circle-size: 20px;
+  border-radius: var(--circle-size);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  font-weight: bolder;
+}
+.notifications > div.undefined ul li button {
+  cursor: pointer;
+  --border-color: var(--lines);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  border-left: none;
+  display: flex;
+  flex-grow: 1;
+  gap: 10px;
+  height: auto;
+  min-height: 53px;
+  background: var(--white);
+  padding: 20px 16.5px;
+  margin: 0;
+  align-items: center;
+  text-align: left;
+  line-height: 1;
+  justify-content: space-between;
+}
+.notifications > div.undefined ul li button.active {
+  background-color: var(--light);
+}
+.notifications > div.undefined ul li button:focus {
+  outline: 2px dashed var(--primary-color);
+  z-index: 1;
+}
+.notifications > div.undefined > div.undefined {
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+.notifications > div.undefined > div.undefined button {
+  --primary-color: var(--blue);
+  --secondary-color: var(--white);
+  --spacing: 10px;
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  min-height: 34px;
+  margin: 0;
+  padding: var(--spacing) calc(var(--spacing) * 2);
+  border: 1px solid;
+  border-radius: 4px;
+  transition: color var(--timing) ease-in-out,
+    background-color var(--timing) ease-in-out;
+}
+.notifications > div.undefined > div.undefined button:not(:disabled):hover,
+.notifications > div.undefined > div.undefined button:not(:disabled):focus {
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+}
+.notifications > div.undefined > div.undefined button:not(:disabled):focus {
+  outline: 2px dashed var(--primary-color);
+}
+.notifications > div.undefined > div.undefined button.small {
+  --spacing: 5px;
+  min-height: unset;
+}
+.notifications > div.undefined > div.undefined button.red {
+  --primary-color: var(--lan-red);
+  --secondary-color: var(--lan-white);
+}
+.notifications > div.undefined > div.undefined button.green {
+  --primary-color: var(--lan-green);
+  --secondary-color: var(--lan-white);
+}
+.notifications > div.undefined > div.undefined button.grey {
+  --primary-color: var(--lan-secondary);
+  --secondary-color: var(--lan-white);
+}
+.notifications > div.undefined > div.undefined button:disabled {
+  cursor: not-allowed;
+  background-color: var(--lan-placeholder);
+}
+.notifications > div.undefined > div.undefined button.icon {
+  --size: 18px;
+}
+.notifications > div.undefined > div.undefined button.icon i {
+  margin-right: var(--spacing);
+  height: 12px;
+}
+.notifications > div.undefined > div.undefined button.icon i:only-child {
+  margin: 0 !important;
+}
+.notifications > div.undefined > div.undefined button.icon.iconRight i {
+  order: 2;
+  margin: unset;
+  margin-left: var(--spacing);
+}
+
+.checkboxes,
+.radio,
+label,
+input[type='checkbox'],
+input[type='radio'] {
+  color: var(--lan-dark);
+  font-family: var(--font-family-sans-serif);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.icon-text {
+  font-family: var(--font-family-sans-serif);
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--lan-secondary);
+}
+
+.icon-text-bold {
+  font-family: var(--font-family-sans-serif);
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: blue;
+  color: var(--lan-blue);
+}
+
+.menuTabBar-permission {
+  cursor: pointer;
+}
+
+.roles .wrapper {
+  padding: 10px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
