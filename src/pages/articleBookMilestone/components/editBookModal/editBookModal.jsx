@@ -475,7 +475,7 @@ export function EditBookModal({
     const token = localStorage.getItem("lanstad-token");
 
     await fetch(`${import.meta.env.VITE_URL_API_SERVICE}/project/update/sbmt`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Lanstad-Token": token,
       },

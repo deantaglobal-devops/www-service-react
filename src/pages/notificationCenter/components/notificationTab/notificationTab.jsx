@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import "./styles/notificationTab.styles.css";
 
@@ -66,19 +65,12 @@ class NotificationTab extends React.Component {
 
   render() {
     return (
-      <Link
-        to={this.props.link}
+      <a
+        href={this.props.link}
         onClick={(event) => this.onClick(event)}
         target="_blank"
         className="notificationTab notification-tab"
-        data-id={this.props.id}
-        data-title={this.props.listofItems.title}
-        data-project_id={this.props.listofItems.project_id}
-        data-task_id={this.props.listofItems.task_id}
-        data-date={this.props.listofItems.date}
-        data-time={this.props.listofItems.time}
-        data-update_date={this.props.listofItems.update_date}
-        rel="noreferrer"
+        rel="noopener noreferrer"
       >
         <div>
           <time dateTime={`${this.props.date} ${this.props.time}`}>
@@ -100,7 +92,7 @@ class NotificationTab extends React.Component {
           <path d="M0 0h24v24H0z" fill="none" />
           <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
         </svg>
-      </Link>
+      </a>
     );
   }
 }

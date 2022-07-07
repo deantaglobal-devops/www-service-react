@@ -9,10 +9,6 @@ import Loading from "../../components/loader/Loading";
 import "./styles/gallery.styles.css";
 
 export function GalleryMainPage() {
-  // GALLERY_PROPS is coming from the twig file - project.assets.html.twig
-  // const props = GALLERY_PROPS;
-  // const { permissions, chapter, user, project } = props;
-
   const [project, setProject] = useState(null);
   const [chapter, setChapter] = useState(null);
   const [gallery, setGallery] = useState(null);

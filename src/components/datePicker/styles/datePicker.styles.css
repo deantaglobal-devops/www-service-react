@@ -1,3 +1,5 @@
+@import url(https://use.fontawesome.com/releases/v5.4.1/css/all.css);
+
 .wrap-field-label {
   margin: 0 1vw 0.5vw 0;
 }
@@ -20,9 +22,9 @@
   color: var(--primary);
 }
 
-.wrap-field-label input[type='password'],
-.wrap-field-label input[type='date'],
-.wrap-field-label input[type='month'] {
+.wrap-field-label input[type="password"],
+.wrap-field-label input[type="date"],
+.wrap-field-label input[type="month"] {
   border: solid 1px var(--lines);
   border-radius: 4px;
   width: 100%;
@@ -37,31 +39,32 @@
   font-weight: 400;
 }
 
-input[type='date'],
-input[type='month'] {
+input[type="date"],
+input[type="month"] {
   position: relative;
+  height: 34px;
 }
 
 /* create a new arrow, because we are going to mess up the native one
 see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
-input[type='date']:after,
-input[type='month']:after {
-  font-family: 'Font Awesome 5 Free';
+input[type="date"]:after,
+input[type="month"]:after {
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  content: '\f073';
+  content: "\f073";
   color: var(--secondary);
   padding-left: 10px;
 }
 
 /* change color of symbol on focus */
-input[type='date']:focus:after,
-input[type='month']:focus:after {
+input[type="date"]:focus:after,
+input[type="month"]:focus:after {
   color: var(--primary);
 }
 
 /* make the native arrow invisible and stretch it over the whole field so you can click anywhere in the input field to trigger the native datepicker*/
-input[type='date']::-webkit-calendar-picker-indicator,
-input[type='month']::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator {
   position: absolute;
   top: 0;
   left: 0;
@@ -75,13 +78,13 @@ input[type='month']::-webkit-calendar-picker-indicator {
 }
 
 /* adjust increase/decrease button */
-input[type='date']::-webkit-inner-spin-button,
-input[type='month']::-webkit-inner-spin-button {
+input[type="date"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-inner-spin-button {
   z-index: 1;
 }
 
 /* adjust clear button */
-input[type='date']::-webkit-clear-button,
-input[type='month']::-webkit-clear-button {
+input[type="date"]::-webkit-clear-button,
+input[type="month"]::-webkit-clear-button {
   z-index: 1;
 }

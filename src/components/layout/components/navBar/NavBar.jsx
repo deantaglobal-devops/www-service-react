@@ -11,8 +11,6 @@ import "../../../../styles/search.css";
 import "../../../../styles/style-toc.css";
 import "./styles/NavBar.styles.css";
 
-const magicCode = !!localStorage.getItem("magic-code");
-
 export function NavBar({
   permissions,
   handleOpenProfileModal,
@@ -21,10 +19,10 @@ export function NavBar({
   const [alertSession, setAlertSession] = useState(false);
   const [sessionExpiredModal, setSessionExpiredModal] = useState(false);
   const [timerSession, setTimerSession] = useState(60);
+  const [isMagicCode, setIsMagicCode] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState([]);
   const controllerRef = useRef();
-
   const searchBarInput = document.querySelector(".navbar-search");
   const clearSearchButton = document.querySelector(
     ".main-navbar__search .input-group .clear-search",
@@ -45,6 +43,10 @@ export function NavBar({
     }
     return () => clearInterval(timer);
   }, [timerSession, alertSession]);
+
+  useEffect(() => {
+    setIsMagicCode(!!window.localStorage.getItem("magic-code"));
+  }, []);
 
   useEffect(() => {
     updateActivity();
@@ -245,7 +247,7 @@ export function NavBar({
                 <br />
                 <b>{timerSession} seconds left.</b>
               </p>
-            ) : magicCode ? (
+            ) : isMagicCode ? (
               <p>
                 Please click on the passkey link in the email you received to
                 <br />

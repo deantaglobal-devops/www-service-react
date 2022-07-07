@@ -226,9 +226,7 @@ export function MainDashboard() {
               {/* Notifications */}
               {Object.keys(notificationsData).length > 0 && (
                 <div className="dashboard-box notifications">
-                  <NotificationDashboard
-                    NOTIFICATION_CENTER_PROPS={notificationsData}
-                  />
+                  <NotificationDashboard />
                 </div>
               )}
 

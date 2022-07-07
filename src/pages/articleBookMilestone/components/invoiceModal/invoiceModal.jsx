@@ -99,7 +99,7 @@ export default function InvoiceModal({
         .then((res) => res.json())
         .then(
           (result) => {
-            return result;
+            window.location.reload();
           },
           (error) => {
             // Todo: How are we going to show the errors

@@ -44,7 +44,7 @@ export function LanstadRoutes() {
 
         {/* Notification Center */}
         <Route path="/notification" element={<Notification />} />
-        <Route path="/notification/:projectId" element={<Notification />} />
+        <Route path="/notification?:project_id" element={<Notification />} />
 
         {/* Journal Overview */}
         <Route

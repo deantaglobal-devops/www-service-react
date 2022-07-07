@@ -7,6 +7,7 @@ export default function Modal({
   title,
   body,
   content,
+  loading,
   classCustom,
   button1Text,
   handleButton1Modal = () => {},
@@ -54,15 +55,25 @@ export default function Modal({
           )}
           {Button2Text && (
             <button
-              className="btn-container modal-confirm-button-container"
+              disabled={loading}
+              className="btn-container deanta-button-outlined"
               onClick={() => handleButton2Modal()}
             >
-              {Button2Text}
+              {!loading ? (
+                Button2Text
+              ) : (
+                <>
+                  <i className="material-icons-outlined loading-icon-button">
+                    sync
+                  </i>{" "}
+                  Saving
+                </>
+              )}
             </button>
           )}
           {Button3Text && (
             <button
-              className="btn-container modal-confirm-button-container"
+              className="btn-container deanta-button-outlined"
               onClick={() => handleButton3Modal()}
             >
               {Button3Text}

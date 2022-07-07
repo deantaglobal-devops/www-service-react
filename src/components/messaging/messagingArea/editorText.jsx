@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Editor,
   EditorState,
@@ -12,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 
 import Modal from "../../modal";
-import FileSearcher from "./fileSearcher";
+import AttachAssetsModal from "./attachAssetModal";
 
 const fileSizeLimit = import.meta.env.VITE_REACT_APP_FILE_SIZE_LIMIT;
 
@@ -29,6 +28,7 @@ export function EditorText({ ...props }) {
   } = props;
 
   const uploadRef = useRef(null);
+  const refDropDown = useRef(null);
   const signatureEditorRef = useRef(null);
 
   const { register, watch } = useForm();
@@ -75,6 +75,20 @@ export function EditorText({ ...props }) {
   ];
 
   useEffect(() => {
+    function handleClickOutside(event) {
+      if (refDropDown.current && !refDropDown.current.contains(event.target)) {
+        setDropdownAttach(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [refDropDown]);
+
+  useEffect(() => {
     uploadFiles();
   }, [fileList]);
 
@@ -88,6 +102,20 @@ export function EditorText({ ...props }) {
   useEffect(() => {
     loadSignature();
   }, [signatureModal]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (refDropDown.current && !refDropDown.current.contains(event.target)) {
+        setDropdownAttach(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [refDropDown]);
 
   const loadSignature = () => {
     const signatureData =
@@ -106,7 +134,6 @@ export function EditorText({ ...props }) {
     setSignature(contentEditor);
     localStorage.setItem("signature", JSON.stringify(contentEditor));
     setSignatureModal(false);
-    // props.updateSignature();
   };
 
   function getExtensionFile(filename) {
@@ -244,14 +271,14 @@ export function EditorText({ ...props }) {
   function Link({ entityKey, contentState, children }) {
     const { url, linkText } = contentState.getEntity(entityKey).getData();
     return (
-      <Link
-        to={url}
+      <a
         style={{ color: "blue", fontStyle: "italic" }}
+        href={url}
         target="_blank"
         rel="noreferrer"
       >
         {linkText || children}
-      </Link>
+      </a>
     );
   }
 
@@ -377,8 +404,8 @@ export function EditorText({ ...props }) {
             </span>
           )}
           {dropdownAttach && (
-            <div className="dropdown-menu-comms">
-              <p>Add files from</p>
+            <div className="dropdown-menu-comms" ref={refDropDown}>
+              <p>Attach files from:</p>
               <ul>
                 <li
                   onClick={() => {
@@ -405,12 +432,13 @@ export function EditorText({ ...props }) {
           className="deanta-button formatting-button formatting-signature"
           onClick={() => setSignatureModal(!signatureModal)}
         >
-          <i className="material-icons-outlined">draw</i>{" "}
+          <i className="material-icons-outlined">draw</i>
         </button>
       </div>
       <Editor
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
+        customStyleMap={colorStyleMap}
         onChange={setEditorState}
       />
       {addLinkModal && (
@@ -459,11 +487,12 @@ export function EditorText({ ...props }) {
       {attachAssetModal && (
         <Modal
           modalInSlider
-          title="Add attachments"
+          title="Attach files from the list below"
           body={
-            <FileSearcher
+            <AttachAssetsModal
               taskId={props.taskId}
               projectId={props.projectId}
+              listSelected={attachsAssetList}
               validationChecker={(array) => {
                 setAttachsAssetList(array);
               }}

@@ -60,7 +60,6 @@ export default function Message({ ...props }) {
         <div className="message-header">
           {props.message.creatorData.avatar ? (
             <img
-              alt="avatar thumb"
               className="avatar-thumb"
               src={`/file/src/?path=${props.message.creatorData.avatar}`}
             />
@@ -88,7 +87,6 @@ export default function Message({ ...props }) {
 
         <div className="message-header">
           <button
-            type="button"
             className="message-header-info deanta-button"
             title="More info"
             onClick={() => {
@@ -126,7 +124,6 @@ export default function Message({ ...props }) {
                     <i className="material-icons-outlined">reply_all</i>
                   </button>
                   <button
-                    type="button"
                     className="message-header-reply-all deanta-button"
                     title="Forward"
                     onClick={() => {
@@ -141,7 +138,6 @@ export default function Message({ ...props }) {
                 </React.Fragment>
               )}
               <button
-                type="button"
                 className="message-header-info deanta-button"
                 title="Send to another task"
                 onClick={() => {
@@ -155,7 +151,6 @@ export default function Message({ ...props }) {
                 props.message.attachments.length > 0 && (
                   <div className="message-header-attachments">
                     <button
-                      type="button"
                       className="deanta-button formatting-button formatting-attachment"
                       onClick={() => {
                         setShowAttachments(!showAttachments);
@@ -222,7 +217,6 @@ export default function Message({ ...props }) {
                 setForwardAttachmentsModal(!forwardAttachmentsModal);
               }}
               className="deanta-button forward-attachment"
-              type="button"
             >
               <i className="material-icons-outlined">keyboard_arrow_right</i>
               Send above attachment
@@ -262,7 +256,6 @@ export default function Message({ ...props }) {
           footer={
             <div className="deanta-button-container">
               <button
-                type="button"
                 className="deanta-button deanta-button-outlined"
                 onClick={() => setInfoDetailsModal(false)}
               >

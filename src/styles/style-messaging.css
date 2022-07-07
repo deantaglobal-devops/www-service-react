@@ -384,7 +384,7 @@ li.attachments-uploaded-item span.name {
   opacity: 1;
   position: absolute;
   bottom: 0;
-  content: '';
+  content: "";
   display: block;
   left: 3%;
   width: 3%;
@@ -513,6 +513,17 @@ li.attachments-uploaded-item span.name {
   font-size: 18px;
 }
 
+.composer-tools-options {
+  padding: 10px 15px 10px 10px !important;
+  transition: 350ms all ease;
+}
+
+.composer-tools-options:hover {
+  background: #0067f415;
+  border-radius: 5px;
+  color: var(--blue);
+}
+
 .composer-tools-options.active {
   color: var(--blue);
 }
@@ -546,7 +557,7 @@ li.attachments-uploaded-item span.name {
 }
 
 .options {
-  padding: 10px;
+  padding: 20px 10px 10px;
 }
 
 .options input,
@@ -557,6 +568,7 @@ li.attachments-uploaded-item span.name {
 
 .options-checkbox {
   color: var(--secondary);
+  margin-top: 5px;
 }
 
 .options-checkbox.disabled,
@@ -590,7 +602,7 @@ li.attachments-uploaded-item span.name {
   cursor: pointer;
 }
 
-.options input[type='checkbox'] {
+.options input[type="checkbox"] {
   position: relative;
   top: 2px;
 }
@@ -860,12 +872,12 @@ p.text-warning {
 
 p.sent-warning {
   position: absolute;
-  top: 0;
-  padding: 10px 5px;
+  top: -61px;
+  padding: 15px 5px;
   text-align: center;
-  width: 100%;
+  margin-left: -24px;
+  width: calc(100% + 48px);
   color: #ffffff !important;
-  border-radius: 3px;
 }
 
 .sent-warning.text-error {
@@ -955,15 +967,13 @@ div.public-DraftEditor-content {
   min-height: 66px;
 }
 
-select {
-  border: 1px solid var(--lines);
-  border-radius: 4px;
-  background-color: transparent;
-  padding: 8px;
-  width: 100%;
-  height: 33px;
+.select-chevron {
+  position: absolute;
+  top: 13px;
+  left: calc(100% - 23px);
   font-size: 12px;
-  line-height: 137.5%;
+  color: #bcbebf;
+  pointer-events: none;
 }
 
 .formatting-attachment {
@@ -1006,10 +1016,10 @@ select {
 }
 
 .dropdown-menu-comms p {
-  color: #999;
+  font-weight: 700;
+  color: #111;
   padding: 5px 15px;
   margin: 0;
-  font-size: 10px;
 }
 
 .dropdown-menu-comms ul {
@@ -1037,7 +1047,7 @@ select {
 .wrap-field-label {
   margin: 0 !important;
 }
-.wrap-field-label input[type='text'] {
+.wrap-field-label input[type="text"] {
   margin: 0 !important;
   border-radius: 4px !important;
 }
@@ -1068,19 +1078,24 @@ ul.projectuser-not-task li {
   text-align: right;
   width: 100%;
 }
-.emails-fields {
+
+.inputs-flex-50 {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 10px 20px;
+  align-items: center;
+  gap: 15px 20px;
   width: 100%;
+}
+
+.emails-fields {
   background: #f9f9f9;
   border-radius: 5px;
   padding: 5px 10px 10px;
   margin-top: 24px;
 }
-.emails-fields > div {
+.inputs-flex-50 > div {
   flex-basis: calc(50% - 10px);
+  flex-grow: 1;
 }
 
 .options-email-subject input,
@@ -1097,7 +1112,7 @@ ul.projectuser-not-task li {
   box-shadow: 0px 0px 0px 3px #0075ff30;
 }
 .options-comms-divisor {
-  margin-top: 24px;
+  margin-top: 8px;
   min-height: 35px;
 }
 .flex-bas-subj {

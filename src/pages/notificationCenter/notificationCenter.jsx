@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/Auth";
 import Layout from "../../components/layout/Layout";
@@ -19,7 +19,10 @@ export function Notification() {
   const [thirdColumnUnseenIds, setThirdColumnUnseenIds] = useState([]);
 
   const { user, permissions } = useAuth();
-  const { projectId } = useParams();
+  // const { projectId } = useParams();
+  const { search } = useLocation();
+  const projectId = new URLSearchParams(search).get("project_id");
+
   const notificationHeader = "Notification Center";
 
   useEffect(() => {

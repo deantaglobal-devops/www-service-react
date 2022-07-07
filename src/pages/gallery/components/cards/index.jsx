@@ -76,13 +76,12 @@ export function GalleryCard({
                     {!!Number(permissions?.gallery.edit) && (
                       <div className="pt-1 pl-1">
                         <label
-                          htmlFor="editGallery"
+                          htmlFor={item.document_id}
                           className="pure-material-checkbox"
                         >
                           <input
-                            id="editGallery"
+                            id={item.document_id}
                             type="checkbox"
-                            data-documentid={item.document_id}
                             checked={selected[item.document_id] || allSelected}
                             onChange={toggleSelected(item.document_id)}
                           />

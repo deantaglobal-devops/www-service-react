@@ -6,11 +6,25 @@
   width: 18.6%;
 }
 
-.gallery-image-content {
+.gallery-image-content-configuration-panel {
   height: 7vw;
   display: flex;
   padding: 10%;
 }
+.gallery-image-content-configuration-panel img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+}
+
+.gallery-image-content-configuration-panel a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
 .client-name,
 .user-name {
   text-align: center;
@@ -370,9 +384,9 @@ fieldset.dropdown select {
   align-items: center;
 }
 
-.wrap-field-label input[type='password'],
-.wrap-field-label input[type='date'],
-.wrap-field-label input[type='month'] {
+.wrap-field-label input[type="password"],
+.wrap-field-label input[type="date"],
+.wrap-field-label input[type="month"] {
   border: solid 1px var(--lines);
   border-radius: 4px;
   width: 100%;
@@ -397,7 +411,7 @@ fieldset.dropdown select {
 .flip-card {
   display: grid;
   grid-template: 1fr / 1fr;
-  grid-template-areas: 'frontAndBack';
+  grid-template-areas: "frontAndBack";
   transform-style: preserve-3d;
   transition: 0.5s ease-in-out;
 }

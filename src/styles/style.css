@@ -605,6 +605,7 @@ div.deanta-button-container span.deanta-more-buttons-dots {
   padding: 3px;
   min-height: 160px;
   max-height: 200px;
+  margin-top: 25px;
 }
 
 .user-list ul,

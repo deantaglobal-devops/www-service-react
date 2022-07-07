@@ -1,18 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { EditorState, ContentState } from "draft-js";
+
+import {
+  EditorState,
+  ContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import { stateFromHTML } from "draft-js-import-html";
 import { useForm, useWatch } from "react-hook-form";
-import { api } from "../../../services/api";
-import { useAuth } from "../../../hooks/Auth";
 
 import Modal from "../../modal";
 import SliderLoading from "../../sliderLoading/SliderLoading";
 import { Tooltip } from "../../tooltip/tooltip";
 
-import AddUserToTask from "./addUserToTask";
+import AddMemberModal from "./addMemberModal";
+import FinishTaskModal from "./finishTaskModal";
 import { EditorText } from "./editorText";
-import SendMessagePmTaskModal from "./sendMessagePmTaskModal";
+
+import { useAuth } from "../../../hooks/Auth";
+import { api } from "../../../services/api";
 
 function messagingArea({ ...props }) {
   const {
@@ -20,6 +27,7 @@ function messagingArea({ ...props }) {
     projectName,
     taskName,
     taskId,
+    milestoneId,
     projectId,
     chapterId,
     reply,
@@ -36,6 +44,7 @@ function messagingArea({ ...props }) {
     setForward,
     setAttachForm,
     setReply,
+    setStatusMsg,
   } = props;
 
   const { user } = useAuth();
@@ -45,7 +54,7 @@ function messagingArea({ ...props }) {
   const [signature, setSignature] = useState(
     JSON.parse(localStorage.getItem("signature")) || "",
   );
-  const [oldSignature, setOldSignature] = useState(signature);
+
   const [textareaRows, setTextareaRows] = useState([
     { currentRows: 1 },
     { currentRows: 1 },
@@ -67,8 +76,99 @@ function messagingArea({ ...props }) {
 
   // Status states control
   const [loading, setLoading] = useState("");
-  const [statusMsg, setStatusMsg] = useState("");
   const [showMoreOpt, setShowMoreOpt] = useState(false);
+
+  // It will be remove when the username list is done in backend
+  const userNameList = [
+    {
+      id: 1,
+      name: "OIKOS",
+      senderName: [
+        {
+          id: 1,
+          name: "Lindbergia",
+        },
+        {
+          id: 2,
+          name: "Journal of Avian Biology",
+        },
+        {
+          id: 3,
+          name: "Nordic Journal of Botany",
+        },
+        {
+          id: 4,
+          name: "Ecography",
+        },
+        {
+          id: 5,
+          name: "Wildlife Biology",
+        },
+        {
+          id: 6,
+          name: "OIKOS",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Bioscientifica",
+      senderName: [
+        {
+          id: 1,
+          name: "EO-prod",
+        },
+        {
+          id: 2,
+          name: "JME-prod",
+        },
+        {
+          id: 3,
+          name: "EDM-prod",
+        },
+        {
+          id: 4,
+          name: "ERP-prod",
+        },
+        {
+          id: 5,
+          name: "VB-prod",
+        },
+        {
+          id: 6,
+          name: "EC-prod",
+        },
+        {
+          id: 7,
+          name: "ERC-prod",
+        },
+        {
+          id: 8,
+          name: "REP-prod",
+        },
+        {
+          id: 9,
+          name: "EJE-prod",
+        },
+        {
+          id: 10,
+          name: "JOE-prod",
+        },
+        {
+          id: 11,
+          name: "RAF-prod",
+        },
+        {
+          id: 12,
+          name: "ETJ-prod",
+        },
+        {
+          id: 13,
+          name: "EOR-prod",
+        },
+      ],
+    },
+  ];
 
   // Form controls
   const defaultForm = {
@@ -108,7 +208,10 @@ function messagingArea({ ...props }) {
     getMembersProject(projectId);
     getAlwaysCC();
     updateContentEditor("");
-    if (hasMessage === 0) {
+  }, []);
+
+  useEffect(() => {
+    if (hasMessage === 0 && loading === "") {
       setShowMoreOpt(true);
       setValue("template", templatesList[0]?.templateId);
       applyTemplate(templatesList[0]?.templateId);
@@ -116,23 +219,7 @@ function messagingArea({ ...props }) {
       setShowMoreOpt(false);
       setValue("template", "");
     }
-  }, [taskId, hasMessage]);
-
-  const updateSignature = () => {
-    updateContentEditor(stateToHTML(editorState.getCurrentContent()));
-  };
-
-  // Update Signature
-  useEffect(() => {
-    updateSignature();
-  }, [signature]);
-
-  // Clean message status
-  useEffect(() => {
-    setTimeout(() => {
-      setStatusMsg("");
-    }, 5000);
-  }, [statusMsg]);
+  }, [templatesList, hasMessage]);
 
   // Get all emails (CC and To) to reply
   useEffect(() => {
@@ -140,9 +227,7 @@ function messagingArea({ ...props }) {
       const replyList = reply?.split(",") || [];
       const addReply = replyList
         .filter(Boolean)
-        .filter(function (value, index, self) {
-          return self.indexOf(value) === index;
-        });
+        .filter((value, index, self) => self.indexOf(value) === index);
       setValue("to", addReply.join(","));
       setShowMoreOpt(true);
       setValue("emailExternal", true);
@@ -171,14 +256,15 @@ function messagingArea({ ...props }) {
   // Logical to managed "Always CC Myself"
   useEffect(() => {
     const ccList = watch("ccs");
-    const array = ccList.split(",");
+    const array = ccList.replace(" ", "").split(",");
 
     const checkCcMe = array.includes(user.email);
     checkCcMe ? setValue("ccMeField", true) : setValue("ccMeField", false);
   }, [ccs]);
+
   useEffect(() => {
     const ccList = watch("ccs");
-    const array = ccList.split(",");
+    const array = ccList.replace(" ", "").split(",");
     const checkCcMe = array.includes(user.email);
 
     const removeMySelf = array
@@ -191,12 +277,36 @@ function messagingArea({ ...props }) {
       : setValue("ccs", removeMySelf.join(","));
   }, [ccMeField]);
 
+  useEffect(() => {
+    const contentEditor = convertToRaw(editorState.getCurrentContent());
+    const keys = signature?.blocks?.map((item) => item.key);
+
+    const removeOldSignature = contentEditor?.blocks?.filter(
+      (el) => !keys?.includes(el.key),
+    );
+
+    updateContentEditor(
+      stateToHTML(
+        convertFromRaw({
+          blocks: removeOldSignature,
+          entityMap: contentEditor.entityMap,
+        }),
+      ),
+    );
+  }, [signature]);
+
   function updateContentEditor(content) {
     const contentState = content ?? "";
-    const contentDataState = stateFromHTML(contentState);
-    const editorDataState = EditorState.createWithContent(contentDataState);
+
+    const currentBlocksArr = stateFromHTML(contentState).getBlocksAsArray();
+    const signatureDataState =
+      signature && convertFromRaw(signature).getBlocksAsArray();
+    const newBlocksArr = signature
+      ? currentBlocksArr.concat(signatureDataState)
+      : currentBlocksArr;
+    const newContentState = ContentState.createFromBlockArray(newBlocksArr);
+    const editorDataState = EditorState.createWithContent(newContentState);
     setEditorState(editorDataState);
-    setOldSignature(signature);
   }
 
   async function getMembersProject(projectId) {
@@ -222,11 +332,11 @@ function messagingArea({ ...props }) {
   function updateAlwaysCC() {
     api
       .post("/user/always-cc", {
-        always_cc: watch("ccMeField") ? 1 : 0,
+        always_cc: ccMeField ? 1 : 0,
         user_id: user.id,
       })
       .then(() => {
-        setValue("ccMeField", true);
+        getAlwaysCC();
       })
       .catch((error) => {
         console.log(error);
@@ -238,16 +348,15 @@ function messagingArea({ ...props }) {
     await api
       .get(`/task/${taskId}/templates`)
       .then((result) => {
-        setTemplatesList(result.data.templates);
+        setTemplatesList(result.data.templates ?? []);
       })
       .catch((e) => console.log(e))
       .finally(() => setLoading(""));
   }
 
   async function applyTemplate(selectedTemplateId) {
-    setLoading("usetemplate");
-
-    if (selectedTemplateId && taskId) {
+    if (selectedTemplateId) {
+      setLoading("usetemplate");
       await api
         .post("/task/template/eproofing", {
           taskId,
@@ -292,6 +401,8 @@ function messagingArea({ ...props }) {
   }
 
   const onSubmit = async (data) => {
+    setLoading("send");
+
     const handleFieldArr = (arr) => {
       if (arr) {
         return arr?.toLowerCase().replace(/\s/g, "").split(",");
@@ -305,7 +416,15 @@ function messagingArea({ ...props }) {
 
     const emailsMerge = [...arrTo, ...arrCC, ...arrBCC];
 
-    setLoading("send");
+    const membersToInclude = memberProjectList.filter(
+      ({ id: id1 }) => !memberList.some(({ id: id2 }) => id2 === id1),
+    );
+    const emailsOfMembers = membersToInclude.filter(
+      (item) =>
+        arrTo.includes(item.email?.toLowerCase()) ||
+        (arrCC.includes(item.email?.toLowerCase()) && item.email),
+    );
+    emailsOfMembers.length > 0 && setUsersToAdd(emailsOfMembers);
 
     if (data.emailExternal) {
       if (data.to === "") {
@@ -319,18 +438,6 @@ function messagingArea({ ...props }) {
           { shouldFocus: true },
         );
         moreOpt.current.scrollIntoView({ block: "center", behavior: "smooth" });
-      } else if (arrTo.some((item) => arrCC.includes(item))) {
-        setLoading("");
-
-        setError(
-          "to",
-          {
-            type: "focus",
-            message:
-              "The same email address is in the To and Cc fields. Please remove one.",
-          },
-          { shouldFocus: true },
-        );
       } else {
         validateEmail(emailsMerge.filter(Boolean)).then((result) => {
           if (result) {
@@ -368,22 +475,18 @@ function messagingArea({ ...props }) {
               block: "end",
               behavior: "smooth",
             });
-          } else if (taskStatusType !== "") {
-            setIsHandlePmTaskModal(true);
-          } else if (+permissions.add === 1) {
-            // Check if the users are already in the task
-            // remove the duplicate email
-            const membersToInclude = memberProjectList.filter(
-              ({ id: id1 }) => !memberList.some(({ id: id2 }) => id2 === id1),
-            );
-            const emailsOfMembers = membersToInclude.filter(
-              (item) =>
-                arrTo.includes(item.email?.toLowerCase()) ||
-                (arrCC.includes(item.email?.toLowerCase()) && item.email),
-            );
-            if (emailsOfMembers.length > 0) {
-              setUsersToAdd(emailsOfMembers);
+          } else if (
+            taskStatusType !== "" ||
+            (+permissions.tasks.users.add === 1 && emailsOfMembers.length > 0)
+          ) {
+            if (
+              +permissions.tasks.users.add === 1 &&
+              emailsOfMembers.length > 0
+            ) {
               setAddUsersToTaskModal(true);
+            }
+            if (taskStatusType !== "") {
+              setIsHandlePmTaskModal(true);
             }
           } else {
             sendChat(data, true);
@@ -392,6 +495,8 @@ function messagingArea({ ...props }) {
       }
     } else if (data.alertMembers) {
       sendChat(data, true);
+    } else if (taskStatusType !== "") {
+      setIsHandlePmTaskModal(true);
     } else {
       sendChat(data);
     }
@@ -443,9 +548,9 @@ function messagingArea({ ...props }) {
         }),
       );
       attachmentsIds = await Promise.all(
-        attachmentsMerge.map(async (file) => {
-          return parseInt(file.id ?? file.document_id);
-        }),
+        attachmentsMerge.map(async (file) =>
+          parseInt(file.id ?? file.document_id),
+        ),
       );
     }
 
@@ -464,6 +569,7 @@ function messagingArea({ ...props }) {
       })
       .then((result) => {
         messageId = result.data.chatroomId;
+        sendtoNotificationsService();
         mail && sendMail(data, attachments, messageId);
       })
       .catch((error) => {
@@ -474,6 +580,7 @@ function messagingArea({ ...props }) {
         setLoading("");
         resetFields();
         updateMessages();
+        updateMembers();
       });
   }
 
@@ -487,11 +594,20 @@ function messagingArea({ ...props }) {
       }
       return [];
     }
-    const ccsAddress = handleStrArr(data.ccs);
+
+    let ccsAddress = handleStrArr(data.ccs);
     const bccsAddress = handleStrArr(data.bccs);
     let toAddress = handleStrArr(data.to);
+
     if (data.alertMembers) {
       toAddress = toAddress.concat(memberList.map((user) => user.email));
+    }
+
+    if (toAddress.some((item) => ccsAddress.includes(item))) {
+      ccsAddress = ccsAddress.filter(
+        (email) =>
+          !toAddress.some((itemToBeRemoved) => itemToBeRemoved === email),
+      );
     }
 
     await api
@@ -503,7 +619,7 @@ function messagingArea({ ...props }) {
           project_id: projectId,
           task_id: taskId,
           creator_id: user.id,
-          creator_name: `${user.name} ${user.lastname}`,
+          creator_name: data.senderName,
           message_id: messageId,
           template_id: parseInt(data.template),
         },
@@ -520,15 +636,79 @@ function messagingArea({ ...props }) {
       .then((res) => {
         if (res.data.status === "sent" || res.data.status === "OK") {
           setStatusMsg("Message sent successfully");
+        } else {
+          setStatusMsg("Something got wrong! Please try again.");
         }
       })
       .catch((err) => {
+        setStatusMsg("Something got wrong! Please try again.");
         console.log(err);
       })
       .finally(() => {
         setLoading("");
         updateAlwaysCC();
       });
+  }
+
+  function sendtoNotificationsService() {
+    // let description = `New message(s) on ${taskName}`;
+
+    // const date = Date.now();
+
+    // const msg = {
+    //   company_id: user.realCompanyId,
+    //   creation_date: date,
+    //   description,
+    //   link: `${window.location.origin}/project/${projectId}`,
+    //   milestone_id: milestoneId,
+    //   type: "Communications",
+    //   project_id: projectId,
+    //   seen: "0",
+    //   task_id: taskId,
+    //   title: description,
+    //   update_date: date,
+    //   user_id: user.id,
+    //   category: projectName,
+    // };
+
+    // const currentURL = window.location.pathname;
+    // if (currentURL.includes("/journal/")) {
+    //   msg.link = `${window.location.origin}/project/journal/${projectId}/detail/${chapterId}`;
+
+    //   const articleTitle = document.querySelector(".page-header h2").innerHTML;
+    //   const articleTitleTruncated = articleTitle.substring(0, 15);
+
+    //   const categoryName = `${projectCode}/${projectName}/${taskName}`;
+    //   const categoryNameSplit = categoryName.split(" / ");
+    //   const journalName = categoryNameSplit[1];
+
+    //   const categoryNameSplitJoined = `${journalName} / ${articleTitleTruncated}...`;
+    //   const milestoneName = categoryNameSplit[2];
+
+    //   msg.category = categoryNameSplitJoined;
+
+    //   description = `New message(s) on ${milestoneName} / ${projectName}`;
+    //   msg.description = description;
+    //   msg.title = description;
+    // }
+
+    const bodyRequest = {
+      userId: user.id,
+      companyId: user.realCompanyId,
+      milestoneId,
+      taskId,
+      channel: "communications-broadcast",
+    };
+    api.post("/notifications/add", bodyRequest);
+
+    // fetch("/push/notifications/communications", {
+    //   method: "POST",
+    //   mode: "no-cors",
+    //   body: JSON.stringify(msg),
+    // })
+    //   .then((res) => res.json())
+    //   .then((result) => result)
+    //   .catch((err) => console.log(err));
   }
 
   async function getAttachs(attachIds) {
@@ -539,9 +719,7 @@ function messagingArea({ ...props }) {
           fileId !== "" &&
           (await api
             .get(`/project/document/${fileId.replace(/\s/g, "").split(",")}`)
-            .then((result) => {
-              return result.data;
-            })
+            .then((result) => result.data)
             .catch((error) => {
               console.log(error);
             })
@@ -648,7 +826,6 @@ function messagingArea({ ...props }) {
             attachmentList={attachmentList}
             setAttachmentList={setAttachmentList}
             setSignature={setSignature}
-            updateSignature={updateSignature}
             setStatusMsg={setStatusMsg}
             {...props}
           />
@@ -668,84 +845,79 @@ function messagingArea({ ...props }) {
             (attachmentList.length > 0 || attachsAssetList.length > 0) && (
               <div className="attachments-uploaded">
                 <ul className="attachments-uploaded-list">
-                  {attachmentList?.map((attachment, index) => {
-                    return (
-                      <li key={index} className="attachments-uploaded-item">
-                        <div
-                          alt={attachment.name ?? attachment.document_name}
-                          className={`attachments-uploaded-card ${
-                            attachment.upload === "uploaded"
-                              ? "loaded-attachment"
-                              : "load-attachment"
-                          } ${attachment.error && "loaderror-attachment"}`}
+                  {attachmentList?.map((attachment, index) => (
+                    <li key={index} className="attachments-uploaded-item">
+                      <div
+                        alt={attachment?.name ?? attachment?.document_name}
+                        className={`attachments-uploaded-card ${
+                          attachment.upload === "uploaded"
+                            ? "loaded-attachment"
+                            : "load-attachment"
+                        } ${attachment.error && "loaderror-attachment"}`}
+                      >
+                        <span
+                          className="name"
+                          onClick={() =>
+                            attachment?.file_path &&
+                            handleDownload(attachment?.file_path)
+                          }
                         >
-                          <span
-                            className="name"
-                            onClick={() =>
-                              attachment.file_path &&
-                              handleDownload(attachment.file_path)
-                            }
-                          >
-                            {attachment.name ?? attachment.document_name}
+                          {attachment?.name ?? attachment?.document_name}
+                        </span>
+                        {attachment?.name?.length > 11 && (
+                          <span className="name">{attachment?.ext ?? ""}</span>
+                        )}{" "}
+                        {attachment?.error && (
+                          <span className="error-filesize">
+                            – {attachment.error}
                           </span>
-                          {attachment.name?.length > 11 && (
-                            <span className="name">{attachment.ext ?? ""}</span>
-                          )}{" "}
-                          {attachment.error && (
-                            <span className="error-filesize">
-                              – {attachment.error}
-                            </span>
-                          )}
-                          {attachment.upload !== "uploading" && (
-                            <button type="button" className="deanta-button">
-                              <i
-                                className="material-icons-outlined remove-attachment"
-                                onClick={() => {
-                                  const removeItem = attachmentList.filter(
-                                    (item) => item !== attachment,
-                                  );
-                                  setAttachmentList(removeItem);
-                                }}
-                                title="Remove"
-                              >
-                                close
-                              </i>
-                            </button>
-                          )}
-                          <span className="progress-bar" />
-                        </div>
-                      </li>
-                    );
-                  })}
-                  {attachsAssetList?.map((attachment, index) => {
-                    return (
-                      <li key={index} className="attachments-uploaded-item">
-                        <div className="attachments-uploaded-card">
-                          <span
-                            className="name"
-                            onClick={() => handleDownload(attachment.file_path)}
-                          >
-                            {attachment.name}
-                          </span>
+                        )}
+                        {attachment.upload !== "uploading" && (
                           <button type="button" className="deanta-button">
                             <i
                               className="material-icons-outlined remove-attachment"
                               onClick={() => {
-                                const newAttachmentList =
-                                  attachsAssetList.filter((item) => {
-                                    return item.id !== attachment.id;
-                                  });
-                                setAttachsAssetList(newAttachmentList);
+                                const removeItem = attachmentList.filter(
+                                  (item) => item !== attachment,
+                                );
+                                setAttachmentList(removeItem);
                               }}
                               title="Remove"
                             >
                               close
                             </i>
                           </button>
-                        </div>
-                      </li>
-                    );
-                  })}
+                        )}
+                        <span className="progress-bar" />
+                      </div>
+                    </li>
+                  ))}
+                  {attachsAssetList?.map((attachment, index) => (
+                    <li key={index} className="attachments-uploaded-item">
+                      <div className="attachments-uploaded-card">
+                        <span
+                          className="name"
+                          onClick={() => handleDownload(attachment.file_path)}
+                        >
+                          {attachment.name}
+                        </span>
+                        <button type="button" className="deanta-button">
+                          <i
+                            className="material-icons-outlined remove-attachment"
+                            onClick={() => {
+                              const newAttachmentList = attachsAssetList.filter(
+                                (item) => item.id !== attachment.id,
+                              );
+                              setAttachsAssetList(newAttachmentList);
+                            }}
+                            title="Remove"
+                          >
+                            close
+                          </i>
+                        </button>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )
@@ -826,46 +998,83 @@ function messagingArea({ ...props }) {
                 )}
               </div>
 
-              <div className="options-template">
-                <label htmlFor="template">Use a template?</label>
-                <select
-                  name="template"
-                  {...register("template")}
-                  onChange={(event) => {
-                    event.target.value !== ""
-                      ? applyTemplate(event.target.value)
-                      : resetFields();
-                  }}
-                >
-                  <option value="">No Template</option>
-                  {loading !== "templatelist" ? (
-                    templatesList?.length > 0 ? (
-                      templatesList.map((template, i) => (
-                        <option
-                          key={template.templateId + i}
-                          value={template.templateId}
-                        >
-                          {template.template_name}
+              <div className="inputs-flex-50">
+                <div className="options-template">
+                  <div className="wrap-field-label">
+                    <label htmlFor="template" className="label-form">
+                      Use a template?
+                    </label>
+                    <select
+                      name="template"
+                      {...register("template")}
+                      onChange={(event) => {
+                        event.target.value !== ""
+                          ? applyTemplate(event.target.value)
+                          : resetFields();
+                      }}
+                    >
+                      <option value="">No Template</option>
+                      {loading !== "templatelist" ? (
+                        templatesList?.length > 0 ? (
+                          templatesList.map((template, i) => (
+                            <option
+                              key={template.templateId + i}
+                              value={template.templateId}
+                            >
+                              {template.template_name}
+                            </option>
+                          ))
+                        ) : (
+                          <option value="" disabled>
+                            There isn't template yet
+                          </option>
+                        )
+                      ) : (
+                        <option value="" disabled>
+                          Loading ...
                         </option>
-                      ))
-                    ) : (
-                      <option value="" disabled>
-                        There isn't template yet
+                      )}
+                    </select>
+                    <i className="material-icons-outlined select-chevron">
+                      expand_more
+                    </i>
+                  </div>
+                </div>
+
+                <div className="options-template">
+                  <div className="wrap-field-label">
+                    <label htmlFor="senderName" className="label-form">
+                      Sender name:
+                    </label>
+                    <select name="senderName" {...register("senderName")}>
+                      <option value={`${user.name} ${user.lastname}`}>
+                        {`${user.name} ${user.lastname}`}
                       </option>
-                    )
-                  ) : (
-                    <option value="" disabled>
-                      Loading ...
-                    </option>
-                  )}
-                </select>
+                      {+permissions?.chatroom?.sender_name_selection === 1 &&
+                        userNameList?.length > 0 &&
+                        userNameList.map((group) => (
+                          <optgroup label={group.name} key={group.id}>
+                            {group.senderName.map((user) => (
+                              <option key={user.id} value={user.name}>
+                                {user.name}
+                              </option>
+                            ))}
+                          </optgroup>
+                        ))}
+                    </select>
+                    <i className="material-icons-outlined select-chevron">
+                      expand_more
+                    </i>
+                  </div>
+                </div>
               </div>
+
               {loading === "usetemplate" || loading === "templatelist" ? (
                 <SliderLoading fitLoad />
               ) : (
                 <div className="options-checkbox">
-                  <div className="options-comms-div">
-                    <div className="chck-center options-comms-divisor max-wdt-ext">
+                  <div className="inputs-flex-50">
+                    <div className="chck-center options-comms-divisor">
                       <input
                         id="email"
                         type="checkbox"
@@ -877,9 +1086,9 @@ function messagingArea({ ...props }) {
                       </label>
                     </div>
                     {watch("emailExternal") && (
-                      <>
-                        <div className="options-email-subject flex-bas-subj">
-                          <label>Subject:</label>
+                      <div className="options-email-subject ">
+                        <div className="wrap-field-label">
+                          <label className="label-form">Subject:</label>
                           <input
                             id="subject"
                             name="subject"
@@ -887,53 +1096,64 @@ function messagingArea({ ...props }) {
                             {...register("subject")}
                           />
                         </div>
-                        <div className="chck-center">
-                          <input
-                            id="ccMeField"
-                            type="checkbox"
-                            name="ccMeField"
-                            {...register("ccMeField")}
-                          />
-                          <label htmlFor="ccMeField" id="ccMeFieldLabel">
-                            Always cc myself
-                          </label>
-                          <Tooltip
-                            direction="top"
-                            content={
-                              <span>
-                                Checking this box will insert your own email
-                                <br />
-                                address into the cc: line of the email. This
-                                <br />
-                                will remain switched on for all messages you
-                                <br />
-                                send on Lanstad until you switch it off.
+                      </div>
+                    )}
+                  </div>
+                  {watch("emailExternal") && (
+                    <>
+                      <div className="inputs-flex-50 options-reminder">
+                        <div className="inputs-flex-50">
+                          <div className="chck-center">
+                            <input
+                              id="ccMeField"
+                              type="checkbox"
+                              name="ccMeField"
+                              {...register("ccMeField")}
+                            />
+                            <label htmlFor="ccMeField" id="ccMeFieldLabel">
+                              Always cc myself
+                            </label>
+                            <Tooltip
+                              direction="top"
+                              content={
+                                <span>
+                                  Checking this box will insert your own email
+                                  <br />
+                                  address into the cc: line of the email. This
+                                  <br />
+                                  will remain switched on for all messages you
+                                  <br />
+                                  send on Lanstad until you switch it off.
+                                </span>
+                              }
+                            >
+                              <span className="material-icons-outlined infoicon">
+                                info
                               </span>
-                            }
+                            </Tooltip>
+                          </div>
+                          <div
+                            className="chck-center"
+                            style={{ justifyContent: "center" }}
                           >
-                            <span className="material-icons-outlined infoicon">
-                              info
-                            </span>
-                          </Tooltip>
-                        </div>
-                        <div className="chck-center">
-                          <input
-                            id="addBccField"
-                            type="checkbox"
-                            name="addBccField"
-                            {...register("addBccField")}
-                          />
-                          <label
-                            htmlFor="addBccField"
-                            id="addBccField"
-                            onClick={() => {
-                              setTimeout(() => {
-                                setFocus("bccs");
-                              }, 200);
-                            }}
-                          >
-                            Add Bcc field
-                          </label>
+                            <input
+                              id="addBccField"
+                              type="checkbox"
+                              name="addBccField"
+                              {...register("addBccField")}
+                            />
+                            <label
+                              htmlFor="addBccField"
+                              id="addBccField"
+                              onClick={() => {
+                                setTimeout(() => {
+                                  setFocus("bccs");
+                                }, 200);
+                              }}
+                            >
+                              Add Bcc field
+                            </label>
+                          </div>
                         </div>
                         <div className="chck-center">
                           <input
@@ -943,7 +1163,7 @@ function messagingArea({ ...props }) {
                             disabled
                             {...register("reminderDate")}
                           />
-                          <label htmlFor="reminder">Set a reminder date?</label>{" "}
+                          <label htmlFor="reminder">Set a reminder date?</label>
                           <Tooltip
                             direction="top"
                             content={
@@ -961,75 +1181,78 @@ function messagingArea({ ...props }) {
                             </span>
                           </Tooltip>
                         </div>
-                      </>
-                    )}
-                  </div>
-                  {watch("emailExternal") && (
-                    <div className="emails-fields">
-                      <div className="options-email-to">
-                        <label>To:</label>
-                        <textarea
-                          id="to"
-                          name="to"
-                          rows={textareaRows[0].currentRows}
-                          onKeyPress={(event) => {
-                            textareaIncrease(event, 0);
-                          }}
-                          onClick={(event) => {
-                            textareaIncrease(event, 0);
-                          }}
-                          {...register("to")}
-                          className={errors.to && "is-invalid"}
-                        />
-                        {errors.to && (
-                          <p className="text-warning text-error">
-                            {errors.to.message}
-                          </p>
-                        )}
                       </div>
-                      <div className="options-email-ccs">
-                        <label>Cc:</label>
-                        <textarea
-                          id="ccs"
-                          name="ccs"
-                          rows={textareaRows[0].currentRows}
-                          onKeyPress={(event) => {
-                            textareaIncrease(event, 0);
-                          }}
-                          onClick={(event) => {
-                            textareaIncrease(event, 0);
-                          }}
-                          {...register("ccs")}
-                          className={errors.ccs && "is-invalid"}
-                        />
-                        {errors.ccs && (
-                          <p className="text-warning text-error">
-                            {errors.ccs.message}
-                          </p>
-                        )}
-                      </div>
-                      {watch("addBccField") && (
-                        <div className="options-email-ccs">
-                          <label>Bcc:</label>
-                          <textarea
-                            id="bccs"
-                            name="bccs"
-                            defaultValue=""
-                            rows={textareaRows[2].currentRows}
-                            onKeyPress={(event) => {
-                              textareaIncrease(event, 2);
-                            }}
-                            {...register("bccs")}
-                            className={errors.bccs && "is-invalid"}
-                          />
-                          {errors.bccs && (
+                      <div className="emails-fields inputs-flex-50">
+                        <div className="options-email-to">
+                          <div className="wrap-field-label">
+                            <label className="label-form">To:</label>
+                            <textarea
+                              id="to"
+                              name="to"
+                              rows={textareaRows[0].currentRows}
+                              onKeyPress={(event) => {
+                                textareaIncrease(event, 0);
+                              }}
+                              onClick={(event) => {
+                                textareaIncrease(event, 0);
+                              }}
+                              {...register("to")}
+                              className={errors.to && "is-invalid"}
+                            />
+                          </div>
+                          {errors.to && (
                             <p className="text-warning text-error">
-                              {errors.bccs.message}
+                              {errors.to.message}
                             </p>
                           )}
                         </div>
-                      )}
-                      {/* {watch('reminderDate') === true && (
+                        <div className="options-email-ccs">
+                          <div className="wrap-field-label">
+                            <label className="label-form">Cc:</label>
+                            <textarea
+                              id="ccs"
+                              name="ccs"
+                              rows={textareaRows[0].currentRows}
+                              onKeyPress={(event) => {
+                                textareaIncrease(event, 0);
+                              }}
+                              onClick={(event) => {
+                                textareaIncrease(event, 0);
+                              }}
+                              {...register("ccs")}
+                              className={errors.ccs && "is-invalid"}
+                            />
+                          </div>
+                          {errors.ccs && (
+                            <p className="text-warning text-error">
+                              {errors.ccs.message}
+                            </p>
+                          )}
+                        </div>
+                        {watch("addBccField") && (
+                          <div className="options-email-ccs">
+                            <div className="wrap-field-label">
+                              <label className="label-form">Bcc:</label>
+                              <textarea
+                                id="bccs"
+                                name="bccs"
+                                defaultValue=""
+                                rows={textareaRows[2].currentRows}
+                                onKeyPress={(event) => {
+                                  textareaIncrease(event, 2);
+                                }}
+                                {...register("bccs")}
+                                className={errors.bccs && "is-invalid"}
+                              />
+                            </div>
+                            {errors.bccs && (
+                              <p className="text-warning text-error">
+                                {errors.bccs.message}
+                              </p>
+                            )}
+                          </div>
+                        )}
+                        {/* {watch('reminderDate') === true && (
                         <div className="options-reminder-date">
                           <label>Reminder Date</label>
                           <input
@@ -1042,7 +1265,8 @@ function messagingArea({ ...props }) {
                           />
                         </div>
                       )} */}
-                    </div>
+                      </div>
+                    </>
                   )}
                 </div>
               )}
@@ -1051,33 +1275,21 @@ function messagingArea({ ...props }) {
         </div>
       </div>
 
-      {statusMsg && (
-        <p
-          className={`sent-warning ${
-            statusMsg.includes("successfully") ? "text-success" : "text-error"
-          }`}
-        >
-          {statusMsg}
-        </p>
-      )}
-
       {isHandlePmTaskModal && (
         <Modal
           modalInSlider
           closeModal={() => {
             setIsHandlePmTaskModal(false);
+            setLoading("");
           }}
           title="Send Message"
           body={
-            <SendMessagePmTaskModal
-              send={() => {
-                sendChat(getValues(), true);
-              }}
-              finish={() => {
-                changeTaskStatus("finish", taskId, 4);
-              }}
+            <FinishTaskModal
+              finish={() => changeTaskStatus("finish", taskId, 4)}
+              send={() => sendChat(getValues(), watch("emailExternal"))}
               close={() => {
-                setIsHandlePmTaskModal(false);
+                setAddUsersToTaskModal(false);
+                setLoading("");
               }}
             />
           }
@@ -1089,15 +1301,20 @@ function messagingArea({ ...props }) {
           modalInSlider
           closeModal={() => {
             setAddUsersToTaskModal(false);
+            setLoading("");
           }}
           title="Add users to task?"
           body={
-            <AddUserToTask
+            <AddMemberModal
               taskId={taskId}
-              close={() => setAddUsersToTaskModal(false)}
+              close={() => {
+                setAddUsersToTaskModal(false);
+                setLoading("");
+              }}
               finish={() => {
-                updateMembers();
-                sendChat(getValues(), true);
+                if (!isHandlePmTaskModal) {
+                  sendChat(getValues(), true);
+                }
               }}
               users={usersToAdd}
             />

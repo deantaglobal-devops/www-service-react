@@ -47,7 +47,7 @@ export default function MilestoneDetails({
   useEffect(() => {
     // Create a new array of tasks and fixing some properties names,
     let _projectId = 0;
-    if (data[0]?.tasks.length > 0) {
+    if (data[0]?.tasks?.length > 0) {
       const tasks = data[0]?.tasks
         ?.filter((task) => {
           if (
@@ -167,22 +167,20 @@ export default function MilestoneDetails({
     const userId = user.id;
     setTaskStatusType(_statusType);
     setTaskId(_taskId);
-    const _finishTemplateList = await fetch(`/task/${_taskId}/templates`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // If skip eProofing is toggled, wipe the eProofing template array
-          if (skipEproofing === true) {
-            return [];
-          }
-
-          return result.templates ? result.templates : [];
-        },
-        (error) => {
-          console.log(error);
+    const _finishTemplateList = await api
+      .get(`/task/${_taskId}/templates`)
+      .then((response) => {
+        // If skip eProofing is toggled, wipe the eProofing template array
+        if (skipEproofing === true) {
           return [];
-        },
-      );
+        }
+
+        return response.data.templates ? response.data.templates : [];
+      })
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
 
     const checklistItems = [];
 
@@ -386,15 +384,10 @@ export default function MilestoneDetails({
     //     );
 
     // LV-1676 (Following this flow for PM Tasks)
-    const _templateData = await fetch(`/task/${_taskId}/templates`)
-      .then((res) => res.json())
-      .then(
-        (result) => result,
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+    const _templateData = await api
+      .get(`/task/${_taskId}/templates`)
+      .then((response) => response.data)
+      .catch((err) => console.log(err));
     // the task has eproofing configured
     if (_templateData.templates && _statusType != 1) {
       changeTaskStatus("start", _taskId, "6");
