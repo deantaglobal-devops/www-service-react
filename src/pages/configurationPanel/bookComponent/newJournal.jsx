@@ -595,7 +595,6 @@ export default function NewJournal(props) {
                     href="#"
                     onClick={() => handleRemoveClick(i)}
                     className="delete-icon"
-                    className="nolink"
                   >
                     <i
                       className="material-icons-outlined"

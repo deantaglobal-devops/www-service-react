@@ -455,8 +455,16 @@ export function EditBookModal({
       "Projects[other_cost_description]",
       editBookData.otherCostDescription,
     );
-    formData.append("Projects[alt_text]", editBookData.altText);
-    formData.append("Projects[altTextSupply]", editBookData.altTextSupply);
+    formData.append(
+      "Projects[alt_text]",
+      editBookData?.altText && editBookData?.altText !== "null"
+        ? editBookData?.altText
+        : "",
+    );
+    formData.append(
+      "Projects[altTextSupply]",
+      editBookData?.altTextSupply ? editBookData?.altTextSupply : "",
+    );
 
     formData.append("pmbrief", projectManagerBriefFile);
     formData.append("pmbriefFlag", projectManagerBriefUpdated ? 0 : 1);
@@ -466,17 +474,13 @@ export function EditBookModal({
 
     const token = localStorage.getItem("lanstad-token");
 
-    await fetch(
-      `${import.meta.env.VITE_URL_API_SERVICE}/call/project/update/submit`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-        body: formData,
+    await fetch(`${import.meta.env.VITE_URL_API_SERVICE}/project/update/sbmt`, {
+      method: "PUT",
+      headers: {
+        "Lanstad-Token": token,
       },
-    )
+      body: formData,
+    })
       .then((res) => res.json())
       .then(
         (msg) => {
@@ -1559,11 +1563,14 @@ export function EditBookModal({
                   iconName="keyboard_arrow_down"
                   iconClassName="material-icons"
                 />
-
                 <Dropdown
                   label="Alt Text Supplied Creation"
                   name="altText"
-                  value={editBookData?.altText ?? ""}
+                  value={
+                    editBookData?.altText && editBookData?.altText !== "null"
+                      ? editBookData?.altText
+                      : ""
+                  }
                   valuesDropdown={altDropVal}
                   handleOnChange={(e) => handleOnChange(e)}
                   iconName="keyboard_arrow_down"

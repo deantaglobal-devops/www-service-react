@@ -64,7 +64,9 @@ export function LoginReactJS() {
       }).catch(() => setIsLoading(false));
 
       setIsLoading(false);
-      if (isSignInSuccessfully) {
+      if (isSignInSuccessfully?.user?.permissions?.rol === "Journal Editor") {
+        navigate("/dashboard/journals");
+      } else if (isSignInSuccessfully?.user) {
         navigate("/dashboard");
       } else {
         const node = document.querySelectorAll("#errorMsg")[0];

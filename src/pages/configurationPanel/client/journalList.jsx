@@ -124,7 +124,6 @@ class JournalList extends React.Component {
                                 className="progress-bar bg-success"
                                 role="progressbar"
                                 style={{ width: milestone.percentage }}
-                                role="progressbar"
                                 aria-valuenow={milestone.percentage}
                                 aria-valuemin="0"
                                 aria-valuemax="100"

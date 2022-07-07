@@ -114,7 +114,7 @@ function AuthProvider({ children }) {
         user: wholeToken.user,
       });
 
-      return true;
+      return { user: wholeToken?.user };
     }
     return false;
   }, []);

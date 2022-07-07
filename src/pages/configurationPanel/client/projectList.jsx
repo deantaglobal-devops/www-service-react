@@ -124,7 +124,6 @@ class ProjectList extends React.Component {
                             <div className="progress progress-sm">
                               <div
                                 className="progress-bar bg-success"
-                                role="progressbar"
                                 style={{ width: milestonePercentage }}
                                 role="progressbar"
                                 aria-valuenow={milestone.percentage}

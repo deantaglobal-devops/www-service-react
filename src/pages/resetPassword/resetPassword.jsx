@@ -80,7 +80,7 @@ export function ResetPassword() {
 
               setIsLoading(false);
 
-              if (isSignInSuccessfully) {
+              if (isSignInSuccessfully?.user) {
                 navigate("/dashboard");
               }
             })
