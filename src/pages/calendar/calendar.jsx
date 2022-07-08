@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import "@fullcalendar/react/dist/vdom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
