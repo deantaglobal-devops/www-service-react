@@ -123,7 +123,9 @@ export default function Milestone({
           if (!avatar.avatar.includes("eu.ui-avatars.com")) {
             return {
               ...avatar,
-              avatar: `/file/src/?path=${avatar.avatar}`,
+              avatar: `${import.meta.env.VITE_URL_API_SERVICE}/file/src/?path=${
+                avatar.avatar
+              }`,
             };
           }
           return avatar;

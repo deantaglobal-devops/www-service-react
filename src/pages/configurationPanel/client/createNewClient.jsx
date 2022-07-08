@@ -34,7 +34,9 @@ class CreateNewClient extends React.Component {
       const client = this.props.selectedClient;
       let updateImg = "";
       if (client.clientImage !== "") {
-        updateImg = `/file/src/?path=${client.clientImage}`;
+        updateImg = `${import.meta.env.VITE_URL_API_SERVICE}/file/src/?path=${
+          client.clientImage
+        }`;
       }
       this.setState({
         pageHeading: "Edit Client Information",

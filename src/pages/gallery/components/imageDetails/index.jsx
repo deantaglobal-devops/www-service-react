@@ -301,7 +301,9 @@ export default function ImageDetails({
                   <div className="image-preview">
                     <img
                       alt="detail"
-                      src={`/file/src/?path=${dataDetails?.src}`}
+                      src={`${
+                        import.meta.env.VITE_URL_API_SERVICE
+                      }/file/src/?path=${dataDetails?.src}`}
                     />
                   </div>
                   <div className="action-image-details">

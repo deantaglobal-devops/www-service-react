@@ -12,7 +12,9 @@ class ClientList extends React.Component {
         <div className="gallery-image-content-configuration-panel">
           <img
             className="gallery-image"
-            src={`/file/src/?path=${client.clientImage}`}
+            src={`${import.meta.env.VITE_URL_API_SERVICE}/file/src/?path=${
+              client.clientImage
+            }`}
           />
         </div>
         <div className="client-name">{client.company_name}</div>

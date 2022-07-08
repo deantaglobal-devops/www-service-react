@@ -219,7 +219,9 @@ export default function TasksList({ milestoneId }) {
                                   getUser(item.user_id).avatar ? (
                                     <img
                                       className="avatar"
-                                      src={`/file/src/?path=${
+                                      src={`${
+                                        import.meta.env.URL_API_SERVICE
+                                      }/file/src/?path=${
                                         getUser(item.user_id).avatar
                                       }`}
                                     />

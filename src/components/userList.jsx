@@ -234,7 +234,9 @@ class UserList extends React.Component {
                           src={
                             user.avatar.includes("eu.ui-avatars.com")
                               ? user.avatar
-                              : `/file/src/?path=${user.avatar}`
+                              : `${
+                                  import.meta.env.VITE_URL_API_SERVICE
+                                }/file/src/?path=${user.avatar}`
                           }
                         />
                       </div>
