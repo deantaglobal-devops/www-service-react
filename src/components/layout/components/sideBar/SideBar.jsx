@@ -184,7 +184,7 @@ export function SideBar({ iconActive, permissions, openSideBarMobile, user }) {
         </ul>
 
         {/* Configuration */}
-        {user.admin_user && (
+        {user?.admin_user && (
           <ul className="nav nav--no-borders flex-column configuration-link">
             <li className="nav-item">
               <Link

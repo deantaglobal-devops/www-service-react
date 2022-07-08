@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/Auth";
 import Layout from "../../components/layout/Layout";
 
@@ -55,19 +55,19 @@ export function LstPage() {
       {/* End Header */}
 
       <div className="nav-tags mt12">
-        <a
-          href={
+        <Link
+          to={
             projectType === "books" ? "/dashboard/books" : "/dashboard/journals"
           }
         >
           Active
-        </a>
-        <a
-          href={projectType === "books" ? "/lst/books" : "/lst/journals"}
+        </Link>
+        <Link
+          to={projectType === "books" ? "/lst/books" : "/lst/journals"}
           className="active"
         >
           Report
-        </a>
+        </Link>
       </div>
 
       {projectType === "journals" ? (

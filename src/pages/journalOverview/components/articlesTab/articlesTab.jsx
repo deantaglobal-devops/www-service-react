@@ -170,11 +170,11 @@ export function ArticlesTab({ permissions, navTag, articles, project }) {
                   </div>
                 </td>
                 <td className="open-default-link">
-                  <a
-                    href={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
+                  <Link
+                    to={`/project/journal/${project.projectId}/detail/${article.chapterID}`}
                   >
                     <i className="material-icons">open_in_new</i>
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

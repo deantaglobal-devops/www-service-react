@@ -73,7 +73,7 @@ export function GalleryCard({
                   key={item.document_id + index}
                 >
                   <div className="gallery-box">
-                    {!!Number(permissions?.gallery.edit) && (
+                    {!!Number(permissions?.gallery?.edit) && (
                       <div className="pt-1 pl-1">
                         <label
                           htmlFor={item.document_id}
@@ -111,7 +111,9 @@ export function GalleryCard({
                           <img
                             alt="tiff background"
                             className="gallery-image tif-background"
-                            src={`/file/src/?path=${item.file_path}`}
+                            src={`${
+                              import.meta.env.VITE_URL_API_SERVICE
+                            }/file/src/?path=${item.file_path}`}
                             data-documentid={item.document_id}
                           />
                         </a>

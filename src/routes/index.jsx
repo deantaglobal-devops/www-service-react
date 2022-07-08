@@ -26,6 +26,9 @@ export function LanstadRoutes() {
       {/* Reset password */}
       <Route path="/password-reset/:token" element={<ResetPassword />} />
 
+      {/* Pro-Editor Magic Code */}
+      <Route path="/pro-editor/:magicCode" element={<ProEditorPage />} />
+
       <Route element={<PublicRoutes />}>
         {/* Login */}
         <Route path="/" exact element={<LoginPage />} />

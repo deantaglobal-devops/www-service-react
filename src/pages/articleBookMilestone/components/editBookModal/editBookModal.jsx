@@ -541,7 +541,11 @@ export function EditBookModal({
                       alt="issue cover"
                       className="profile-image"
                       id="IssuecoverImage"
-                      src={`/file/src/?path=/epublishing/books/${editBookData?.projectImage}&storage=blob`}
+                      src={`${
+                        import.meta.env.VITE_URL_API_SERVICE
+                      }/file/src/?path=/epublishing/books/${
+                        editBookData?.projectImage
+                      }&storage=blob`}
                     />
                   ) : (
                     <img

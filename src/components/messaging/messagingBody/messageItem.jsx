@@ -60,8 +60,11 @@ export default function Message({ ...props }) {
         <div className="message-header">
           {props.message.creatorData.avatar ? (
             <img
+              alt="avatar"
               className="avatar-thumb"
-              src={`/file/src/?path=${props.message.creatorData.avatar}`}
+              src={`${import.meta.env.VITE_URL_API_SERVICE}/file/src/?path=${
+                props.message.creatorData.avatar
+              }`}
             />
           ) : (
             <div className="no-avatar">

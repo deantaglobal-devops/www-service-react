@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./styles/client.styles.css";
 
@@ -29,20 +30,26 @@ class ProjectList extends React.Component {
               <div className="card-body p-0">
                 <div className="row mt-4 pb-0">
                   <div className="col-sm-12 col-lg-3 pr-0">
-                    <a
-                      href={`/project/${project.id}`}
+                    <Link
+                      to={`/project/${project.id}`}
                       className="project-thumb-list-wrapper"
                     >
                       <img
-                        src={`/file/src/?path=/epublishing/books/${project.projectImage}&storage=blob`}
+                        src={`${
+                          import.meta.env.VITE_URL_API_SERVICE
+                        }/file/src/?path=/epublishing/books/${
+                          project.projectImage
+                        }&storage=blob`}
                         className="project-thumb-list"
                       />
-                    </a>
+                    </Link>
                   </div>
                   <div className="col-lg-9">
                     <div className="project-card-details">
                       <h3>
-                        <a href={`/project/${project.id}`}>{project.name}</a>
+                        <Link to={`/project/${project.id}`}>
+                          {project.name}
+                        </Link>
                       </h3>
                       <div className="flex-list-blocks">
                         <div className="list-info-singular">
@@ -93,12 +100,12 @@ class ProjectList extends React.Component {
                     >
                       <i className="material-icons">flip</i> Flip
                     </a>
-                    <a
+                    <Link
                       className="action-bottom"
-                      href={`/project/${project.id}`}
+                      to={`/project/${project.id}`}
                     >
                       <i className="material-icons">open_in_new</i> Open
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -145,9 +152,9 @@ class ProjectList extends React.Component {
                   >
                     <i className="material-icons">flip</i> Flip
                   </a>
-                  <a className="action-bottom" href={`/project/${project.id}`}>
+                  <Link className="action-bottom" to={`/project/${project.id}`}>
                     <i className="material-icons">open_in_new</i> Open
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

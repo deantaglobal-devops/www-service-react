@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import { api } from "../../../../services/api";
 
 import Modal from "../../../../components/Modal/modal";
@@ -127,13 +128,15 @@ export default function ImageDetails({
                         import.meta.env.VITE_URL_API_SERVICE
                       }/file/src/?path=${dataDetails?.src}`}
                     />
-                    <a
-                      href={`/file/src/?path=${dataDetails?.src}`}
+                    <Link
+                      href={`${
+                        import.meta.env.VITE_URL_API_SERVICE
+                      }/file/src/?path=${dataDetails?.src}`}
                       className="hide"
                       download
                     >
                       File
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="action-image-details">

@@ -154,8 +154,8 @@ export function ProjectsDashboard() {
 
       <div className="d-flex mb-2 mt-2 buttons-project-dashboard-container">
         <div className="nav-tags p-0">
-          <a
-            href={
+          <Link
+            to={
               projectType === "books"
                 ? "/dashboard/books"
                 : "/dashboard/journals"
@@ -163,7 +163,7 @@ export function ProjectsDashboard() {
             className="active"
           >
             Active
-          </a>
+          </Link>
           <Link
             to={projectType === "books" ? "/lst/books" : "/lst/journals"}
             style={{ color: "unset" }}

@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 // import './styles/loading.styles.css';
 
-export default function Toast({ text, type, handleToastOnClick = () => {} }) {
+export default function Toast({
+  text,
+  type,
+  time,
+  handleToastOnClick = () => {},
+}) {
   const [isToastClosed, setIsToastClosed] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => handleOnClick(), 5000);
+    setTimeout(() => handleOnClick(), time || 5000);
   }, []);
 
   const handleOnClick = () => {
