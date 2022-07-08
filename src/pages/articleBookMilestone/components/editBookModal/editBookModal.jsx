@@ -200,11 +200,11 @@ export function EditBookModal({
   const altDropVal = [
     {
       id: 1,
-      value: "Yes",
+      value: "No",
     },
     {
-      id: 1,
-      value: "No",
+      id: 2,
+      value: "Yes",
     },
   ];
 

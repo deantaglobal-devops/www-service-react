@@ -350,8 +350,6 @@ export function NewArticle({ show, handleClose, projectId }) {
                 value={data?.DOI}
                 handleOnChange={(e) => handleOnChange(e)}
               />
-            </div>
-            <div className="col">
               {/* Publication Type */}
               <Input
                 label="Publication Type"
@@ -360,7 +358,8 @@ export function NewArticle({ show, handleClose, projectId }) {
                 value={data?.publicationType}
                 handleOnChange={(e) => handleOnChange(e)}
               />
-
+            </div>
+            <div className="col">
               {/* Received Date */}
               <DatePicker
                 type="date"

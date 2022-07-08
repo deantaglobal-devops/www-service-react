@@ -123,7 +123,9 @@ export default function ImageDetails({
                   <div className="image-preview">
                     <img
                       alt="preview"
-                      src={`/file/src/?path=${dataDetails?.src}`}
+                      src={`${
+                        import.meta.env.VITE_URL_API_SERVICE
+                      }/file/src/?path=${dataDetails?.src}`}
                     />
                     <a
                       href={`/file/src/?path=${dataDetails?.src}`}
