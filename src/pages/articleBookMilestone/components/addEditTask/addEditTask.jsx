@@ -902,12 +902,88 @@ export default function AddEditTask({
                 >
                   Click here to start
                 </button>
+              ) : task?.status === "Inprogress" ? (
+                <div className="task-wip-options">
+                  <span>WIP</span>
+                  <a
+                    onClick={() => confirmReject(task.taskId)}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Reject"
+                  >
+                    <i className="material-icons-outlined">close</i>
+                  </a>
+                  <a
+                    onClick={() =>
+                      changeTaskStatus("hold", `${task.taskId}`, "9")
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Hold"
+                  >
+                    <i className="material-icons-outlined">pause</i>
+                  </a>
+                  <a
+                    onClick={() =>
+                      confirmFinish(
+                        task.taskId,
+                        task.projectId,
+                        task.taskName,
+                        data.taskPath,
+                        task.statusType,
+                      )
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Finish"
+                  >
+                    <i className="material-icons-outlined">check</i>
+                  </a>
+                </div>
+              ) : task.status === "Hold" ? (
+                <div className="task-wip-options">
+                  <span>HOLD</span>
+                  <a
+                    onClick={() => confirmReject(task.taskId)}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Reject"
+                  >
+                    <i className="material-icons-outlined">close</i>
+                  </a>
+                  <a
+                    onClick={() =>
+                      changeTaskStatus("start", `${task.taskId}`, "6")
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Resume"
+                  >
+                    <i className="material-icons-outlined">play_arrow</i>
+                  </a>
+                  <a
+                    onClick={() =>
+                      confirmFinish(
+                        task.taskId,
+                        task.projectId,
+                        task.taskName,
+                        data.taskPath,
+                        task.statusType,
+                      )
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Finish"
+                  >
+                    <i className="material-icons-outlined">check</i>
+                  </a>
+                </div>
               ) : (
                 <button
                   type="button"
                   className="btn-start-task"
                   onClick={() =>
-                    invoiceProcess("start", task.projectId, task.taskId, "4")
+                    invoiceProcess("start", task.projectId, task.taskId, "6")
                   }
                 >
                   Click here to start

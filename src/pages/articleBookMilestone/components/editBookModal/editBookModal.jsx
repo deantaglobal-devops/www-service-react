@@ -1555,7 +1555,7 @@ export function EditBookModal({
                 </div>
 
                 <Dropdown
-                  label="Alt Text Supplied"
+                  label="Alt text supplied"
                   name="altTextSupply"
                   value={editBookData?.altTextSupply ?? ""}
                   valuesDropdown={altDropVal}
@@ -1564,7 +1564,7 @@ export function EditBookModal({
                   iconClassName="material-icons"
                 />
                 <Dropdown
-                  label="Alt Text Supplied Creation"
+                  label="Alt text creation"
                   name="altText"
                   value={
                     editBookData?.altText && editBookData?.altText !== "null"

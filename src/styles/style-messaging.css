@@ -157,7 +157,8 @@ img.user-avatar-messaging {
   padding-left: 40px;
 }
 
-.message-body strong {
+.message-body strong,
+.message-body b {
   font-weight: 700 !important;
 }
 
@@ -600,6 +601,7 @@ li.attachments-uploaded-item span.name {
   font-size: 12px;
   gap: 6px;
   cursor: pointer;
+  line-break: anywhere;
 }
 
 .options input[type="checkbox"] {
@@ -1082,7 +1084,7 @@ ul.projectuser-not-task li {
 .inputs-flex-50 {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 15px 20px;
   width: 100%;
 }

@@ -136,7 +136,7 @@ export default function ForwardTask({ ...props }) {
                 },
               )
               .then((res) => {
-                setStatusMsg("Message sent successfully");
+                setStatusMsg("Task sent successfully");
                 setLoading(false);
               })
               .catch((error) => {

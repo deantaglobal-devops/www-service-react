@@ -11,7 +11,7 @@ export default function ModalForm({ show, className, children }) {
     return () => {
       document.body.classList.remove("modal-open");
     };
-  }, []);
+  }, [show]);
 
   const showHideClassName = show
     ? "modal display-block "

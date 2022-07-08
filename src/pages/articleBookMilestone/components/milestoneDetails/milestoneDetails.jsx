@@ -164,6 +164,7 @@ export default function MilestoneDetails({
     _taskPath,
     _statusType,
   ) => {
+    setIsLoading(true);
     const userId = user.id;
     setTaskStatusType(_statusType);
     setTaskId(_taskId);
@@ -210,6 +211,8 @@ export default function MilestoneDetails({
       _finishTemplateList,
       _statusType,
     ) {
+      setIsLoading(false);
+
       const checklistItemsArray = [];
       let checkListContent = null;
       const OLwrapper = document.createElement("ol");
@@ -420,6 +423,7 @@ export default function MilestoneDetails({
       .catch((err) => console.log(err));
 
     setInvoiceData(_invoiceData);
+    setIsLoading(false);
     setOpenInvoiceModal(true);
   };
 
@@ -447,6 +451,7 @@ export default function MilestoneDetails({
   };
 
   const reorderList = async (newTask) => {
+    setIsLoading(true);
     const formData = new FormData();
 
     newTask?.map((task, index) => {
@@ -488,7 +493,7 @@ export default function MilestoneDetails({
               taskPath={taskPath}
               taskName={taskName}
               taskStatusType={taskStatusType}
-              permissions={milestoneData.permissions.tasks.users}
+              permissions={milestoneData.permissions}
               projectAbbreviation={project.abbreviation}
               projectCode={project.bookcode}
               projectClient={project.client}

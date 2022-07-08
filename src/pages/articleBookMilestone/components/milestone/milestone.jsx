@@ -6,7 +6,7 @@ import Loading from "../../../../components/loader/Loading";
 import MilestoneDetails from "../milestoneDetails/milestoneDetails";
 import Modal from "../../../../components/Modal/modal";
 import DatePicker from "../../../../components/datePicker/datePicker";
-import RescheduleDates from "../rescheduleDates/rescheduleDates";
+import RescheduleDatesChoose from "../rescheduleDates";
 import SpecialInstructionsModal from "../specialInstructionsModal/specialInstructionsModal";
 import ChecklistModal from "../checklistModal/checklistModal";
 
@@ -598,8 +598,9 @@ export default function Milestone({
       )}
 
       {openRescheduleModal && (
-        <RescheduleDates
+        <RescheduleDatesChoose
           openRescheduleModal={openRescheduleModal}
+          closeRescheduleModal={() => setOpenRescheduleModal(false)}
           handleOnCloseRescheduleModal={(e) => closeModals(e)}
           projectId={projectData?.projectId}
           chapterId={chapter?.chapter_id}

@@ -11,7 +11,7 @@ export function NotificationDashboard() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getNotifications();
+    user && getNotifications();
   }, [user]);
 
   const getNotifications = () => {

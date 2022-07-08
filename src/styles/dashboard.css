@@ -227,3 +227,19 @@
   text-decoration: none;
   /* border: 2px solid green; */
 }
+
+.empty-msg {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 50px 0;
+  color: #bbb;
+  height: calc(100% - 110px);
+}
+.empty-msg .icon {
+  font-size: 28px;
+  color: #bbb;
+}

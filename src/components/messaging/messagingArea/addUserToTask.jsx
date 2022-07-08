@@ -31,7 +31,6 @@ export default function AddUserToTask({ ...props }) {
           })
           .then((result) => {
             if (result.data.status === "success") {
-              props.finish();
               props.close();
               setStatusMsg("success");
             } else {
@@ -48,7 +47,9 @@ export default function AddUserToTask({ ...props }) {
 
         return response;
       }),
-    );
+    ).then(() => {
+      props.finish();
+    });
   }
 
   return (

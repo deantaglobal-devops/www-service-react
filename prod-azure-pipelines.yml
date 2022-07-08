@@ -1,0 +1,138 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionId: "4604ed60-ca11-448a-91b2-69a84b1d3a83"
+
+  # Web app name
+  webAppName: "webapp-production-www-02"
+
+  # Agent VM image name
+  vmImageName: "ubuntu-latest"
+
+  # PHP version 7.4
+  phpVersion: "7.4"
+
+  # Node Version 14.18
+  nodeVersion: "14.18.0"
+
+  # Python version: 2.7
+  pythonVersion: "2.7"
+
+  # Environment name
+  environmentName: "webapp-production-www-02"
+
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)/www-service
+
+stages:
+  - stage: Build
+    displayName: Build Stage
+
+    jobs:
+      - job: BuildJob
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - checkout: self
+          - checkout: git://Lanstad/environment-files
+
+          - task: CopyFiles@2
+            displayName: "Import env file"
+            inputs:
+              sourceFolder: "$(projectRoot)/../environment-files/prod/www"
+              Contents: ".env"
+              TargetFolder: "$(projectRoot)"
+              OverWrite: true
+              cleanTargetFolder: false
+
+          - script: |
+              sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+              sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+              sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+              sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+              sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+              php -version
+            displayName: "Use PHP version $(phpVersion)"
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "$(nodeVersion)"
+            displayName: "Install Node.js"
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "$(pythonVersion)"
+            displayName: "Use Python $(pythonVersion)"
+
+          - script: composer install --no-interaction --prefer-dist
+            workingDirectory: $(projectRoot)
+            displayName: "Composer install"
+
+          - script: npm install -g node-gyp@latest
+            workingDirectory: $(projectRoot)
+            displayName: "Upgrade NPM"
+
+          - script: npm install -g --save-dev webpack-cli
+            workingDirectory: $(projectRoot)
+            displayName: "Install Webpack Cli"
+
+          - script: yarn install
+            workingDirectory: $(projectRoot)
+            displayName: "Yarn install"
+
+          - script: npm run build --if-present
+            displayName: "NPM build"
+            workingDirectory: $(projectRoot)
+            continueOnError: true
+
+          - script: rm -rf docker-compose.yml Dockerfile *.yml
+            displayName: "Clean excess folders"
+            workingDirectory: $(projectRoot)
+
+          - task: CopyFiles@2
+            displayName: "Copy root"
+            inputs:
+              sourceFolder: "$(projectRoot)"
+              Contents: "**/*"
+              TargetFolder: "$(Build.ArtifactStagingDirectory)/app"
+              cleanTargetFolder: true
+
+          - task: ArchiveFiles@2
+            displayName: "Archive files"
+            inputs:
+              rootFolderOrFile: "$(Build.ArtifactStagingDirectory)/app"
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/build.zip
+              replaceExistingArchive: true
+
+          - upload: $(Build.ArtifactStagingDirectory)/build.zip
+            displayName: "Upload package"
+            artifact: drop
+
+  - stage: Deploy
+    displayName: Deploy Stage
+    dependsOn: Build
+    condition: succeeded()
+
+    jobs:
+      - deployment: DeploymentJob
+        pool:
+          vmImage: $(vmImageName)
+        environment: $(environmentName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: "Deploy Azure Web App : $(environmentName)"
+                  inputs:
+                    runtimeStack: PHP|8.0
+                    azureSubscription: "Deanta Azure Production($(azureServiceConnectionId))"
+                    appName: "$(webAppName)"
+                    package: "$(Pipeline.Workspace)/drop/build.zip"
+                    startUpCommand: "./startup.sh"

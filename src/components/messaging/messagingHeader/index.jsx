@@ -89,7 +89,7 @@ export default function MessagingHeader({ ...props }) {
                     : "No Members"
                   : loadingSkeleton}
               </ul>
-              {+permissions.add === 1 && (
+              {+permissions.tasks.users.add === 1 && (
                 <>
                   <button
                     className="deanta-button member-add"
