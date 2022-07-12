@@ -83,24 +83,13 @@ export default function AttachAssetsModal({ ...props }) {
     setLoading(true);
     const newAttachments = await Promise.all(
       attachments.map(async (att) => {
-        const newFilePath = await fetch("/call/file/attachment/move", {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify({
-            taskId,
-            assetPath: att.file_path,
-          }),
-        })
-          .then((res) => res.json())
-          .then(
-            (response) => {
-              return response.filePath;
-            },
-            (error) => {
-              // Todo: How are we going to show the errors
-              console.log(error);
-            },
-          );
+        const newFilePath = await api
+          .post("/file/attachment/move", { taskId, assetPath: att.file_path })
+          .then((response) => response.data.filePath)
+          .catch((err) => {
+            console.log(err);
+          });
+
         return { id: att.id, name: att.name, file_path: newFilePath };
       }),
     );
