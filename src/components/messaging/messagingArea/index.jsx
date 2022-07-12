@@ -651,55 +651,62 @@ function messagingArea({ ...props }) {
   }
 
   function sendtoNotificationsService() {
-    // let description = `New message(s) on ${taskName}`;
+    let description = `New message(s) on ${taskName}`;
 
-    // const date = Date.now();
+    const date = Date.now();
 
-    // const msg = {
-    //   company_id: user.realCompanyId,
-    //   creation_date: date,
-    //   description,
-    //   link: `${window.location.origin}/project/${projectId}`,
-    //   milestone_id: milestoneId,
-    //   type: "Communications",
-    //   project_id: projectId,
-    //   seen: "0",
-    //   task_id: taskId,
-    //   title: description,
-    //   update_date: date,
-    //   user_id: user.id,
-    //   category: projectName,
-    // };
-
-    // const currentURL = window.location.pathname;
-    // if (currentURL.includes("/journal/")) {
-    //   msg.link = `${window.location.origin}/project/journal/${projectId}/detail/${chapterId}`;
-
-    //   const articleTitle = document.querySelector(".page-header h2").innerHTML;
-    //   const articleTitleTruncated = articleTitle.substring(0, 15);
-
-    //   const categoryName = `${projectCode}/${projectName}/${taskName}`;
-    //   const categoryNameSplit = categoryName.split(" / ");
-    //   const journalName = categoryNameSplit[1];
-
-    //   const categoryNameSplitJoined = `${journalName} / ${articleTitleTruncated}...`;
-    //   const milestoneName = categoryNameSplit[2];
-
-    //   msg.category = categoryNameSplitJoined;
-
-    //   description = `New message(s) on ${milestoneName} / ${projectName}`;
-    //   msg.description = description;
-    //   msg.title = description;
-    // }
-
-    const bodyRequest = {
-      userId: user.id,
+    const msg = {
       companyId: user.realCompanyId,
+      creation_date: date,
+      description,
+      link: `${window.location.origin}/project/${projectId}`,
       milestoneId,
+      type: "Communications",
+      project_id: projectId,
+      seen: "0",
       taskId,
-      channel: "communications-broadcast",
+      title: description,
+      update_date: date,
+      userId: user.id,
+      category: projectName,
     };
-    api.post("/notifications/add", bodyRequest);
+
+    const currentURL = window.location.pathname;
+    if (currentURL.includes("/journal/")) {
+      msg.link = `${window.location.origin}/project/journal/${projectId}/detail/${chapterId}`;
+
+      const articleTitle = document.querySelector(".page-header h2").innerHTML;
+      const articleTitleTruncated = articleTitle.substring(0, 15);
+
+      const categoryName = `${projectCode}/${projectName}/${taskName}`;
+      const categoryNameSplit = categoryName.split(" / ");
+      const journalName = categoryNameSplit[1];
+
+      const categoryNameSplitJoined = `${journalName} / ${articleTitleTruncated}...`;
+      const milestoneName = categoryNameSplit[2];
+
+      msg.category = categoryNameSplitJoined;
+
+      description = `New message(s) on ${milestoneName} / ${projectName}`;
+      msg.description = description;
+      msg.title = description;
+    }
+
+    // const bodyRequest = {
+    //   userId: user.id,
+    //   companyId: user.realCompanyId,
+    //   milestoneId,
+    //   taskId,
+    //   channel: "communications-broadcast",
+    //   description: currentURL.includes("/journal/")
+    //     ? `New message(s) on ${milestoneName} / ${projectName}`
+    //     : `New message(s) on ${taskName}`,
+    //   link: currentURL.includes("/journal/")
+    //     ? `${window.location.origin}/project/journal/${projectId}/detail/${chapterId}`
+    //     : `${window.location.origin}/project/${projectId}`,
+    //   type: "Communications",
+    // };
+    api.post("/notifications/add", msg);
 
     // fetch("/push/notifications/communications", {
     //   method: "POST",
