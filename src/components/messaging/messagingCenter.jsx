@@ -96,18 +96,18 @@ export default function MessagingCenter(props) {
     const date = Date.now();
 
     const msg = {
-      company_id: failureEmailData.failure_data.company_id,
+      companyId: failureEmailData.failure_data.company_id,
       creation_date: date,
       description,
       link: `${window.location.origin}/project/${failureEmailData.failure_data.project_id}`,
-      milestone_id: failureEmailData.failure_data.milestone_id,
+      milestoneId: failureEmailData.failure_data.milestone_id,
       type: "Communications",
       project_id: failureEmailData.failure_data.project_id,
       seen: "0",
       task_id: failureEmailData.failure_data.task_id,
       title: description,
       update_date: date,
-      user_id: failureEmailData.failure_data.user_id,
+      userId: failureEmailData.failure_data.user_id,
       category: failureEmailData.failure_data.project_name,
     };
 
@@ -122,8 +122,13 @@ export default function MessagingCenter(props) {
       milestoneId: failureEmailData.failure_data.milestone_id,
       taskId: failureEmailData.failure_data.task_id,
       channel: "communications-broadcast",
+      description,
+      type: "Communications",
+      link: currentURL.includes("/journal/")
+        ? `${window.location.origin}/project/journal/${failureEmailData.failure_data.project_id}/detail/${failureEmailData.failure_data.chapter_id}`
+        : `${window.location.origin}/project/${failureEmailData.failure_data.project_id}`,
     };
-    api.post("/notifications/add", bodyRequest);
+    api.post("/notifications/add", msg);
     // fetch(`/push/notifications/communications`, {
     //   method: 'POST',
     //   mode: 'no-cors',
