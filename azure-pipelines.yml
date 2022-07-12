@@ -44,7 +44,7 @@ stages:
 
           - script: npm install
             workingDirectory: $(projectRoot)
-            displayName: "npm install"
+            displayName: "npm install --legacy-peer-deps"
 
           - script: npm run build --if-present
             displayName: "NPM build"
