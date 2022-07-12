@@ -452,31 +452,22 @@ export default function MilestoneDetails({
 
   const reorderList = async (newTask) => {
     setIsLoading(true);
-    const formData = new FormData();
+
+    let reorderedList = [];
 
     newTask?.map((task, index) => {
-      formData.append(`reorderedList[${index}][orderId]`, index + 1);
-      formData.append(`reorderedList[${index}][taskId]`, task.taskId);
+      reorderedList = [
+        ...reorderedList,
+        {
+          orderId: index + 1,
+          taskId: task.taskId,
+        },
+      ];
     });
 
-    await fetch("/call/milestone/reordertasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // return result;
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+    await api
+      .post("/milestone/reordertasks", { reorderedList })
+      .catch((err) => console.log(err));
   };
 
   return (
