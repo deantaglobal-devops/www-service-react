@@ -392,14 +392,6 @@ export default function Milestone({
   const milestoneupdateinfo = async () => {
     setIsLoading(true);
 
-    const formData = new FormData();
-    formData.append("projectId", projectData.projectId);
-    formData.append("companyId", projectData?.companyId);
-    formData.append(
-      "chapterId",
-      chapter?.chapter_id > 0 ? chapter?.chapter_id : 0,
-    );
-
     // Get the updated milestones
     const valuesEdited = [];
     projectData.milestones.map(function (value1) {
@@ -413,40 +405,31 @@ export default function Milestone({
       });
     });
 
-    valuesEdited.map((milestoneEdited, index) => {
-      formData.append(`milestoneEditArray[${index}][id]`, milestoneEdited.id);
-      formData.append(
-        `milestoneEditArray[${index}][name]`,
-        milestoneEdited.milestoneTitle,
-      );
-      formData.append(
-        `milestoneEditArray[${index}][startdate]`,
-        milestoneEdited.milestoneStart.value,
-      );
-      formData.append(
-        `milestoneEditArray[${index}][enddate]`,
-        milestoneEdited.milestoneEnd.value,
-      );
+    let milestoneUpdateArray = [];
+
+    valuesEdited.map((milestoneEdited) => {
+      milestoneUpdateArray = [
+        ...milestoneUpdateArray,
+        {
+          milestoneid: milestoneEdited.id,
+          milestoneName: milestoneEdited.milestoneTitle,
+          startDate: milestoneEdited.milestoneStart.value,
+          endDate: milestoneEdited.milestoneEnd.value,
+        },
+      ];
     });
 
-    await fetch("/call/calendar/milestone/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "no-cors",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setEditMilestone(false);
-        },
-        (error) => {
-          // Todo: How are we going to show the errors
-          console.log(error);
-        },
-      );
+    await api
+      .post("/milestone/update", {
+        milestoneUpdateArray,
+        projectId: projectData.projectId,
+        companyId: projectData?.companyId,
+        chapterId: chapter?.chapter_id > 0 ? chapter?.chapter_id : 0,
+      })
+      .then(() => {
+        setEditMilestone(false);
+      })
+      .catch((err) => console.log(err));
 
     setIsLoading(false);
   };

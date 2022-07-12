@@ -462,7 +462,7 @@ export function ProEditorPage() {
                 )}
 
                 {!!parseInt(
-                  permissionsMagicCode.journals?.users?.view ||
+                  permissionsMagicCode?.journals?.users?.view ||
                     permissions?.journals?.users?.view,
                 ) && (
                   <Link
