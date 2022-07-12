@@ -42,7 +42,7 @@ stages:
               versionSpec: "$(nodeVersion)"
             displayName: "Install Node.js"
 
-          - script: npm install
+          - script: npm install --legacy-peer-deps
             workingDirectory: $(projectRoot)
             displayName: "npm install --legacy-peer-deps"
 
