@@ -493,8 +493,6 @@ function messagingArea({ ...props }) {
           }
         });
       }
-    } else if (data.alertMembers) {
-      sendChat(data, true);
     } else if (taskStatusType !== "") {
       setIsHandlePmTaskModal(true);
     } else {
@@ -577,9 +575,9 @@ function messagingArea({ ...props }) {
         console.log(error);
       })
       .finally(() => {
+        updateMessages();
         setLoading("");
         resetFields();
-        updateMessages();
         updateMembers();
       });
   }
@@ -637,11 +635,11 @@ function messagingArea({ ...props }) {
         if (res.data.status === "sent" || res.data.status === "OK") {
           setStatusMsg("Message sent successfully");
         } else {
-          setStatusMsg("Something got wrong! Please try again.");
+          setStatusMsg("Message wasn't send. Something got wrong!");
         }
       })
       .catch((err) => {
-        setStatusMsg("Something got wrong! Please try again.");
+        setStatusMsg("Message wasn't send. Something got wrong!");
         console.log(err);
       })
       .finally(() => {
@@ -651,7 +649,7 @@ function messagingArea({ ...props }) {
   }
 
   function sendtoNotificationsService() {
-    // let description = `New message(s) on ${taskName}`;
+    const description = `New message(s) on ${taskName}`;
 
     // const date = Date.now();
 
@@ -698,6 +696,11 @@ function messagingArea({ ...props }) {
       milestoneId,
       taskId,
       channel: "communications-broadcast",
+      type: "Communications",
+      description,
+      category: projectName,
+      title: description,
+      projectId,
     };
     api.post("/notifications/add", bodyRequest);
 
@@ -1289,7 +1292,6 @@ function messagingArea({ ...props }) {
               send={() => sendChat(getValues(), watch("emailExternal"))}
               close={() => {
                 setAddUsersToTaskModal(false);
-                setLoading("");
               }}
             />
           }
@@ -1309,11 +1311,10 @@ function messagingArea({ ...props }) {
               taskId={taskId}
               close={() => {
                 setAddUsersToTaskModal(false);
-                setLoading("");
               }}
               finish={() => {
                 if (!isHandlePmTaskModal) {
-                  sendChat(getValues(), true);
+                  sendChat(getValues(), watch("emailExternal"));
                 }
               }}
               users={usersToAdd}
