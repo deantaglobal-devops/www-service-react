@@ -96,6 +96,7 @@ export function EditorText({ ...props }) {
     const removeOld = attachmentList.filter(
       (prev) => prev.file !== progressUpload.file,
     );
+
     progressUpload !== "" && setAttachmentList([...removeOld, progressUpload]);
   }, [progressUpload]);
 
@@ -205,8 +206,9 @@ export function EditorText({ ...props }) {
             },
           },
         )
+          .then((res) => res.json())
           .then((response) => {
-            fileUpload.file_path = response.filePath;
+            fileUpload.file_path = response?.filePath;
             fileUpload.upload = "uploaded";
             fileUpload.error = "";
           })
