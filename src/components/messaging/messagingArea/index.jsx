@@ -703,7 +703,7 @@ function messagingArea({ ...props }) {
       title: description,
       projectId,
     };
-    api.post("/notifications/add", bodyRequest);
+    api.post("/notifications/add", msg);
 
     // fetch("/push/notifications/communications", {
     //   method: "POST",
