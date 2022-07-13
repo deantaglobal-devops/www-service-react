@@ -76,6 +76,12 @@ export default function Message({ ...props }) {
               {props.message.externalFrom !== ""
                 ? props.message.externalFrom
                 : `${props.message.creatorData.name} ${props.message.creatorData.lastname}`}
+              {props.message.senderName !== 0 && (
+                <span style={{ fontSize: 12 }}>
+                  {" "}
+                  (Sent from: {props.message.senderName})
+                </span>
+              )}
             </div>
 
             <div className="sender-timestamp">
