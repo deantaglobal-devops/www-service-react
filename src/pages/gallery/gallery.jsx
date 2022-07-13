@@ -21,7 +21,6 @@ export function GalleryMainPage() {
   useEffect(() => {
     document.title = "Lanstad — Gallery";
 
-    console.log("test");
     handleData();
   }, []);
 

@@ -704,7 +704,6 @@ function messagingArea({ ...props }) {
     };
     api.post("/notifications/add", bodyRequest);
 
-
     // fetch("/push/notifications/communications", {
     //   method: "POST",
     //   mode: "no-cors",
