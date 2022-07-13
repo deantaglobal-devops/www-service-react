@@ -9,6 +9,7 @@ import { Tooltip } from "../../components/tooltip/tooltip";
 import { EditBookModal } from "./components/editBookModal/editBookModal";
 import EditArticleModal from "./components/editArticleModal/editArticleModal";
 import Milestone from "./components/milestone/milestone";
+import { downloadFile } from "../../utils/downloadFile";
 
 import BriefViewer from "./components/briefViewer";
 
@@ -67,25 +68,25 @@ export function ArticleBookMilestone() {
         });
     }
 
-    await api
-      .get(`/file/get?path=${responseProject.pmbriefLink}`)
-      .then((response) => {
-        setFile64(response.data.content);
-        setMimeType(response.data.mimetype);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (responseProject.pmbriefLink) {
+      await api
+        .get(`/file/get?path=${responseProject.pmbriefLink}`)
+        .then((response) => {
+          setFile64(response.data.content);
+          setMimeType(response.data.mimetype);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     setIsLoading(false);
   }
 
   const handleDownload = async (filePath) => {
-    await api.get(`/file/get?path=${filePath}`).then((response) => {
-      const a = document.createElement("a"); // Create <a>
-      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-      a.download = response.data.file_name; // File name Here
-      a.click(); // Downloaded file
-    });
+    if (filePath) {
+      downloadFile(filePath);
+    }
   };
 
   const downloadFileNew = (fileURL, fileName) => {
