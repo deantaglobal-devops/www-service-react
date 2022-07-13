@@ -661,13 +661,14 @@ function messagingArea({ ...props }) {
       link: `${window.location.origin}/project/${projectId}`,
       milestoneId,
       type: "Communications",
-      project_id: projectId,
+      projectId,
       seen: "0",
       taskId,
       title: description,
       update_date: date,
       userId: user.id,
       category: projectName,
+      channel: "communications-broadcast",
     };
 
     const currentURL = window.location.pathname;
@@ -703,7 +704,7 @@ function messagingArea({ ...props }) {
       title: description,
       projectId,
     };
-    api.post("/notifications/add", bodyRequest);
+    api.post("/notifications/add", msg);
 
     // fetch("/push/notifications/communications", {
     //   method: "POST",

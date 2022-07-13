@@ -53,16 +53,17 @@ export default function MilestoneDetails({
           if (
             // external
             (task.statusType == 2 &&
-              !!parseInt(data[0]?.permissions.tasks.external)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external)) ||
             // internal
             (task.statusType == 1 &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // not assigned or both
             ((task.statusType == 0 || task.statusType == 4) &&
-              !!parseInt(data[0]?.permissions.tasks.external) &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external) &&
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // Pm task
-            (task.statusType == 3 && !!parseInt(data[0]?.permissions.tasks.pm))
+            (task.statusType == 3 &&
+              !!parseInt(data[0]?.permissions?.tasks?.pm))
           ) {
             return task;
           }
