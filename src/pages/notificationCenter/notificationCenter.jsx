@@ -48,7 +48,6 @@ export function Notification() {
     await api
       .get(`/notifications/${user.realCompanyId}/${user.id}`)
       .then((response) => {
-        console.log("response.data", response.data);
         setNotificationsList(response.data);
       })
       .catch((err) => {

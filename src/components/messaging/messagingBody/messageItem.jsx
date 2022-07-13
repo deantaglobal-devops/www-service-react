@@ -6,6 +6,7 @@ import Modal from "../../modal";
 import ForwardTask from "./forwardTask";
 import ForwardAttach from "./forwardAttach";
 import InfoDetails from "./infoDetails";
+import { downloadFile } from "../../../utils/downloadFile";
 
 export default function Message({ ...props }) {
   const [infoDetailsModal, setInfoDetailsModal] = useState(false);
@@ -46,12 +47,9 @@ export default function Message({ ...props }) {
   }
 
   async function fileDownloadAction(filePath, fileName) {
-    await api.get(`/file/get?path=${filePath}`).then((response) => {
-      const a = document.createElement("a"); // Create <a>
-      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-      a.download = response.data.file_name; // File name Here
-      a.click(); // Downloaded file
-    });
+    if (filePath) {
+      downloadFile(filePath);
+    }
   }
 
   return (

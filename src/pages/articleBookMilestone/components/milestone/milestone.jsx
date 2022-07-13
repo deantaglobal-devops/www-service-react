@@ -186,6 +186,7 @@ export default function Milestone({
 
   const getTaskMemberList = async (_taskId) => {
     const responseData = await fetch(`/task/${_taskId}/users/get`)
+      .then((res) => res.json())
       .then((response) => {
         return response.data;
       })

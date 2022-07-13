@@ -20,6 +20,7 @@ import { EditorText } from "./editorText";
 
 import { useAuth } from "../../../hooks/Auth";
 import { api } from "../../../services/api";
+import { downloadFile } from "../../../utils/downloadFile";
 
 function messagingArea({ ...props }) {
   const {
@@ -704,7 +705,6 @@ function messagingArea({ ...props }) {
     };
     api.post("/notifications/add", bodyRequest);
 
-
     // fetch("/push/notifications/communications", {
     //   method: "POST",
     //   mode: "no-cors",
@@ -810,12 +810,9 @@ function messagingArea({ ...props }) {
   };
 
   const handleDownload = async (filePath) => {
-    await api.get(`/file/get?path=${filePath}`).then((response) => {
-      const a = document.createElement("a"); // Create <a>
-      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-      a.download = response.data.file_name; // File name Here
-      a.click(); // Downloaded file
-    });
+    if (filePath) {
+      downloadFile(filePath);
+    }
   };
 
   return (
