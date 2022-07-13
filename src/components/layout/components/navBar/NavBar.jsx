@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-// import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { api } from "../../../../services/api";
 import AvatarProfile from "./components/avatarProfile/avatarProfile";
 import BellNotifications from "./components/bellNotifications/bellNotifications";
@@ -189,19 +189,14 @@ export function NavBar({
           searchInput !== "" &&
           searchData[0].id !== 0 ? (
             <ul className="results shadow">
-              {searchData?.map((data) => {
-                console.log("data", data.url);
-                return (
-                  <li key={data.id}>
-                    <a href={data.url}>
-                      {/* <Link to={data.url}> */}
-                      <p className="title">{data.project_title}</p>
-                      <span className="projectType">{data.project_type}</span>
-                      {/* </Link> */}
-                    </a>
-                  </li>
-                );
-              })}
+              {searchData?.map((data) => (
+                <li key={data.id}>
+                  <Link to={data.url} replace>
+                    <p className="title">{data.project_title}</p>
+                    <span className="projectType">{data.project_type}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           ) : (
             searchData.length > 0 &&
