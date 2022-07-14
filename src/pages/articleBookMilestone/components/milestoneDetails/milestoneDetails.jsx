@@ -474,7 +474,7 @@ export default function MilestoneDetails({
   return (
     <>
       <div className="existing-tasks-wrapper">
-        {openMessageCenter && taskId != 0 && taskId != undefined && (
+        {openMessageCenter && taskId !== 0 && taskId !== undefined && (
           <div id="side-slider-container" hidden>
             <MessagingCenter
               userId={user.id}
@@ -497,6 +497,7 @@ export default function MilestoneDetails({
               changeTaskStatus={(_action, _taskId, _status) =>
                 changeTaskStatus(_action, _taskId, _status)
               }
+              milestoneData={milestoneData}
               getMilestoneData={(_taskId) =>
                 getMilestoneData(milestoneData.milestoneId, _taskId)
               }
