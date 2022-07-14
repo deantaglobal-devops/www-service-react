@@ -1179,7 +1179,8 @@ function messagingArea({ ...props }) {
               finish={() => changeTaskStatus("finish", taskId, 4)}
               send={() => sendChat(getValues(), watch("emailExternal"))}
               close={() => {
-                setAddUsersToTaskModal(false);
+                setLoading("");
+                setIsHandlePmTaskModal(false);
               }}
             />
           }
@@ -1199,6 +1200,7 @@ function messagingArea({ ...props }) {
               taskId={taskId}
               close={() => {
                 setAddUsersToTaskModal(false);
+                setLoading("");
               }}
               finish={() => {
                 if (!isHandlePmTaskModal) {
