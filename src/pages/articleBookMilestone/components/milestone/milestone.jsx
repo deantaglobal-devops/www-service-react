@@ -498,7 +498,6 @@ export default function Milestone({
   const createMilestoneInformation = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log(projectData);
 
     const bodyRequest = {
       projectId: chapter?.chapter_id
