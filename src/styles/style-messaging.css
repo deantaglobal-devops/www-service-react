@@ -931,6 +931,10 @@ p.sent-warning {
   animation: rotating 2s linear infinite;
 }
 
+.disabled-loading {
+  cursor: wait;
+}
+
 .save-users {
   min-width: 100px;
   justify-content: center;

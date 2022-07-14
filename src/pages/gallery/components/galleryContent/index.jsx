@@ -15,6 +15,7 @@ export default function GalleryContent({ permissions, project, chapter }) {
   const [allSelected, setAllSelected] = useState(false);
   const [selected, setSelected] = useState({});
   const [imagesSelecteds, setImagesSelecteds] = useState([]);
+  const [loading, setLoading] = useState("");
 
   const [nameType, setNameType] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -87,12 +88,14 @@ export default function GalleryContent({ permissions, project, chapter }) {
   }
 
   function downloadAllImages() {
+    setLoading("downloading");
     const allid = imagesSelecteds.join(",");
 
     api
       .get(`/project/assets/downloadall/${allid}`)
       .then((response) => {
         downloadFile(response.data.zipfilepath);
+        setLoading("");
       })
       .catch((err) => {
         console.log(err);
@@ -295,15 +298,30 @@ export default function GalleryContent({ permissions, project, chapter }) {
                 {!!parseInt(permissions?.gallery?.download) && (
                   <a
                     href="#"
-                    className="download-all"
+                    className={`download-all ${
+                      loading === "downloading" && "disabled-loading"
+                    }`}
                     onClick={() => {
-                      imagesSelecteds?.length > 0
-                        ? downloadAllImages()
-                        : setAlertModal(true);
+                      if (loading !== "downloading") {
+                        imagesSelecteds?.length > 0
+                          ? downloadAllImages()
+                          : setAlertModal(true);
+                      }
                     }}
                   >
-                    <i className="material-icons-outlined">save_alt</i>
-                    Download Selected
+                    {loading !== "downloading" ? (
+                      <>
+                        <i className="material-icons-outlined">save_alt</i>
+                        Download Selected
+                      </>
+                    ) : (
+                      <>
+                        <i className="material-icons-outlined loading-icon-button">
+                          sync
+                        </i>
+                        Processing Download
+                      </>
+                    )}
                   </a>
                 )}
                 {!!parseInt(permissions?.gallery?.edit) && (
