@@ -9,7 +9,7 @@ import "./styles/LoginPage.styles.css";
 
 export function LoginPage() {
   useEffect(() => {
-    document.title = "test Lanstad — Login";
+    document.title = "Lanstad — Login";
   }, []);
 
   return (
