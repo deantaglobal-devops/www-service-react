@@ -808,7 +808,6 @@ function messagingArea({ ...props }) {
     <div className="messaging-body" id="messaging-body">
       <div id="composerArea">
         <div>
-          {console.log(props)}
           <EditorText
             editorState={editorState}
             setEditorState={setEditorState}
