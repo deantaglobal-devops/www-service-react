@@ -195,8 +195,13 @@ export function Notification() {
           unseenNotificationsIds.push(tab.id);
         }
 
+        const title =
+          tab.notifications[0]?.chapter_id !== "0"
+            ? `${tab.notifications[0]?.abbreviation} - ${tab.notifications[0]?.chapterNo}`
+            : tab.menuTitle;
+
         return {
-          menuTitle: tab.menuTitle ? tab.menuTitle : tab,
+          menuTitle: title ?? tab,
           text: tab.description,
           date: dateTimeFunction(tab.update_date, "date"),
           time: dateTimeFunction(tab.update_date, "time"),
@@ -253,6 +258,8 @@ export function Notification() {
         };
       });
     }
+
+    console.log(nextColumn);
 
     setSecondColumn(nextColumn);
     setSecondColumnUnseenIds(unseenNotificationsIds);

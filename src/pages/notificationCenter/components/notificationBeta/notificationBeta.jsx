@@ -182,7 +182,6 @@ class NotificationBeta extends React.Component {
             </p>
           )}
         </MenuColumnLanUI>
-
         {this.state.activeItems.length >= 1 &&
           this.props.secondColumn.length > 0 && (
             <MenuColumnLanUI
@@ -219,7 +218,7 @@ class NotificationBeta extends React.Component {
 
         {this.state.activeItems.length >= 2 &&
           this.props.thirdColumn.length > 0 && (
-            <MenuColumnLanUI>
+            <MenuColumnLanUI title="Messages">
               <MenuTabsLanUI
                 columnNumber={3}
                 isNotifications={

@@ -24,6 +24,7 @@ import { downloadFile } from "../../../utils/downloadFile";
 
 function messagingArea({ ...props }) {
   const {
+    milestoneData,
     projectCode,
     projectName,
     taskName,
@@ -572,7 +573,7 @@ function messagingArea({ ...props }) {
   }
 
   function sendtoNotificationsService() {
-    const description = `New message(s) on ${taskName}`;
+    const description = `${milestoneData.milestoneTitle} / ${taskName}`;
 
     const date = Date.now();
 
