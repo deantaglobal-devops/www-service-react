@@ -25,9 +25,11 @@ export default function AddBookModal({
 
   // remove it after demo
   const categoryList = [
-    { id: "1", value: "PLAN 1" },
-    { id: "2", value: "PLAN 2" },
-    { id: "3", value: "PLAN 3" },
+    { id: "1", value: "TS+PR" },
+    { id: "2", value: "CE+TS" },
+    { id: "3", value: "CE+TS+PR" },
+    { id: "3", value: "Light CE+TS+PR" },
+    { id: "3", value: "TS-only" },
   ];
   const [data, setData] = useState({
     categoryList: { id: "", value: "" },
