@@ -752,7 +752,7 @@ input.default-input-select {
   top: 11px !important;
   color: var(--secondary);
   cursor: pointer;
-  z-index: 0;
+  z-index: 1;
   transition: 0.1s;
 }
 
