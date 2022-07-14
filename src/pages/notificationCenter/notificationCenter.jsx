@@ -202,6 +202,7 @@ export function Notification() {
 
         return {
           menuTitle: title ?? tab,
+          titleProject: tab.menuTitle ?? tab,
           text: tab.description,
           date: dateTimeFunction(tab.update_date, "date"),
           time: dateTimeFunction(tab.update_date, "time"),
@@ -259,8 +260,6 @@ export function Notification() {
       });
     }
 
-    console.log(nextColumn);
-
     setSecondColumn(nextColumn);
     setSecondColumnUnseenIds(unseenNotificationsIds);
 
@@ -280,7 +279,6 @@ export function Notification() {
         // array of unseen notifications for this column
         unseenNotificationsIds.push(notificationOnThisObject.id);
       }
-
       return {
         // not sure why we have this as menuTitle in the third column
         menuTitle: "sd",

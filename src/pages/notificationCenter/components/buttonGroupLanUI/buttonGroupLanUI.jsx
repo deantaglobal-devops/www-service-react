@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import './styles/buttonGroupLanUI.styles.css';
+import "./styles/buttonGroupLanUI.styles.css";
 
 export default function ButtonGroupLanUI({ text, ...props }) {
-  return (
-    <>
-      <div className="undefined">{props.children}</div>
-    </>
-  );
+  return <div className="undefined footer-btn">{props.children}</div>;
 }

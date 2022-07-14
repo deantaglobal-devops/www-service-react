@@ -229,6 +229,7 @@ class NotificationBeta extends React.Component {
                 itemClickFunction={this.itemClickFunction}
                 activeItem={this.state.activeItems[2]}
               />
+
               <ButtonGroupLanUI>
                 <ButtonLanUI
                   small
