@@ -572,7 +572,7 @@ function messagingArea({ ...props }) {
   }
 
   function sendtoNotificationsService() {
-    let description = `New message(s) on ${taskName}`;
+    const description = `New message(s) on ${taskName}`;
 
     const date = Date.now();
 
@@ -600,30 +600,10 @@ function messagingArea({ ...props }) {
       const articleTitle = document.querySelector(".page-header h2").innerHTML;
       const articleTitleTruncated = articleTitle.substring(0, 15);
 
-      const categoryName = `${projectCode}/${projectName}/${taskName}`;
-      const categoryNameSplit = categoryName.split(" / ");
-      const journalName = categoryNameSplit[1];
-
-      const categoryNameSplitJoined = `${journalName} / ${articleTitleTruncated}...`;
-      const milestoneName = categoryNameSplit[2];
-
-      msg.category = categoryNameSplitJoined;
-
-      description = `New message(s) on ${milestoneName} / ${projectName}`;
-      msg.description = description;
-      msg.title = description;
+      msg.category = `${projectName}/${articleTitleTruncated} ...`;
     }
 
     api.post("/notifications/add", msg);
-
-    // fetch("/push/notifications/communications", {
-    //   method: "POST",
-    //   mode: "no-cors",
-    //   body: JSON.stringify(msg),
-    // })
-    //   .then((res) => res.json())
-    //   .then((result) => result)
-    //   .catch((err) => console.log(err));
   }
 
   async function getAttachs(attachIds) {
