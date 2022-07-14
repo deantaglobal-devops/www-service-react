@@ -614,18 +614,6 @@ function messagingArea({ ...props }) {
       msg.title = description;
     }
 
-    const bodyRequest = {
-      userId: user.id,
-      companyId: user.realCompanyId,
-      milestoneId,
-      taskId,
-      channel: "communications-broadcast",
-      type: "Communications",
-      description,
-      category: projectName,
-      title: description,
-      projectId,
-    };
     api.post("/notifications/add", msg);
 
     // fetch("/push/notifications/communications", {

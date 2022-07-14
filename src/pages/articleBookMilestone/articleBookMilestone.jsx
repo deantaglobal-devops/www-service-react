@@ -46,22 +46,26 @@ export function ArticleBookMilestone() {
 
   async function handleData() {
     setIsLoading(true);
-    const responseProject = await api
-      .get(`/project/${projectId}`)
-      .then((response) => {
-        setProject(response.data);
-        return response.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let responseProject;
 
     // if journals, then call this endpoint
     if (chapterId) {
-      await api
+      responseProject = await api
         .get(`/project/journal/${projectId}/detail/${chapterId}`)
         .then((response) => {
           setChapter(response.data);
+          setProject(response.data);
+          return response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      responseProject = await api
+        .get(`/project/${projectId}`)
+        .then((response) => {
+          setProject(response.data);
+          return response.data;
         })
         .catch((err) => {
           console.log(err);

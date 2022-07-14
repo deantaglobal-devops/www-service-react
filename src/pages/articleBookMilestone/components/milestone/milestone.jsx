@@ -500,8 +500,12 @@ export default function Milestone({
     setIsLoading(true);
 
     const bodyRequest = {
-      projectId: newMilestoneData.projectId,
-      companyId: newMilestoneData.companyId,
+      projectId: chapter?.chapter_id
+        ? projectData?.project_id
+        : projectData?.projectId,
+      companyId: chapter?.chapter_id
+        ? projectData?.project_id
+        : projectData?.projectId,
       chapterId: newMilestoneData.chapterId,
       milestoneName: newMilestoneData.milestoneName,
       startDate: newMilestoneData.startDate,
@@ -510,7 +514,8 @@ export default function Milestone({
       milestoneComplexity: newMilestoneData.milestoneComplexity,
       orderId: newMilestoneData.orderId,
     };
-    await fetch("/milestone/create", bodyRequest)
+    await api
+      .post("/milestone/create", bodyRequest)
       .then(() => {
         location.reload();
       })
@@ -588,7 +593,11 @@ export default function Milestone({
           openRescheduleModal={openRescheduleModal}
           closeRescheduleModal={() => setOpenRescheduleModal(false)}
           handleOnCloseRescheduleModal={(e) => closeModals(e)}
-          projectId={projectData?.projectId}
+          projectId={
+            chapter?.chapter_id
+              ? projectData?.project_id
+              : projectData?.projectId
+          }
           chapterId={chapter?.chapter_id}
           setIsLoading={setIsLoading}
           projectStartDate={projectData?.startDate}
