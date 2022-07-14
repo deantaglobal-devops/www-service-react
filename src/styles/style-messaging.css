@@ -970,7 +970,7 @@ div.public-DraftEditor-content p {
 div.DraftEditor-editorContainer,
 div.public-DraftEditor-content {
   height: max-content;
-  min-height: 66px;
+  min-height: 90px;
 }
 
 .select-chevron {
