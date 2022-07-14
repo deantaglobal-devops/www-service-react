@@ -692,18 +692,6 @@ function messagingArea({ ...props }) {
       msg.title = description;
     }
 
-    const bodyRequest = {
-      userId: user.id,
-      companyId: user.realCompanyId,
-      milestoneId,
-      taskId,
-      channel: "communications-broadcast",
-      type: "Communications",
-      description,
-      category: projectName,
-      title: description,
-      projectId,
-    };
     api.post("/notifications/add", msg);
 
     // fetch("/push/notifications/communications", {
@@ -820,6 +808,7 @@ function messagingArea({ ...props }) {
     <div className="messaging-body" id="messaging-body">
       <div id="composerArea">
         <div>
+          {console.log(props)}
           <EditorText
             editorState={editorState}
             setEditorState={setEditorState}
