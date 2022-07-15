@@ -64,8 +64,13 @@ export function LoginReactJS() {
       }).catch(() => setIsLoading(false));
 
       setIsLoading(false);
+
+      // remove it after demo
+
       if (isSignInSuccessfully?.user?.permissions?.rol === "Journal Editor") {
         navigate("/dashboard/journals");
+      } else if (isSignInSuccessfully?.user?.id === 15331) {
+        navigate("/dashboard/books");
       } else if (isSignInSuccessfully?.user) {
         navigate("/dashboard");
       } else {

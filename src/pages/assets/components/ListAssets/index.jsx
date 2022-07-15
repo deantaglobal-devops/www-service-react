@@ -22,7 +22,7 @@ function ListAssets({ assets, permissions, project }) {
   const [sorting, setSorting] = useState("updatedDate");
   const [nameType, setNameType] = useState("");
   const [ascDesc, setAscDesc] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState("");
 
   const searchField = createRef();
 
@@ -78,16 +78,17 @@ function ListAssets({ assets, permissions, project }) {
     const BodyRequest = {
       documentid: allid,
     };
-    setIsLoading(true);
+    setLoading("downloading");
     await api
       .post("/project/assets/downloadallforAsset/", BodyRequest)
       .then((response) => {
-        downloadFile(response.data.zipfilepath);
+        downloadFile(response.data.zipfilepath).then(() => {
+          setLoading("");
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-    setIsLoading(false);
   }
 
   const deleteAllAsset = async (documentId) => {
@@ -172,7 +173,6 @@ function ListAssets({ assets, permissions, project }) {
 
   return (
     <>
-      {isLoading && <Loading />}
       <div className="head-actions">
         <div className="wrap-field-label">
           <div className="inputWrapper search-asset">
@@ -225,13 +225,28 @@ function ListAssets({ assets, permissions, project }) {
           </a>
           <a
             href="#"
-            className="download-selected"
+            className={`download-selected ${
+              loading === "downloading" && "disabled-loading"
+            }`}
             onClick={() => {
-              downloadAll();
+              if (loading !== "downloading") {
+                downloadAll();
+              }
             }}
           >
-            <i className="material-icons-outlined">save_alt</i>
-            Download Selected
+            {loading !== "downloading" ? (
+              <>
+                <i className="material-icons-outlined">save_alt</i>
+                Download Selected
+              </>
+            ) : (
+              <>
+                <i className="material-icons-outlined loading-icon-button">
+                  sync
+                </i>
+                Processing Download
+              </>
+            )}
           </a>
         </div>
       </div>

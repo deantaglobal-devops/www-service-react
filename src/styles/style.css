@@ -273,7 +273,7 @@ div.deanta-toast-alert > i.hidden {
   border-radius: 4px;
 
   width: 100%;
-  max-width: 340px;
+  max-width: 360px;
   min-width: 200px;
   max-height: 100%;
 
@@ -990,4 +990,52 @@ div.deanta-button-container span.deanta-more-buttons-dots {
 
 .greyoutmodal {
   backdrop-filter: grayscale(1);
+}
+
+.drag-drop-input {
+  display: flex;
+  justify-content: center;
+  min-height: 98px;
+  padding: 30px 20px;
+  border-radius: 6px;
+  border: 1px dashed #ccc;
+}
+
+.drag-drop-input > i {
+  font-size: 12px;
+  color: #111;
+}
+
+.drag-drop-input > div {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.drag-drop-input span {
+  font-size: 12px;
+  color: #333;
+}
+
+.drag-drop-input.dragging {
+  opacity: 0.6;
+}
+
+.list-files {
+  padding-top: 20px;
+}
+
+.list-files p.title {
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.list-files p.filename {
+  white-space: nowrap;
+  margin-bottom: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
