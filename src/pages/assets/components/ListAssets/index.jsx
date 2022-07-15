@@ -82,12 +82,13 @@ function ListAssets({ assets, permissions, project }) {
     await api
       .post("/project/assets/downloadallforAsset/", BodyRequest)
       .then((response) => {
-        downloadFile(response.data.zipfilepath);
+        downloadFile(response.data.zipfilepath).then(() => {
+          setLoading("");
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-    setLoading("");
   }
 
   const deleteAllAsset = async (documentId) => {
