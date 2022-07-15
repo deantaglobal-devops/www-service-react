@@ -19,6 +19,7 @@ import { ProEditorPage } from "../pages/proEditor/proEditor";
 import { Users } from "../pages/users/users";
 import { LstPage } from "../pages/lst/lst";
 import { ConfigurationPanel } from "../pages/configurationPanel/configurationPanel";
+import { DownloadAttachmentFromEmail } from "../pages/downloadAttachmentFromEmail/downloadAttachmentFromEmail";
 
 export function LanstadRoutes() {
   return (
@@ -28,6 +29,12 @@ export function LanstadRoutes() {
 
       {/* Pro-Editor Magic Code */}
       <Route path="/pro-editor/:magicCode" element={<ProEditorPage />} />
+
+      {/* Download Attachment File from Email */}
+      <Route
+        path="/download/author"
+        element={<DownloadAttachmentFromEmail />}
+      />
 
       <Route element={<PublicRoutes />}>
         {/* Login */}
