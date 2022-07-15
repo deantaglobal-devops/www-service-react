@@ -32,9 +32,6 @@ export function DownloadAttachment() {
     a.download = file.file_name; // File name Here
     a.click(); // Downloaded file
 
-    window.open("about:blank", "_self");
-    window.close();
-
     return <></>;
   };
 }
