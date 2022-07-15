@@ -94,8 +94,9 @@ export default function GalleryContent({ permissions, project, chapter }) {
     api
       .get(`/project/assets/downloadall/${allid}`)
       .then((response) => {
-        downloadFile(response.data.zipfilepath);
-        setLoading("");
+        downloadFile(response.data.zipfilepath).then(() => {
+          setLoading("");
+        });
       })
       .catch((err) => {
         console.log(err);
