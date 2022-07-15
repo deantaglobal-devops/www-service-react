@@ -1,9 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { downloadFile } from "../../utils/downloadFile";
 import { api } from "../../services/api";
 
-export function DownloadAttachmentFromEmail() {
+export function DownloadAttachment() {
   const [searchParams] = useSearchParams();
   const userId = 4169;
 
@@ -17,19 +16,25 @@ export function DownloadAttachmentFromEmail() {
       .then((response) => response.data.token);
 
     const filePath = searchParams.get("file");
-    // const fileName = searchParams.get("name");
 
-    // downloadFile(`/file/get/?storage=azure&path=/resources/${filePath}`);
     const file = await api
-      .get(`/file/get/?storage=azure&path=/resources/${filePath}`, {
+      .get(`/file/get?path=/resources/${filePath}`, {
         headers: {
           "Lanstad-Token": token,
         },
       })
-      .then((response) => response.data);
+      .then((response) => {
+        return response.data;
+      });
 
-    console.log("file", file);
+    const a = document.createElement("a"); // Create <a>
+    a.href = `data:application/octet-stream;base64,${file.content}`; // File Base64 Goes here
+    a.download = file.file_name; // File name Here
+    a.click(); // Downloaded file
+
+    window.open("about:blank", "_self");
+    window.close();
+
+    return <></>;
   };
-
-  return <></>;
 }
