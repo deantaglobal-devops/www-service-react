@@ -113,7 +113,7 @@ export default function Milestone({
   };
 
   const getUserData = async () => {
-    const { projectId } = projectData;
+    const projectId = projectData?.projectId || projectData?.project_id;
 
     // This is the for users on the overall project
     await api
