@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../../../../../services/api";
 import { useAuth } from "../../../../../../hooks/Auth";
 
 export default function BellNotifications() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   let intervalID;
   useEffect(() => {
@@ -43,7 +44,11 @@ export default function BellNotifications() {
           triggerNotificationBell(unreadNumber);
         }
       })
-      .catch((err) => {});
+      .catch((error) => {
+        if (error.message === "Network Error") {
+          navigate("/error");
+        }
+      });
   };
 
   return (
