@@ -27,6 +27,7 @@ export function LanstadRoutes() {
     <Routes>
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
+      <Route path="/error" element={<PageNotFound />} />
 
       {/* Reset password */}
       <Route path="/password-reset/:token" element={<ResetPassword />} />

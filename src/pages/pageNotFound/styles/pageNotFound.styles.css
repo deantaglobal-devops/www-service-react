@@ -45,6 +45,12 @@
   line-height: 60px;
 }
 
+.page-not-found-error-message {
+  margin-top: 3rem;
+  color: #000000;
+  font-size: 24px;
+}
+
 .graphic-image {
   width: 45%;
 
