@@ -159,6 +159,7 @@
 
 .icon-draggable div.tooltip-content {
   padding: 7px;
+  line-height: 0;
   border-radius: 50%;
   background: var(--primary);
   color: white;

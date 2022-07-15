@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Editor,
   EditorState,
@@ -9,6 +9,7 @@ import {
   Modifier,
 } from "draft-js";
 import { useForm } from "react-hook-form";
+import { useDropzone } from "react-dropzone";
 
 import Modal from "../../modal";
 import AttachAssetsModal from "./attachAssetModal";
@@ -27,7 +28,6 @@ export function EditorText({ ...props }) {
     setStatusMsg,
   } = props;
 
-  const uploadRef = useRef(null);
   const refDropDown = useRef(null);
   const signatureEditorRef = useRef(null);
 
@@ -36,9 +36,17 @@ export function EditorText({ ...props }) {
     EditorState.createEmpty(),
   );
 
+  const onDrop = useCallback((acceptedFiles) => {
+    fileUploadInputChange(acceptedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   const [dropdownAttach, setDropdownAttach] = useState(false);
   const [dropdownPalette, setDropdownPalette] = useState(false);
+
   const [addLinkModal, setAddLinkModal] = useState(false);
+  const [uploadFilesModal, setUploadFilesModal] = useState(false);
   const [attachAssetModal, setAttachAssetModal] = useState(false);
   const [signatureModal, setSignatureModal] = useState(false);
   const [fileList, setFileList] = useState([]);
@@ -143,20 +151,19 @@ export function EditorText({ ...props }) {
       : 0;
   }
 
-  async function fileUploadInputChange(e) {
-    let attchs = [...attachmentList];
-    const filesSelected = [...e.target.files];
+  async function fileUploadInputChange(files) {
+    const filesSelected = [...files];
 
-    filesSelected.map(async (file) => {
+    filesSelected.map((file) => {
       if (
         file.size / 1024 / 1024 <= fileSizeLimit &&
-        attchs?.filter((item) => item.name === file.name).length === 0
+        attachmentList?.filter((item) => item.name === file.name).length === 0
       ) {
-        setFileList(filesSelected);
+        setFileList((state) => [...state, file]);
       }
     });
 
-    filesSelected.map(async (file) => {
+    filesSelected.map((file) => {
       const fileData = {
         file_path: "",
         upload: "uploading",
@@ -170,11 +177,12 @@ export function EditorText({ ...props }) {
         fileData.error = "File is too big";
         fileData.upload = "error";
       }
-      if (attchs?.filter((item) => item.name === file.name).length > 0) {
+      if (
+        attachmentList?.filter((item) => item.name === file.name).length > 0
+      ) {
         setStatusMsg("File is already added in the attachment");
       } else {
-        attchs = [...attchs, fileData];
-        setAttachmentList(attchs);
+        setAttachmentList((state) => [...state, fileData]);
       }
     });
   }
@@ -390,15 +398,6 @@ export function EditorText({ ...props }) {
           onClick={() => setDropdownAttach(!dropdownAttach)}
         >
           <i className="material-icons-outlined">attach_file</i>
-          <input
-            ref={uploadRef}
-            id="file-dialog"
-            name="file-dialog"
-            type="file"
-            multiple
-            hidden
-            onChange={(e) => fileUploadInputChange(e)}
-          />
 
           {(attachmentList.length !== 0 || attachsAssetList.length !== 0) && (
             <span className="formatting-attachment-bubble">
@@ -419,7 +418,8 @@ export function EditorText({ ...props }) {
                 </li>
                 <li
                   onClick={() => {
-                    uploadRef.current.click();
+                    // uploadRef.current.click();
+                    setUploadFilesModal(true);
                     setDropdownAttach(false);
                   }}
                 >
@@ -443,6 +443,7 @@ export function EditorText({ ...props }) {
         customStyleMap={colorStyleMap}
         onChange={setEditorState}
       />
+
       {addLinkModal && (
         <Modal
           modalInSlider={false}
@@ -482,6 +483,51 @@ export function EditorText({ ...props }) {
           }
           closeModal={() => {
             setAddLinkModal(false);
+          }}
+        />
+      )}
+
+      {uploadFilesModal && (
+        <Modal
+          modalInSlider
+          title="Upload file"
+          body={
+            <>
+              <div
+                className={`drag-drop-input ${isDragActive && "dragging"}`}
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <div>
+                  {isDragActive ? (
+                    <>
+                      <i className="material-icons-outlined">upload</i>
+                      <span>Drop your file(s) here</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Drag and drop to upload or </span>
+                      <button className="deanta-button  deanta-button-outlined">
+                        Select File
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+              {fileList.length > 0 && (
+                <div className="list-files">
+                  <p className="title">Your attached files:</p>
+                  {fileList.map((item) => (
+                    <p className="filename" key={item.name}>
+                      {item.name}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </>
+          }
+          closeModal={() => {
+            setUploadFilesModal(false);
           }}
         />
       )}
