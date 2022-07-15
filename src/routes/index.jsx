@@ -20,10 +20,14 @@ import { Users } from "../pages/users/users";
 import { LstPage } from "../pages/lst/lst";
 import { ConfigurationPanel } from "../pages/configurationPanel/configurationPanel";
 import { DownloadAttachment } from "../pages/downloadAttachment/downloadAttachment";
+import { PageNotFound } from "../pages/pageNotFound/pageNotFound";
 
 export function LanstadRoutes() {
   return (
     <Routes>
+      {/* Page Not Found */}
+      <Route path="*" element={<PageNotFound />} />
+
       {/* Reset password */}
       <Route path="/password-reset/:token" element={<ResetPassword />} />
 
