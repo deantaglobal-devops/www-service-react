@@ -29,6 +29,7 @@ export function NavBar({
   );
 
   const { signOut } = useAuth();
+  const { origin } = window.location;
 
   useEffect(() => {
     const timer =
@@ -191,7 +192,7 @@ export function NavBar({
               {searchData?.map((data) => (
                 <li key={data?.id}>
                   {/* <Link to={data.url}> */}
-                  <a href={data?.url}>
+                  <a href={`${origin}/${data.url}`}>
                     <p className="title">{data?.project_title}</p>
                     <span className="projectType">{data?.project_type}</span>
                   </a>
