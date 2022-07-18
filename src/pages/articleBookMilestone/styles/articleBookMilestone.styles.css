@@ -260,7 +260,7 @@ td.actions-milestone a {
 }
 
 .task-material-checkbox > span::after {
-  top: -2px !important;
+  top: 4px !important;
 }
 
 .flex {

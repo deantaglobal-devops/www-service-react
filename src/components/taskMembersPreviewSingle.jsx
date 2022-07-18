@@ -18,7 +18,7 @@ class TaskMembersPreviewSingle extends React.Component {
           <img
             className="main-user"
             key={this.props.id}
-            src={`${import.meta.env.VITE_URL_API_SERVICE}/${this.props.avatar}`}
+            src={`${import.meta.env.VITE_URL_API_SERVICE}${this.props.avatar}`}
             alt={`${this.props.name} ${this.props.lastname}`}
             title={`${this.props.name} ${this.props.lastname}`}
             data-original-title={`${this.props.name} ${this.props.lastname}`}

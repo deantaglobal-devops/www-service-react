@@ -586,8 +586,8 @@ export default function MilestoneDetails({
                             id={`taskId-${task.taskId}`}
                             className={
                               taskEditing && taskId === task.taskId
-                                ? `task-details status-task-${task.statusId} task-editing`
-                                : `task-details status-task-${task.statusId}`
+                                ? `task-details task-details-milestones status-task-${task.statusId} task-editing`
+                                : `task-details task-details-milestones status-task-${task.statusId}`
                             }
                           >
                             <AddEditTask

@@ -451,9 +451,6 @@ export default function Milestone({
     if (milestoneIdToBeDeleted > 0) {
       setIsLoading(true);
 
-      const formData = new FormData();
-      formData.append("milestoneId", milestoneIdToBeDeleted);
-
       await api
         .post("/milestone/delete", {
           milestoneId: milestoneIdToBeDeleted,
