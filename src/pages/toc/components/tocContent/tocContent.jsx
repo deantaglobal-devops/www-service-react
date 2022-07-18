@@ -32,6 +32,9 @@ export default function TocContent(props) {
   const [selectAllChapters, setSelectAllChapters] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [openProbaDetModal, setOpenProbaDetModal] = useState(false);
+  const [bodyProbModal, setBodyProbModal] = useState("");
+
 
   const handleEditModal = (e, _chapterId, _chapterName) => {
     e.preventDefault();
@@ -307,6 +310,30 @@ export default function TocContent(props) {
     setNewFileName(fileName);
   };
 
+  const showCopyEditlevel = (e, data) => { // show Modal for Probality data
+    setOpenProbaDetModal(true);
+    setBodyProbModal(probTemp(data.probabilities));
+  }
+
+  const probTemp = (bodyData) => { // Probality data Component
+    return(
+      <>
+      <span >The level of copy editing required for this manuscript has been assessed. The result is:</span>
+      <ul style={{marginTop: '15px', paddingLeft: '25px'}}>
+      {bodyData.map((data) => {
+        return(            
+          <li key={'key-'+data}>{data}</li>
+        )
+      })}
+      </ul>
+      </>
+    )
+  }
+
+  const closeProbaDetModal = () => { // Hide Modal for Probality data
+    setOpenProbaDetModal(false);
+  };
+
   useEffect(() => {
     if (newElement.id) {
       if (newElement.id === "FM") {
@@ -357,6 +384,18 @@ export default function TocContent(props) {
           Button2Text="Confirm"
           handleButton2Modal={() => confirmationHandleDeleteModal()}
         />
+      )}
+
+      {openProbaDetModal && (        
+      <Modal
+        displayModal={openProbaDetModal}
+        closeModal={closeProbaDetModal}
+        classCustom="proba-modal"
+        title="Copy Edit Level"
+        content={bodyProbModal}
+        button1Text="Cancel"
+        handleButton1Modal={closeProbaDetModal}
+      />
       )}
 
       <div className="toc-content">
@@ -465,6 +504,7 @@ export default function TocContent(props) {
                       <th className="ws">Nº</th>
                       <th className="ws">Chapter Title</th>
                       <th className="ws">File name</th>
+                      <th className="ws">Copy edit level</th>
                       {!!parseInt(props?.permissions?.toc?.edit) && (
                         <th className="ws ws-edit">Edit</th>
                       )}
@@ -597,7 +637,7 @@ export default function TocContent(props) {
                               <Draggable
                                 draggableId={chapter.id.toString()}
                                 index={index}
-                                key={chapter.id}
+                                key={'key-' + index}
                               >
                                 {(provided, snapshot) => (
                                   <tr
@@ -611,7 +651,6 @@ export default function TocContent(props) {
                                     }
                                   >
                                     <TocRow
-                                      // key={chapter.id}
                                       permissions={props?.permissions}
                                       chapter={chapter}
                                       showMoreInfo={showMoreInfo}
@@ -642,6 +681,7 @@ export default function TocContent(props) {
                                         handleChapterSelected(_chapterId)
                                       }
                                       allChaptersSelected={selectAllChapters}
+                                      showCopyEditlevel={showCopyEditlevel}
                                     />
                                   </tr>
                                 )}
