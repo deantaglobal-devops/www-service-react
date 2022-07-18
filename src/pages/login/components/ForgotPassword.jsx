@@ -127,7 +127,7 @@ class ForgotPassword extends React.Component {
         {isLoading && <Loading />}
         <h2>Reset Your Password</h2>
 
-        <form className="general-forms editable-hidden w-100">
+        <form className="general-forms editable-hidden">
           <div className="form-group w-100">
             <div className="input-group input-group-seamless password-field">
               <label htmlFor="username">
