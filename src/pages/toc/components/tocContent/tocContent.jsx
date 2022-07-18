@@ -316,18 +316,25 @@ export default function TocContent(props) {
   }
 
   const probTemp = (bodyData) => { // Probality data Component
-    return(
-      <>
-      <span >The level of copy editing required for this manuscript has been assessed. The result is:</span>
-      <ul style={{marginTop: '15px', paddingLeft: '25px'}}>
-      {bodyData.map((data) => {
-        return(            
-          <li key={'key-'+data}>{data}</li>
-        )
-      })}
-      </ul>
-      </>
-    )
+    if(bodyData.length > 0) {
+      return(
+        <>
+        <span >The level of copy editing required for this manuscript has been assessed. The result is:</span>
+        <ul style={{marginTop: '15px', paddingLeft: '25px'}}>
+        {bodyData.map((data) => {
+          return(            
+            <li key={'key-'+data}>{data}</li>
+          )
+        })}
+        </ul>
+        </>
+      )
+    } else {
+      return(        
+        <span style={{display:'flex', marginBottom: '15px'}}>No Data</span>                
+      )
+    }
+    
   }
 
   const closeProbaDetModal = () => { // Hide Modal for Probality data
