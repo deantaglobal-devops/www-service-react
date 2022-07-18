@@ -3,6 +3,16 @@
 }
 .btn-login {
   width: 294px;
+  border: 1px solid;
+  padding: 0.6rem 1.2rem;
+  line-height: 1;
+  border-radius: 4px;
+  transition: 0.3s 0s;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
 }
 
 .auth-form__meta a {
