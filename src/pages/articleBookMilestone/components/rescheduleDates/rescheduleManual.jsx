@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import moment from "moment";
 import { useForm } from "react-hook-form";
@@ -30,10 +30,6 @@ export default function RescheduleManual({
   const [modalChangeDetected, setModalChangeDetected] = useState(false);
 
   useEffect(() => {
-    getRescheduleData();
-  }, [projectId]);
-
-  useEffect(() => {
     const subscription = watch((value, { name }) => {
       const milestoneId = name
         .slice(0, name.indexOf(".tasks."))
@@ -43,10 +39,7 @@ export default function RescheduleManual({
         setValue(`milestone[${milestoneId}].endDate`, watch(name));
       }
 
-      if (
-        watch(name) >
-        projectEndDate.split("/").reverse().join("/").replace(/\//, "-")
-      ) {
+      if (watch(name) > projectEndDate.split("/").reverse().join("-")) {
         setModalLaterDate(true);
       }
 
@@ -73,6 +66,10 @@ export default function RescheduleManual({
         setIsLoading(false);
       });
   };
+
+  useEffect(() => {
+    getRescheduleData();
+  }, [projectId]);
 
   const resheduleSubmit = async (data) => {
     setLoading(true);
@@ -160,9 +157,11 @@ export default function RescheduleManual({
                 type="button"
                 className="close"
                 onClick={(e) => {
-                  tasksChange.length > 0
-                    ? setModalChangeDetected(true)
-                    : handleOnCloseRescheduleModal(e);
+                  if (tasksChange.length > 0) {
+                    setModalChangeDetected(true);
+                  } else {
+                    handleOnCloseRescheduleModal(e);
+                  }
                 }}
               >
                 <i className="material-icons">close</i>
@@ -347,9 +346,11 @@ export default function RescheduleManual({
                 className="btn btn-outline-primary"
                 data-dismiss="modal"
                 onClick={(e) => {
-                  tasksChange.length > 0
-                    ? setModalChangeDetected(true)
-                    : handleOnCloseRescheduleModal(e);
+                  if (tasksChange.length > 0) {
+                    setModalChangeDetected(true);
+                  } else {
+                    handleOnCloseRescheduleModal(e);
+                  }
                 }}
               >
                 Cancel
