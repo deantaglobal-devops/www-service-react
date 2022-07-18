@@ -46,9 +46,7 @@ export function ProEditorPage() {
       }
 
       window.addEventListener("message", (event) => {
-        if (event.data === "fullScreen") {
-          fullScreenToggle();
-        } else if (event.data === "setToken") {
+        if (event.data === "setToken") {
           const token = window.localStorage.getItem("lanstad-token");
           const iframe = document.getElementById("iframe-id");
           iframe.contentWindow.postMessage(
@@ -97,6 +95,19 @@ export function ProEditorPage() {
     },
     [],
   );
+
+  const setFocusMode = (event) => {
+    if (event.data === "fullScreen") {
+      fullScreenToggle();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", setFocusMode);
+    return () => {
+      window.removeEventListener("message", setFocusMode);
+    };
+  }, [setFocusMode]);
 
   const handleData = async () => {
     setIsLoading(true);

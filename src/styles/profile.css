@@ -607,7 +607,7 @@ Dropdown Styles Only
   display: none !important;
 }
 
-#image-details .general-infos input.off {
+#image-details .general-infos input {
   border-color: var(--lines);
   padding: 0.4em 0.7em;
 }
