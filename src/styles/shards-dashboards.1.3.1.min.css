@@ -4570,6 +4570,11 @@ tr.tasks-space .secondary-navigation {
   float: left;
 }
 
+.task-toolbar-active {
+  background-color: inherit !important;
+  right: 0 !important;
+}
+
 .task-toolbar {
   right: -50%;
   float: right;

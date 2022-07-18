@@ -250,7 +250,7 @@ function ListAssets({ assets, permissions, project }) {
           </a>
         </div>
       </div>
-      <table className="table table-striped table-borderless table-oversize assets-list-table stages table-task">
+      <table className="table table-striped table-borderless table-oversize assets-list-table stages table-task table-assets">
         <thead>
           <tr>
             <th className="select-all">

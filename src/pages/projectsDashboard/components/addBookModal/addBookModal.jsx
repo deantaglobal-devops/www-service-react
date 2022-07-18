@@ -1,6 +1,6 @@
 // remove it after demo
 // delete this file
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ModalForm from "../../../../components/ModalForm/modalForm";
 import ProgressBar from "./components/progressBar";
 import Dropdown from "../../../../components/dropdown/dropdown";
@@ -15,36 +15,26 @@ export default function AddBookModal({
   handleOnCloseAddBookModal,
   handleAddNewProject,
 }) {
-  const [error, setError] = useState("");
-  const [file, setFile] = useState({
-    file: "",
-    fileData: "",
+  const [data, setData] = useState({
+    categoryList: { id: "", value: "" },
+    file: {
+      file: "",
+      fileData: "",
+    },
+    projectCode: "",
   });
-
+  const [error, setError] = useState("");
   const [completed, setCompleted] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   // remove it after demo
   const categoryList = [
     { id: "1", value: "TS+PR" },
     { id: "2", value: "CE+TS" },
     { id: "3", value: "CE+TS+PR" },
-    { id: "3", value: "Light CE+TS+PR" },
-    { id: "3", value: "TS-only" },
+    { id: "4", value: "Light CE+TS+PR" },
+    { id: "5", value: "TS-only" },
   ];
-  const [data, setData] = useState({
-    categoryList: { id: "", value: "" },
-  });
-  const [projectCode, setProjectCode] = useState("");
-
-  useEffect(() => {
-    let value = 0;
-    setInterval(() => {
-      value += 20;
-      if (value <= 100) {
-        setCompleted(value);
-      }
-    }, 2000);
-  }, []);
 
   const fileTypeChecker = (file) => {
     if (file?.type?.includes("zip")) {
@@ -70,15 +60,13 @@ export default function AddBookModal({
         `The file selected is too large. The maximum supported file size is ${fileSizeLimit}MB.`,
       );
     } else if (areFilesSelected) {
-      setFile({
-        file: URL.createObjectURL(event.target.files[0]),
-        fileData: event.target.files[0],
+      setData({
+        ...data,
+        file: {
+          file: URL.createObjectURL(event.target.files[0]),
+          fileData: event.target.files[0],
+        },
       });
-      // this.setState({
-      //   file: URL.createObjectURL(event.target.files[0]),
-      //   fileData: event.target.files[0],
-      // });
-      // this.showHide("#progress-upload", "remove");
     }
   };
 
@@ -87,19 +75,43 @@ export default function AddBookModal({
       const eleValue = JSON.parse(e.target.getAttribute("data-id"));
 
       setData({
+        ...data,
         categoryList: { id: eleValue.id, value: eleValue.value },
       });
     }
   };
 
   const handleOnChange = (e) => {
-    setProjectCode(e.target.value);
+    setData({
+      ...data,
+      projectCode: e?.target?.value,
+    });
+  };
+
+  const handleUpload = () => {
+    if (
+      data?.projectCode !== "" &&
+      data?.file?.fileData !== "" &&
+      data?.categoryList?.id !== ""
+    ) {
+      setIsUploaded(true);
+      let value = 0;
+      setInterval(() => {
+        value += 20;
+        if (value <= 100) {
+          setCompleted(value);
+        }
+      }, 2000);
+      handleAddNewProject(data?.projectCode, data?.categoryList, data?.file);
+    } else {
+      // handle error
+    }
   };
 
   return (
-    <ModalForm show={openAddBookModal}>
+    <ModalForm show={openAddBookModal} className="addBook-modal">
       <div className="modal-header">
-        {file.file !== "" ? (
+        {isUploaded ? (
           <>
             <h5 className="modal-title" />
             {completed === 100 ? (
@@ -107,7 +119,6 @@ export default function AddBookModal({
                 type="button"
                 className="close"
                 onClick={() => {
-                  handleAddNewProject();
                   handleOnCloseAddBookModal();
                 }}
               >
@@ -137,7 +148,7 @@ export default function AddBookModal({
         )}
       </div>
 
-      {file.file !== "" ? (
+      {isUploaded ? (
         <div className="upload-file-container">
           <main id="loading-zone" aria-busy="true">
             <span>Analysing File</span>
@@ -150,7 +161,6 @@ export default function AddBookModal({
                 type="button"
                 className="btn btn-outline-primary"
                 onClick={() => {
-                  handleAddNewProject();
                   handleOnCloseAddBookModal();
                 }}
               >
@@ -166,7 +176,7 @@ export default function AddBookModal({
             label="Project Code *"
             name="projectCode"
             id="projectCode"
-            value={projectCode}
+            value={data?.projectCode}
             handleOnChange={(e) => handleOnChange(e)}
           />
           <div className="">
@@ -209,16 +219,26 @@ export default function AddBookModal({
         <span className="error-message-upload-zip-file">{error}</span>
       )}
 
-      {file.file === "" && (
-        <div className="modal-footer cta-right mt-2">
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={() => handleOnCloseAddBookModal()}
-          >
-            Cancel
-          </button>
-        </div>
+      {!isUploaded && (
+        <>
+          <div className="modal-footer cta-right mt-2">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => handleOnCloseAddBookModal()}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => handleUpload()}
+            >
+              Upload
+            </button>
+          </div>
+          <div className="modal-footer cta-right mt-2" />
+        </>
       )}
     </ModalForm>
   );
