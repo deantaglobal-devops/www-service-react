@@ -44,6 +44,7 @@
   animation-name: slideIn;
   animation-duration: var(--slideTransitionTime);
   animation-iteration-count: 1;
+  overflow: auto;
 }
 
 @keyframes slideIn {

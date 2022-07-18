@@ -536,7 +536,7 @@ Dropdown Styles Only
 #profile-area fieldset.dropdown div.DdWrapper {
   position: relative;
   width: 100%;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
 }
 
 #profile-area fieldset.dropdown label {

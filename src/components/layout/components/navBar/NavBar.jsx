@@ -193,7 +193,7 @@ export function NavBar({
                 <li key={data?.id}>
                   {/* <Link to={data.url}> */}
                   <a href={`${origin}/${data.url}`}>
-                    <p className="title">{data?.project_title}</p>
+                    <p className="search-bar-title">{data?.project_title}</p>
                     <span className="projectType">{data?.project_type}</span>
                   </a>
                   {/* </Link> */}

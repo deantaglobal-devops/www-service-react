@@ -9271,7 +9271,7 @@ li.nav-item.dropdown:hover {
 }
 
 .icon-sidebar-nav .main-content {
-  padding: 0 1rem 0 5rem;
+  padding: 0 0rem 0 5rem;
 }
 @media (max-width: 767.98px) {
   .icon-sidebar-nav .main-content {
