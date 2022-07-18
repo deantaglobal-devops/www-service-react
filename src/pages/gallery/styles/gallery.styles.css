@@ -252,7 +252,7 @@ fieldset.dropdown select {
   position: absolute;
   right: 7px;
   font-size: 15px;
-  top: 24px;
+  top: 30px;
   color: var(--placeholder);
 }
 

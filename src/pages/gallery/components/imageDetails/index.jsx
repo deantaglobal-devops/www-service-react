@@ -129,7 +129,7 @@ export default function ImageDetails({
                       }/file/src/?path=${dataDetails?.src}`}
                     />
                     <Link
-                      href={`${
+                      to={`${
                         import.meta.env.VITE_URL_API_SERVICE
                       }/file/src/?path=${dataDetails?.src}`}
                       className="hide"
