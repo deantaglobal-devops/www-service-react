@@ -629,7 +629,7 @@ export function EditorText({ ...props }) {
                             }}
                           >
                             <span className="color-bubble black" />
-                            Dark Blue
+                            Black
                           </li>
                         </ul>
                       </div>

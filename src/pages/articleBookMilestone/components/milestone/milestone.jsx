@@ -499,8 +499,12 @@ export default function Milestone({
         ...newMilestoneData,
         [e.target.name]: e.target.value,
         orderId: projectData?.milestones?.length + 1,
-        projectId: projectData?.projectId,
-        companyId: projectData?.companyId,
+        projectId: chapter?.chapter_id
+          ? projectData?.project_id
+          : projectData?.projectId,
+        companyId: chapter?.chapter_id
+          ? projectData?.company_id
+          : projectData?.companyId,
         chapterId: chapter?.chapter_id ? chapter?.chapter_id : 0,
       });
     }
@@ -511,12 +515,8 @@ export default function Milestone({
     setIsLoading(true);
 
     const bodyRequest = {
-      projectId: chapter?.chapter_id
-        ? projectData?.project_id
-        : projectData?.projectId,
-      companyId: chapter?.chapter_id
-        ? projectData?.project_id
-        : projectData?.projectId,
+      projectId: newMilestoneData.projectId,
+      companyId: newMilestoneData.companyId,
       chapterId: newMilestoneData.chapterId,
       milestoneName: newMilestoneData.milestoneName,
       startDate: newMilestoneData.startDate,
