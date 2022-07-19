@@ -503,7 +503,9 @@ function messagingArea({ ...props }) {
       .then((result) => {
         messageId = result.data.chatroomId;
         sendtoNotificationsService();
-        mail && sendMail(data, attachments, messageId);
+        if (mail || data.alertMembers) {
+          sendMail(data, attachments, messageId);
+        }
       })
       .catch((error) => {
         setStatusMsg("Something got wrong! Please try again.");
