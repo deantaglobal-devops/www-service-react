@@ -143,7 +143,7 @@ div.changed-task {
   position: absolute;
   top: 40px;
   left: 0;
-  height: calc(100% - 95px);
+  height: calc(100% - 150px);
   background: #eee;
 }
 

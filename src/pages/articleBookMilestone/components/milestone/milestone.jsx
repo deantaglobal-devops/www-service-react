@@ -590,6 +590,7 @@ export default function Milestone({
           handleOnCloseRescheduleModal={(e) => closeModals(e)}
           projectId={projectData?.projectId}
           chapterId={chapter?.chapter_id}
+          isLoading={isLoading}
           setIsLoading={setIsLoading}
           projectStartDate={projectData?.startDate}
           projectEndDate={projectData?.endDate}
