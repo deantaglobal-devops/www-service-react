@@ -402,6 +402,10 @@ export default function RescheduleManual({
     getRescheduleData();
   }, [projectId]);
 
+  useEffect(() => {
+    setDatesOld(getValues().milestones);
+  }, [rescheduleData]);
+
   return (
     <>
       {modalConfirmation && (
