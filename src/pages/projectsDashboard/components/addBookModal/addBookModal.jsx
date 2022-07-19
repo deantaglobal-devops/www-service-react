@@ -1,6 +1,6 @@
 // remove it after demo
 // delete this file
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { api } from "../../../../services/api";
 import ModalForm from "../../../../components/ModalForm/modalForm";
 // import ProgressBar from "./components/progressBar";
@@ -18,10 +18,7 @@ export default function AddBookModal({
 }) {
   const [data, setData] = useState({
     categoryList: { id: "", value: "" },
-    file: {
-      file: "",
-      fileData: "",
-    },
+    file: [],
     projectCode: "",
   });
   const [error, setError] = useState("");
@@ -31,11 +28,16 @@ export default function AddBookModal({
   const [errorMessage, setErrorMessage] = useState({
     projectCode: "",
     categoryList: "",
+    fileUpload: "",
   });
   const [validateForm, setValidateForm] = useState({
     projectCode: false,
     categoryList: false,
+    fileUpload: false,
   });
+
+  // create a ref for the file input
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const handleCategoryList = async () => {
@@ -55,37 +57,51 @@ export default function AddBookModal({
   }, []);
 
   const fileTypeChecker = (file) => {
-    if (file?.type?.includes("zip")) {
+    if (
+      file?.type?.includes("zip") ||
+      file?.type?.includes("doc") ||
+      file?.type?.includes("xls")
+    ) {
       return true;
     }
-    setError("Please select a zip file.");
+
+    setError("Please select a zip/docx/xls/xlsx file.");
     return false;
   };
 
-  const handleChange = (event) => {
+  const handleUploadFileOnChange = () => {
     setError("");
-    const areFilesSelected = event.target.files && event.target.files[0];
+    setErrorMessage({
+      ...errorMessage,
+      fileUpload: "",
+    });
 
-    if (!fileTypeChecker(areFilesSelected)) {
-      return;
-    }
+    const filesUploaded = [];
+    Array.from(inputRef.current.files).map((files) => {
+      const areFilesSelected = files;
 
-    if (
-      areFilesSelected &&
-      event.target.files[0].size / 1024 / 1024 > fileSizeLimit
-    ) {
-      setError(
-        `The file selected is too large. The maximum supported file size is ${fileSizeLimit}MB.`,
-      );
-    } else if (areFilesSelected) {
-      setData({
-        ...data,
-        file: {
-          file: URL.createObjectURL(event.target.files[0]),
-          fileData: event.target.files[0],
-        },
-      });
-    }
+      if (!fileTypeChecker(areFilesSelected)) {
+        return;
+      }
+
+      if (areFilesSelected && files.size / 1024 / 1024 > fileSizeLimit) {
+        setError(
+          `The file selected is too large. The maximum supported file size is ${fileSizeLimit}MB.`,
+        );
+      } else if (areFilesSelected) {
+        filesUploaded.push({
+          file: URL.createObjectURL(files),
+          fileData: files,
+        });
+      }
+    });
+
+    const fileConcatenated = data?.file.concat(filesUploaded);
+
+    setData({
+      ...data,
+      file: fileConcatenated,
+    });
   };
 
   const handleOnChangeDropdown = (e) => {
@@ -99,7 +115,7 @@ export default function AddBookModal({
     }
   };
 
-  const handleOnChange = (e) => {
+  const handleInputOnChange = (e) => {
     setData({
       ...data,
       projectCode: e?.target?.value,
@@ -120,24 +136,18 @@ export default function AddBookModal({
       //   }
       // }, 2000);
       handleAddNewProject(data?.projectCode, data?.categoryList, data?.file);
-    } else if (data?.projectCode === "" && data?.categoryList?.id === "") {
+    } else {
       setErrorMessage({
-        projectCode: "Project code is required",
-        categoryList: "Category is required",
+        projectCode: data?.projectCode === "" ? "Project code is required" : "",
+        categoryList:
+          data?.categoryList?.id === "" ? "Category is required" : "",
+        fileUpload: data?.file.length === 0 ? "File is required" : "",
       });
-      setValidateForm({ projectCode: true, categoryList: true });
-    } else if (data?.projectCode === "") {
-      setErrorMessage({
-        categoryList: "",
-        projectCode: "Project code is required",
+      setValidateForm({
+        projectCode: data?.projectCode === "",
+        categoryList: data?.categoryList?.id === "",
+        fileUpload: (data?.file.length === 0) === "",
       });
-      setValidateForm({ categoryList: false, projectCode: true });
-    } else if (data?.categoryList?.id === "") {
-      setErrorMessage({
-        projectCode: "",
-        categoryList: "Category is required",
-      });
-      setValidateForm({ projectCode: false, categoryList: true });
     }
   };
 
@@ -181,7 +191,9 @@ export default function AddBookModal({
     // getFilterValues([newBook, ...filterProjects]);
 
     const bodyFormData = new FormData();
-    bodyFormData.append("file", file?.fileData);
+    file.map((file) => {
+      bodyFormData.append("file[]", file?.fileData);
+    });
 
     const token = localStorage.getItem("lanstad-token");
 
@@ -218,6 +230,19 @@ export default function AddBookModal({
           console.log("error", error);
         },
       );
+  };
+
+  const removeFileFromDragAndDropArea = (fileToBeRemoved) => {
+    const fileRemoved = data?.file?.filter(
+      (file) => file.file !== fileToBeRemoved.file,
+    );
+
+    setData({
+      ...data,
+      file: fileRemoved,
+    });
+
+    inputRef.current.value = null;
   };
 
   return (
@@ -277,7 +302,7 @@ export default function AddBookModal({
             name="projectCode"
             id="projectCode"
             value={data?.projectCode}
-            handleOnChange={(e) => handleOnChange(e)}
+            handleOnChange={(e) => handleInputOnChange(e)}
             titleError={errorMessage?.projectCode}
             hasError={validateForm?.projectCode}
           />
@@ -296,26 +321,58 @@ export default function AddBookModal({
             />
           </div>
           <div className="upload-file-container">
-            <span>Uploaded file must be in .zip format</span>
-            <form
-              id="add-book-file-upload-form"
-              encType="multipart/form-data"
-              action="/upload/image"
-              method="post"
-            >
+            {/* <span>Uploaded file must be in .zip format</span> */}
+            <form id="add-book-file-upload-form">
               <p>
                 Drop files to upload or <span>Click here to select</span>
               </p>
               <input
+                ref={inputRef}
+                accept=".zip, .docx, .xls, .xlsx"
                 id="file-upload"
-                accept=".zip"
                 type="file"
                 name="fileUpload"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleUploadFileOnChange(e)}
                 multiple
               />
             </form>
+            {data?.file?.map((file) => (
+              <div className="w-100" id="" key={file?.file}>
+                <div className="flex flex-column align-items-center mt-2 w-100 ">
+                  <div className="flex align-items-center w-100 ">
+                    <span className="w-100">{file?.fileData?.name}</span>
+                    <i
+                      className="material-icons-outlined add-book-delete-file-from-upload"
+                      onClick={() => {
+                        removeFileFromDragAndDropArea(file);
+                      }}
+                    >
+                      delete_outline
+                    </i>
+                  </div>
+                  <div className="w-100">
+                    <div className="progress-status">
+                      <div className="progress progress-sm">
+                        <div
+                          className="progress-bar bg-success progress-per"
+                          role="progressbar"
+                          aria-valuenow="75"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {errorMessage?.fileUpload !== "" && (
+            <span className="add-book-error-message-upload-zip-file">
+              {errorMessage?.fileUpload}
+            </span>
+          )}
 
           {error !== "" && (
             <span className="error-message-upload-zip-file">{error}</span>

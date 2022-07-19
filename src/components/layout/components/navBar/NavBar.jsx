@@ -72,6 +72,7 @@ export function NavBar({
   const removeTokens = () => {
     localStorage.removeItem("magic-code");
     localStorage.removeItem("lanstad-token");
+    localStorage.removeItem("lanstad-user");
   };
 
   const updateActivity = () => {
