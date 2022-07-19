@@ -19,15 +19,25 @@ import { ProEditorPage } from "../pages/proEditor/proEditor";
 import { Users } from "../pages/users/users";
 import { LstPage } from "../pages/lst/lst";
 import { ConfigurationPanel } from "../pages/configurationPanel/configurationPanel";
+import { DownloadAttachment } from "../pages/downloadAttachment/downloadAttachment";
+import { PageNotFound } from "../pages/pageNotFound/pageNotFound";
 
 export function LanstadRoutes() {
   return (
     <Routes>
+      {/* Page Not Found */}
+      <Route path="*" element={<PageNotFound />} />
+      <Route path="/error" element={<PageNotFound />} />
+
       {/* Reset password */}
       <Route path="/password-reset/:token" element={<ResetPassword />} />
 
       {/* Pro-Editor Magic Code */}
       <Route path="/pro-editor/:magicCode" element={<ProEditorPage />} />
+
+      {/* Download Attachment File */}
+      <Route path="/download/author" element={<DownloadAttachment />} />
+      <Route path="/download/attachment" element={<DownloadAttachment />} />
 
       <Route element={<PublicRoutes />}>
         {/* Login */}

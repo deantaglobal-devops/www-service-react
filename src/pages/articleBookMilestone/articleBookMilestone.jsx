@@ -46,22 +46,26 @@ export function ArticleBookMilestone() {
 
   async function handleData() {
     setIsLoading(true);
-    const responseProject = await api
-      .get(`/project/${projectId}`)
-      .then((response) => {
-        setProject(response.data);
-        return response.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let responseProject;
 
     // if journals, then call this endpoint
     if (chapterId) {
-      await api
+      responseProject = await api
         .get(`/project/journal/${projectId}/detail/${chapterId}`)
         .then((response) => {
           setChapter(response.data);
+          setProject(response.data);
+          return response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      responseProject = await api
+        .get(`/project/${projectId}`)
+        .then((response) => {
+          setProject(response.data);
+          return response.data;
         })
         .catch((err) => {
           console.log(err);
@@ -500,7 +504,7 @@ export function ArticleBookMilestone() {
             <nav className="main-project-navigation">
               {!!parseInt(permissions?.milestones?.view) && (
                 <Link
-                  to={`/project/journal/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/journal/${project.project_id}/detail/${chapter.chapter_id}`}
                   className="active"
                 >
                   <i className="material-icons-outlined">view_day</i> Milestones
@@ -509,7 +513,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.vxe?.view) && (
                 <Link
-                  to={`/vxe/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/vxe/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">format_shapes</i>
                   PRO Editor
@@ -518,7 +522,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.assets?.view) && (
                 <Link
-                  to={`/project/assets/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/assets/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">folder</i>
                   Assets
@@ -527,7 +531,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.gallery?.view) && (
                 <Link
-                  to={`/project/gallery/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/gallery/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">collections</i>
                   Gallery
@@ -536,7 +540,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.books?.users?.view) && (
                 <Link
-                  to={`/project/users/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/users/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">group</i> Users
                 </Link>

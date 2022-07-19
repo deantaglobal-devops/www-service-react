@@ -1,3 +1,7 @@
+.filter-container {
+  width: 16%;
+}
+
 .dashboard-filters {
   width: 20rem;
 }

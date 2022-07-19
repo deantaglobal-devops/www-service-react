@@ -9,6 +9,7 @@ export default function DashboardCard({
   handleHover,
   cardHovered,
   isBook,
+  userId,
 }) {
   const [flip, setFlip] = useState(false);
 
@@ -57,7 +58,7 @@ export default function DashboardCard({
                     }
                     className="project-thumb-list-wrapper"
                   >
-                    {project.projectImage != "" && (
+                    {project.projectImage != "" && userId !== 15331 ? (
                       <img
                         src={`${
                           import.meta.env.VITE_URL_API_SERVICE
@@ -66,6 +67,13 @@ export default function DashboardCard({
                         }&storage=blob`}
                         className="project-thumb-list"
                         alt="project"
+                      />
+                    ) : (
+                      // remove it after demo
+                      <img
+                        alt="project"
+                        src={project.projectImage}
+                        className="project-thumb-list"
                       />
                     )}
                   </Link>

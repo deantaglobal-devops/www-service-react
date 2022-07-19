@@ -41,11 +41,14 @@ class SingleUserCard extends React.Component {
         className={this.props.simplecard ? "user-card simple" : "user-card"}
       >
         <img
-          src={this.props.userPhoto}
+          src={
+            this.props.userPhoto.includes("eu.ui-avatars.com")
+              ? this.props.userPhoto
+              : `${import.meta.env.VITE_URL_API_SERVICE}${this.props.userPhoto}`
+          }
           alt={`${this.props.userFirstName} ${this.props.userLastName}`}
           title={`${this.props.userFirstName} ${this.props.userLastName}`}
         />
-
         <div>
           <h3>{`${this.props.userFirstName} ${this.props.userLastName}`}</h3>
 
@@ -56,7 +59,6 @@ class SingleUserCard extends React.Component {
             )
           }
         </div>
-
         {/* If permission to delete user  */}
         {!!this.props.deletepermission && (
           <button

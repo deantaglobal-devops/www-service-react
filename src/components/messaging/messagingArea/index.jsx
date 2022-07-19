@@ -24,6 +24,7 @@ import { downloadFile } from "../../../utils/downloadFile";
 
 function messagingArea({ ...props }) {
   const {
+    milestoneData,
     projectCode,
     projectName,
     taskName,
@@ -63,6 +64,7 @@ function messagingArea({ ...props }) {
   ]);
 
   // List states
+  const [userNameList, setUserNameList] = useState([]);
   const [memberProjectList, setMemberProjectList] = useState([]);
   const [templatesList, setTemplatesList] = useState([]);
   const [attachmentList, setAttachmentList] = useState([]);
@@ -78,98 +80,6 @@ function messagingArea({ ...props }) {
   // Status states control
   const [loading, setLoading] = useState("");
   const [showMoreOpt, setShowMoreOpt] = useState(false);
-
-  // It will be remove when the username list is done in backend
-  const userNameList = [
-    {
-      id: 1,
-      name: "OIKOS",
-      senderName: [
-        {
-          id: 1,
-          name: "Lindbergia",
-        },
-        {
-          id: 2,
-          name: "Journal of Avian Biology",
-        },
-        {
-          id: 3,
-          name: "Nordic Journal of Botany",
-        },
-        {
-          id: 4,
-          name: "Ecography",
-        },
-        {
-          id: 5,
-          name: "Wildlife Biology",
-        },
-        {
-          id: 6,
-          name: "OIKOS",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Bioscientifica",
-      senderName: [
-        {
-          id: 1,
-          name: "EO-prod",
-        },
-        {
-          id: 2,
-          name: "JME-prod",
-        },
-        {
-          id: 3,
-          name: "EDM-prod",
-        },
-        {
-          id: 4,
-          name: "ERP-prod",
-        },
-        {
-          id: 5,
-          name: "VB-prod",
-        },
-        {
-          id: 6,
-          name: "EC-prod",
-        },
-        {
-          id: 7,
-          name: "ERC-prod",
-        },
-        {
-          id: 8,
-          name: "REP-prod",
-        },
-        {
-          id: 9,
-          name: "EJE-prod",
-        },
-        {
-          id: 10,
-          name: "JOE-prod",
-        },
-        {
-          id: 11,
-          name: "RAF-prod",
-        },
-        {
-          id: 12,
-          name: "ETJ-prod",
-        },
-        {
-          id: 13,
-          name: "EOR-prod",
-        },
-      ],
-    },
-  ];
 
   // Form controls
   const defaultForm = {
@@ -203,8 +113,17 @@ function messagingArea({ ...props }) {
     name: ["ccMeField", "ccs"],
   });
 
+  const optionsEditorStyle = {
+    inlineStyles: {
+      BLACK: { style: { color: "#000000" } },
+      GREY: { style: { color: "#55636c" } },
+      BLUE: { style: { color: "#074973" } },
+    },
+  };
+
   // Get all data
   useEffect(() => {
+    getSenderNamesList();
     getTemplates(taskId);
     getMembersProject(projectId);
     getAlwaysCC();
@@ -342,6 +261,17 @@ function messagingArea({ ...props }) {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  async function getSenderNamesList() {
+    setLoading("sendername");
+    await api
+      .post("/messages/sendername", {
+        userId: user.id,
+      })
+      .then((result) => setUserNameList(result.data.senderList))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(""));
   }
 
   async function getTemplates(taskId) {
@@ -557,7 +487,10 @@ function messagingArea({ ...props }) {
       .post("/messages/add", {
         companyId: user.realCompanyId,
         taskId,
-        content: stateToHTML(editorState.getCurrentContent()),
+        content: stateToHTML(
+          editorState.getCurrentContent(),
+          optionsEditorStyle,
+        ),
         creatorId: user.id,
         attachments: attachmentsIds,
         emailTo: data.to.replace(" ", ""),
@@ -565,6 +498,7 @@ function messagingArea({ ...props }) {
         alertedIds: memberList.map((user) => user.id).join(","),
         message_id_related: replyMsgId,
         is_reply: replyMsgId ? "1" : "0",
+        senderName: data.senderName,
       })
       .then((result) => {
         messageId = result.data.chatroomId;
@@ -623,7 +557,10 @@ function messagingArea({ ...props }) {
           template_id: parseInt(data.template),
         },
         content: {
-          body: stateToHTML(editorState.getCurrentContent()),
+          body: stateToHTML(
+            editorState.getCurrentContent(),
+            optionsEditorStyle,
+          ),
           to: toAddress.length > 0 ? toAddress : "",
           cc: ccsAddress.length > 0 ? ccsAddress : "",
           bcc: bccsAddress.length > 0 ? bccsAddress : "",
@@ -650,7 +587,7 @@ function messagingArea({ ...props }) {
   }
 
   function sendtoNotificationsService() {
-    let description = `New message(s) on ${taskName}`;
+    const description = `${milestoneData.milestoneTitle} / ${taskName}`;
 
     const date = Date.now();
 
@@ -678,42 +615,10 @@ function messagingArea({ ...props }) {
       const articleTitle = document.querySelector(".page-header h2").innerHTML;
       const articleTitleTruncated = articleTitle.substring(0, 15);
 
-      const categoryName = `${projectCode}/${projectName}/${taskName}`;
-      const categoryNameSplit = categoryName.split(" / ");
-      const journalName = categoryNameSplit[1];
-
-      const categoryNameSplitJoined = `${journalName} / ${articleTitleTruncated}...`;
-      const milestoneName = categoryNameSplit[2];
-
-      msg.category = categoryNameSplitJoined;
-
-      description = `New message(s) on ${milestoneName} / ${projectName}`;
-      msg.description = description;
-      msg.title = description;
+      msg.category = `${projectName}/${articleTitleTruncated} ...`;
     }
 
-    const bodyRequest = {
-      userId: user.id,
-      companyId: user.realCompanyId,
-      milestoneId,
-      taskId,
-      channel: "communications-broadcast",
-      type: "Communications",
-      description,
-      category: projectName,
-      title: description,
-      projectId,
-    };
     api.post("/notifications/add", msg);
-
-    // fetch("/push/notifications/communications", {
-    //   method: "POST",
-    //   mode: "no-cors",
-    //   body: JSON.stringify(msg),
-    // })
-    //   .then((res) => res.json())
-    //   .then((result) => result)
-    //   .catch((err) => console.log(err));
   }
 
   async function getAttachs(attachIds) {
@@ -1053,12 +958,11 @@ function messagingArea({ ...props }) {
                         {`${user.name} ${user.lastname}`}
                       </option>
                       {+permissions?.chatroom?.sender_name_selection === 1 &&
-                        userNameList?.length > 0 &&
-                        userNameList.map((group) => (
-                          <optgroup label={group.name} key={group.id}>
-                            {group.senderName.map((user) => (
-                              <option key={user.id} value={user.name}>
-                                {user.name}
+                        Object.keys(userNameList)?.map((item) => (
+                          <optgroup label={item} key={item}>
+                            {userNameList[item].map((user) => (
+                              <option key={user} value={user}>
+                                {user}
                               </option>
                             ))}
                           </optgroup>
@@ -1290,7 +1194,8 @@ function messagingArea({ ...props }) {
               finish={() => changeTaskStatus("finish", taskId, 4)}
               send={() => sendChat(getValues(), watch("emailExternal"))}
               close={() => {
-                setAddUsersToTaskModal(false);
+                setLoading("");
+                setIsHandlePmTaskModal(false);
               }}
             />
           }
@@ -1310,6 +1215,7 @@ function messagingArea({ ...props }) {
               taskId={taskId}
               close={() => {
                 setAddUsersToTaskModal(false);
+                setLoading("");
               }}
               finish={() => {
                 if (!isHandlePmTaskModal) {

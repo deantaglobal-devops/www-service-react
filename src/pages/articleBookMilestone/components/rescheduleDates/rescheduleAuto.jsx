@@ -49,6 +49,7 @@ export default function RescheduleManual({
       Math.abs(differentDays) < 10000
     ) {
       // Rescheduling in cascade starting in middle of task
+
       if (ids[1] && datesOld[+ids[0]]) {
         for (
           let indexTask = +ids[1];
@@ -270,6 +271,7 @@ export default function RescheduleManual({
           let newDateTaskEnd = "";
 
           const element = datesOld[index].tasks[indexTask];
+
           const iniDateTaskStart = element?.taskStartDate;
           const iniDateTaskEnd = element?.taskEndDate;
 
@@ -374,7 +376,6 @@ export default function RescheduleManual({
 
   const resheduleSubmit = async (data) => {
     setLoading("sending");
-
     api
       .post("/milestone/reshedule/submit", {
         chapterId: chapterId === undefined ? 0 : chapterId,
@@ -502,7 +503,6 @@ export default function RescheduleManual({
                     <h5 className="w-15">New Due Date</h5>
                   </div>
                   {/* Collapse list */}
-
                   {loading !== "loading" &&
                     rescheduleData?.milestones
                       ?.slice(0, stopHere)

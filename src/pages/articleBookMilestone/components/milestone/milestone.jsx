@@ -113,7 +113,7 @@ export default function Milestone({
   };
 
   const getUserData = async () => {
-    const { projectId } = projectData;
+    const projectId = projectData?.projectId || projectData?.project_id;
 
     // This is the for users on the overall project
     await api
@@ -451,9 +451,6 @@ export default function Milestone({
     if (milestoneIdToBeDeleted > 0) {
       setIsLoading(true);
 
-      const formData = new FormData();
-      formData.append("milestoneId", milestoneIdToBeDeleted);
-
       await api
         .post("/milestone/delete", {
           milestoneId: milestoneIdToBeDeleted,
@@ -488,8 +485,12 @@ export default function Milestone({
         ...newMilestoneData,
         [e.target.name]: e.target.value,
         orderId: projectData?.milestones?.length + 1,
-        projectId: projectData?.projectId,
-        companyId: projectData?.companyId,
+        projectId: chapter?.chapter_id
+          ? projectData?.project_id
+          : projectData?.projectId,
+        companyId: chapter?.chapter_id
+          ? projectData?.company_id
+          : projectData?.companyId,
         chapterId: chapter?.chapter_id ? chapter?.chapter_id : 0,
       });
     }
@@ -510,7 +511,8 @@ export default function Milestone({
       milestoneComplexity: newMilestoneData.milestoneComplexity,
       orderId: newMilestoneData.orderId,
     };
-    await fetch("/milestone/create", bodyRequest)
+    await api
+      .post("/milestone/create", bodyRequest)
       .then(() => {
         location.reload();
       })
@@ -588,7 +590,11 @@ export default function Milestone({
           openRescheduleModal={openRescheduleModal}
           closeRescheduleModal={() => setOpenRescheduleModal(false)}
           handleOnCloseRescheduleModal={(e) => closeModals(e)}
-          projectId={projectData?.projectId}
+          projectId={
+            chapter?.chapter_id
+              ? projectData?.project_id
+              : projectData?.projectId
+          }
           chapterId={chapter?.chapter_id}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

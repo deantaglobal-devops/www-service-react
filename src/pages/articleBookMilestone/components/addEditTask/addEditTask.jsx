@@ -8,6 +8,8 @@ import Modal from "../../../../components/Modal/modal";
 import SpecialInstructionsTaskModal from "../specialInstructionsTaskModal/specialInstructionsTaskModal";
 import ModalForm from "../../../../components/ModalForm/modalForm";
 
+import "./styles/addEditTask.styles.css";
+
 export default function AddEditTask({
   task,
   data,
@@ -1140,7 +1142,7 @@ export default function AddEditTask({
         </button>
       )}
       <div className="actions-task-col">
-        <div className="task-toolbar default-toolbar active">
+        <div className="task-toolbar default-toolbar active task-toolbar-active">
           {/* let just one checklist per task */}
           {project?.checklist
             ?.filter(
@@ -1474,7 +1476,7 @@ export default function AddEditTask({
         {/* Task type */}
         <div className="task-type-col mt-3">
           <div className="task-label">Task Type</div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-type-container ">
             <input
               type="radio"
               className="custom-control-input"
@@ -1491,7 +1493,7 @@ export default function AddEditTask({
               Internal
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-type-container ">
             <input
               type="radio"
               className="custom-control-input"
@@ -1508,7 +1510,7 @@ export default function AddEditTask({
               External
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-type-container ">
             <input
               type="radio"
               className="custom-control-input"
@@ -1525,7 +1527,7 @@ export default function AddEditTask({
               PM
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-type-container ">
             <input
               type="radio"
               className="custom-control-input"
@@ -1548,11 +1550,11 @@ export default function AddEditTask({
         </div>
 
         {/* Task Complexity */}
-        <div className="task-complexity-col mt-3">
+        <div className="task-complexity-col mt-3 mb-3">
           <div className="task-label" style={{ width: `${100}%` }}>
             Task Complexity
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-complexity-container">
             <input
               type="radio"
               className="custom-control-input"
@@ -1569,7 +1571,7 @@ export default function AddEditTask({
               Simple
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-complexity-container">
             <input
               type="radio"
               className="custom-control-input"
@@ -1586,7 +1588,7 @@ export default function AddEditTask({
               Medium
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-complexity-container">
             <input
               type="radio"
               className="custom-control-input"
@@ -1603,7 +1605,7 @@ export default function AddEditTask({
               Complex
             </label>
           </div>
-          <div className="custom-control custom-radio custom-control-inline">
+          <div className="custom-control custom-radio custom-control-inline task-complexity-container">
             <input
               type="radio"
               className="custom-control-input"

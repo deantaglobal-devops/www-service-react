@@ -569,7 +569,7 @@ export default function TocContent(props) {
                       <th
                         className={
                           showMoreInfo
-                            ? "ws show-hide-report active"
+                            ? "ws show-hide-report active toc-active"
                             : "ws show-hide-report"
                         }
                         onClick={() => setShowMoreInfo(!showMoreInfo)}

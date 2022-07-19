@@ -556,6 +556,10 @@ td.m-title-col {
   padding: 10px 0;
 }
 
+[id*="milestoneDetails"]:hover {
+  color: var(--dark) !important;
+}
+
 .skeleton-parent {
   display: flex;
   flex-direction: column;
