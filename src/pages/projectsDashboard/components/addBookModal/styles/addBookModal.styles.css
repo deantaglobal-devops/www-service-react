@@ -78,3 +78,28 @@ input#file-upload {
 .upload-file-container:last-child {
   align-items: flex-end;
 }
+
+.add-book-zip-folder-icon {
+  font-size: 46px;
+  color: var(--secondary);
+  margin-right: 8px;
+}
+
+.add-book-delete-file-from-upload {
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 4px;
+  color: var(--secondary);
+}
+
+.add-book-delete-file-from-upload:hover {
+  color: var(--danger);
+}
+
+.add-book-error-message-upload-zip-file {
+  color: #dc3545;
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+}
