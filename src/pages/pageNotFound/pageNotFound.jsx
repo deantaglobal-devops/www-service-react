@@ -1,4 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { api } from "../../services/api";
 import lanstadLogo from "../../assets/lanstadLogo.svg";
 import graphic from "../../assets/graphic.svg";
 
@@ -8,6 +10,22 @@ export function PageNotFound() {
   const location = useLocation();
 
   const { pathname } = location;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyApiStatus = async () => {
+      await api
+        .get("/token/check")
+        .then(() => {
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    };
+    verifyApiStatus();
+  }, []);
+
   return (
     <div className="page-not-found-container">
       <div className="page-not-found-message-container">
@@ -25,8 +43,8 @@ export function PageNotFound() {
             </strong>
 
             <span className="page-not-found-error-message">
-              the server is temporarily unable to complete your request due to
-              regular maintenance. Please try again later
+              The server is temporarily unable to complete your request due to
+              regular maintenance. Please try again later.
             </span>
           </>
         ) : (

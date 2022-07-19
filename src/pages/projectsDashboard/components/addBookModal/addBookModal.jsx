@@ -1,8 +1,9 @@
 // remove it after demo
 // delete this file
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { api } from "../../../../services/api";
 import ModalForm from "../../../../components/ModalForm/modalForm";
-import ProgressBar from "./components/progressBar";
+// import ProgressBar from "./components/progressBar";
 import Dropdown from "../../../../components/dropdown/dropdown";
 import Input from "../../../../components/input/input";
 
@@ -13,7 +14,7 @@ const fileSizeLimit = import.meta.env.VITE_REACT_APP_FILE_SIZE_LIMIT;
 export default function AddBookModal({
   openAddBookModal,
   handleOnCloseAddBookModal,
-  handleAddNewProject,
+  // handleAddNewProject,
 }) {
   const [data, setData] = useState({
     categoryList: { id: "", value: "" },
@@ -24,17 +25,34 @@ export default function AddBookModal({
     projectCode: "",
   });
   const [error, setError] = useState("");
-  const [completed, setCompleted] = useState(0);
+  // const [completed, setCompleted] = useState(0);
   const [isUploaded, setIsUploaded] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState({
+    projectCode: "",
+    categoryList: "",
+  });
+  const [validateForm, setValidateForm] = useState({
+    projectCode: false,
+    categoryList: false,
+  });
 
-  // remove it after demo
-  const categoryList = [
-    { id: "1", value: "TS+PR" },
-    { id: "2", value: "CE+TS" },
-    { id: "3", value: "CE+TS+PR" },
-    { id: "4", value: "Light CE+TS+PR" },
-    { id: "5", value: "TS-only" },
-  ];
+  useEffect(() => {
+    const handleCategoryList = async () => {
+      const categoriesList = await api
+        .get("/company/categories")
+        .then((response) => {
+          return response.data[0].categoryList.map((category) => {
+            return {
+              id: category.category_id,
+              value: category.category_name,
+            };
+          });
+        });
+      setCategoryList(categoriesList);
+    };
+    handleCategoryList();
+  }, []);
 
   const fileTypeChecker = (file) => {
     if (file?.type?.includes("zip")) {
@@ -94,68 +112,140 @@ export default function AddBookModal({
       data?.file?.fileData !== "" &&
       data?.categoryList?.id !== ""
     ) {
-      setIsUploaded(true);
-      let value = 0;
-      setInterval(() => {
-        value += 20;
-        if (value <= 100) {
-          setCompleted(value);
-        }
-      }, 2000);
+      // let value = 0;
+      // setInterval(() => {
+      //   value += 20;
+      //   if (value <= 100) {
+      //     setCompleted(value);
+      //   }
+      // }, 2000);
       handleAddNewProject(data?.projectCode, data?.categoryList, data?.file);
-    } else {
-      // handle error
+    } else if (data?.projectCode === "" && data?.categoryList?.id === "") {
+      setErrorMessage({
+        projectCode: "Project code is required",
+        categoryList: "Category is required",
+      });
+      setValidateForm({ projectCode: true, categoryList: true });
+    } else if (data?.projectCode === "") {
+      setErrorMessage({
+        categoryList: "",
+        projectCode: "Project code is required",
+      });
+      setValidateForm({ categoryList: false, projectCode: true });
+    } else if (data?.categoryList?.id === "") {
+      setErrorMessage({
+        projectCode: "",
+        categoryList: "Category is required",
+      });
+      setValidateForm({ projectCode: false, categoryList: true });
     }
+  };
+
+  // remove it after demo
+  const handleAddNewProject = async (projectCode, category, file) => {
+    // const newBook = {
+    //   author: "Natasha Santarossa",
+    //   bookcode: "TFN",
+    //   client: "Deanta Publishers",
+    //   clientId: 13,
+    //   endDate: "31-08-2022",
+    //   id: 248169,
+    //   indexer: "",
+    //   isbn: "235634547547235346",
+    //   milestones: [
+    //     {
+    //       id: 156380,
+    //       percentage: 0,
+    //       milestoneTitle: "Project analysis and scheduling",
+    //       milestoneStart: "30-06-2022",
+    //       milestoneEnd: "02-07-2022",
+    //     },
+    //     {
+    //       id: 156381,
+    //       percentage: 0,
+    //       milestoneTitle: "Copy editing",
+    //       milestoneStart: "04-07-2022",
+    //       milestoneEnd: "09-08-2022",
+    //     },
+    //   ],
+    //   percent: 0,
+    //   productionEditor: "Donnita McDonnell",
+    //   projectImage: testBook,
+    //   projectManager: "Michelle van Kampen",
+    //   projectType: "LXE",
+    //   startDate: "30-06-2022",
+    //   template: "",
+    //   title: "Comparative Policing",
+    // };
+    // setFilterProjects([newBook, ...filterProjects]);
+    // getFilterValues([newBook, ...filterProjects]);
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("file", file?.fileData);
+
+    const token = localStorage.getItem("lanstad-token");
+
+    // For this endpoint we need to use fetch instead of axios.
+    // Headers is not being created properly using axios
+    await fetch(
+      `${
+        import.meta.env.VITE_URL_API_SERVICE
+      }/file/upload/project?project_code=${projectCode}&category_id=${
+        category.id
+      }`,
+      {
+        method: "POST",
+        body: bodyFormData,
+        headers: {
+          "Lanstad-Token": token,
+        },
+      },
+    )
+      .then((res) => res.json())
+      .then(
+        (response) => {
+          if (response?.error?.message === "project already exists") {
+            setErrorMessage({
+              ...errorMessage,
+              projectCode: "Project already exists",
+            });
+            setValidateForm({ categoryList: false, projectCode: true });
+          } else {
+            setIsUploaded(true);
+          }
+        },
+        (error) => {
+          console.log("error", error);
+        },
+      );
   };
 
   return (
     <ModalForm show={openAddBookModal} className="addBook-modal">
-      <div className="modal-header">
-        {isUploaded ? (
-          <>
+      {isUploaded ? (
+        <>
+          <div className="modal-header">
             <h5 className="modal-title" />
-            {completed === 100 ? (
-              <button
-                type="button"
-                className="close"
-                onClick={() => {
-                  handleOnCloseAddBookModal();
-                }}
-              >
-                <i className="material-icons">close</i>
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="close"
-                onClick={() => handleOnCloseAddBookModal()}
-              >
-                <i className="material-icons">close</i>
-              </button>
-            )}
-          </>
-        ) : (
-          <>
-            <h5 className="modal-title">Upload file</h5>
             <button
               type="button"
               className="close"
-              onClick={() => handleOnCloseAddBookModal()}
+              onClick={() => {
+                handleOnCloseAddBookModal();
+              }}
             >
               <i className="material-icons">close</i>
             </button>
-          </>
-        )}
-      </div>
+          </div>
+          <div className="upload-file-container">
+            <main id="loading-zone" aria-busy="true">
+              {/* <span>Analysing File</span> */}
 
-      {isUploaded ? (
-        <div className="upload-file-container">
-          <main id="loading-zone" aria-busy="true">
-            <span>Analysing File</span>
-
-            <ProgressBar bgcolor="#17C671" completed={completed} />
-          </main>
-          {completed === 100 && (
+              {/* <ProgressBar bgcolor="#17C671" completed={completed} /> */}
+              <span>
+                We have already set up your project and will notify you when it
+                is completed.
+              </span>
+            </main>
             <div className="modal-footer cta-right mt-4">
               <button
                 type="button"
@@ -164,13 +254,23 @@ export default function AddBookModal({
                   handleOnCloseAddBookModal();
                 }}
               >
-                Complete
+                Close
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        </>
       ) : (
         <>
+          <div className="modal-header">
+            <h5 className="modal-title">Upload file</h5>
+            <button
+              type="button"
+              className="close"
+              onClick={() => handleOnCloseAddBookModal()}
+            >
+              <i className="material-icons">close</i>
+            </button>
+          </div>
           {/* Project Code */}
           <Input
             label="Project Code *"
@@ -178,6 +278,8 @@ export default function AddBookModal({
             id="projectCode"
             value={data?.projectCode}
             handleOnChange={(e) => handleOnChange(e)}
+            titleError={errorMessage?.projectCode}
+            hasError={validateForm?.projectCode}
           />
           <div className="">
             <Dropdown
@@ -189,6 +291,8 @@ export default function AddBookModal({
               handleOnChange={(e) => handleOnChangeDropdown(e)}
               iconName="keyboard_arrow_down"
               iconClassName="material-icons"
+              titleError={errorMessage?.categoryList}
+              hasError={validateForm?.categoryList}
             />
           </div>
           <div className="upload-file-container">
@@ -212,16 +316,12 @@ export default function AddBookModal({
               />
             </form>
           </div>
-        </>
-      )}
 
-      {error !== "" && (
-        <span className="error-message-upload-zip-file">{error}</span>
-      )}
+          {error !== "" && (
+            <span className="error-message-upload-zip-file">{error}</span>
+          )}
 
-      {!isUploaded && (
-        <>
-          <div className="modal-footer cta-right mt-2">
+          <div className="modal-footer cta-right mt-4">
             <button
               type="button"
               className="btn btn-outline-primary"
@@ -237,7 +337,6 @@ export default function AddBookModal({
               Upload
             </button>
           </div>
-          <div className="modal-footer cta-right mt-2" />
         </>
       )}
     </ModalForm>
