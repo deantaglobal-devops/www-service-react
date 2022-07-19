@@ -347,7 +347,7 @@ export default function RescheduleManual({
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
-      if (watch(name) > projectEndDate.split("/").reverse().join("-")) {
+      if (watch(name) > projectEndDate?.split("/").reverse().join("-")) {
         setModalLaterDate(true);
       }
       setTasksChange((oldArray) => [...oldArray, name]);

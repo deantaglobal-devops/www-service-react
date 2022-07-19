@@ -26,7 +26,7 @@ iframe {
 iframe#iframe-id {
   transition: 400ms ease all;
   height: calc(100% - 80px);
-  z-index: 9999 !important;
+  z-index: 999 !important;
   top: 130px;
 }
 

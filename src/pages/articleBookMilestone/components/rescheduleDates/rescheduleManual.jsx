@@ -39,7 +39,7 @@ export default function RescheduleManual({
         setValue(`milestone[${milestoneId}].endDate`, watch(name));
       }
 
-      if (watch(name) > projectEndDate.split("/").reverse().join("-")) {
+      if (watch(name) > projectEndDate?.split("/").reverse().join("-")) {
         setModalLaterDate(true);
       }
 

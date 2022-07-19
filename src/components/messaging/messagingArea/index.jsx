@@ -113,6 +113,14 @@ function messagingArea({ ...props }) {
     name: ["ccMeField", "ccs"],
   });
 
+  const optionsEditorStyle = {
+    inlineStyles: {
+      BLACK: { style: { color: "#000000" } },
+      GREY: { style: { color: "#55636c" } },
+      BLUE: { style: { color: "#074973" } },
+    },
+  };
+
   // Get all data
   useEffect(() => {
     getSenderNamesList();
@@ -479,7 +487,10 @@ function messagingArea({ ...props }) {
       .post("/messages/add", {
         companyId: user.realCompanyId,
         taskId,
-        content: stateToHTML(editorState.getCurrentContent()),
+        content: stateToHTML(
+          editorState.getCurrentContent(),
+          optionsEditorStyle,
+        ),
         creatorId: user.id,
         attachments: attachmentsIds,
         emailTo: data.to.replace(" ", ""),
@@ -546,7 +557,10 @@ function messagingArea({ ...props }) {
           template_id: parseInt(data.template),
         },
         content: {
-          body: stateToHTML(editorState.getCurrentContent()),
+          body: stateToHTML(
+            editorState.getCurrentContent(),
+            optionsEditorStyle,
+          ),
           to: toAddress.length > 0 ? toAddress : "",
           cc: ccsAddress.length > 0 ? ccsAddress : "",
           bcc: bccsAddress.length > 0 ? bccsAddress : "",
