@@ -1,7 +1,7 @@
 /* remove it after demo */
 
 .modal-main.addBook-modal {
-  width: 40%;
+  width: 40% !important;
 }
 
 .upload-file-container {

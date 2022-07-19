@@ -147,7 +147,6 @@ export function ProjectsDashboard() {
     ];
 
     // remove it after demo
-
     if (user?.id === 15331) {
       setFilterProjects(booksForDemo);
       getFilterValues(booksForDemo);
@@ -247,77 +246,6 @@ export function ProjectsDashboard() {
     }
   };
 
-  // remove it after demo
-  const handleAddNewProject = async (projectCode, category, file) => {
-    const newBook = {
-      author: "Natasha Santarossa",
-      bookcode: "TFN",
-      client: "Deanta Publishers",
-      clientId: 13,
-      endDate: "31-08-2022",
-      id: 248169,
-      indexer: "",
-      isbn: "235634547547235346",
-      milestones: [
-        {
-          id: 156380,
-          percentage: 0,
-          milestoneTitle: "Project analysis and scheduling",
-          milestoneStart: "30-06-2022",
-          milestoneEnd: "02-07-2022",
-        },
-        {
-          id: 156381,
-          percentage: 0,
-          milestoneTitle: "Copy editing",
-          milestoneStart: "04-07-2022",
-          milestoneEnd: "09-08-2022",
-        },
-      ],
-      percent: 0,
-      productionEditor: "Donnita McDonnell",
-      projectImage: testBook,
-      projectManager: "Michelle van Kampen",
-      projectType: "LXE",
-      startDate: "30-06-2022",
-      template: "",
-      title: "Comparative Policing",
-    };
-    setFilterProjects([newBook, ...filterProjects]);
-    getFilterValues([newBook, ...filterProjects]);
-
-    const bodyFormData = new FormData();
-    bodyFormData.append("file", file?.fileData);
-
-    const token = localStorage.getItem("lanstad-token");
-
-    // For this endpoint we need to use fetch instead of axios.
-    // Headers is not being created properly using axios
-    await fetch(
-      `${
-        import.meta.env.VITE_URL_API_SERVICE
-      }/file/upload/project?project_code=${projectCode}&category_id=${
-        category.id
-      }`,
-      {
-        method: "POST",
-        body: bodyFormData,
-        headers: {
-          "Lanstad-Token": token,
-        },
-      },
-    )
-      .then((res) => res.json())
-      .then(
-        (response) => {
-          console.log("response", response);
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
-  };
-
   const handleAddBook = () => {
     setOpenAddBookModal(true);
   };
@@ -341,9 +269,9 @@ export function ProjectsDashboard() {
         <AddBookModal
           openAddBookModal={openAddBookModal}
           handleOnCloseAddBookModal={() => handleOnCloseAddBookModal()}
-          handleAddNewProject={(projectCode, category, file) =>
-            handleAddNewProject(projectCode, category, file)
-          }
+          // handleAddNewProject={(projectCode, category, file) =>
+          //   handleAddNewProject(projectCode, category, file)
+          // }
         />
       )}
 
