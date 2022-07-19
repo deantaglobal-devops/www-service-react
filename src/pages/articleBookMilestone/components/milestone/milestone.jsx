@@ -596,6 +596,7 @@ export default function Milestone({
               : projectData?.projectId
           }
           chapterId={chapter?.chapter_id}
+          isLoading={isLoading}
           setIsLoading={setIsLoading}
           projectStartDate={projectData?.startDate}
           projectEndDate={projectData?.endDate}

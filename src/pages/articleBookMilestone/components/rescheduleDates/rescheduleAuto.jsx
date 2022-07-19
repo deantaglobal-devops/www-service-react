@@ -25,7 +25,7 @@ export default function RescheduleManual({
   const [datesOld, setDatesOld] = useState([]);
   const [tasksChange, setTasksChange] = useState([]);
   const prevName = useRef("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("loading");
   const { register, watch, handleSubmit, setValue, getValues } = useForm();
 
   const [modalConfirmation, setModalConfirm] = useState(false);
@@ -39,18 +39,18 @@ export default function RescheduleManual({
     let newDateEnd = "";
     let newDateEndCurrent = "";
     const differentDays =
-      moment(e.target.value, "YYYY-MM-DD").diff(
-        moment(prevName.current, "YYYY-MM-DD"),
-      ) / 8.64e7;
+      moment(e.target.value).diff(moment(prevName.current), "days") || 0;
 
     if (
       differentDays &&
       differentDays !== 0 &&
       prevName.current &&
-      prevName.current !== e.target.value
+      prevName.current !== e.target.value &&
+      Math.abs(differentDays) < 10000
     ) {
       // Rescheduling in cascade starting in middle of task
-      if (ids[1]) {
+
+      if (ids[1] && datesOld[+ids[0]]) {
         for (
           let indexTask = +ids[1];
           indexTask < datesOld[+ids[0]].tasks.length - 1;
@@ -61,8 +61,8 @@ export default function RescheduleManual({
           let newDateTaskEndCurrent = "";
 
           const element = datesOld[+ids[0]].tasks[indexTask + 1];
-          const iniDateTaskStart = element.taskStartDate;
-          const iniDateTaskEnd = element.taskEndDate;
+          const iniDateTaskStart = element?.taskStartDate;
+          const iniDateTaskEnd = element?.taskEndDate;
           const currentDateTaskEnd =
             datesOld[+ids[0]].tasks[indexTask + 1].taskEndDate;
 
@@ -165,8 +165,8 @@ export default function RescheduleManual({
         indexMilestone += 1
       ) {
         const element = datesOld[indexMilestone + 1];
-        const startDay = element.startDate;
-        const endDay = element.endDate;
+        const startDay = element?.startDate;
+        const endDay = element?.endDate;
         const endDayCurrent = datesOld[indexMilestone].endDate;
 
         if (differentDays < 0) {
@@ -271,8 +271,9 @@ export default function RescheduleManual({
           let newDateTaskEnd = "";
 
           const element = datesOld[index].tasks[indexTask];
-          const iniDateTaskStart = element.taskStartDate;
-          const iniDateTaskEnd = element.taskEndDate;
+
+          const iniDateTaskStart = element?.taskStartDate;
+          const iniDateTaskEnd = element?.taskEndDate;
 
           if (differentDays < 0) {
             let daysStart = differentDays;
@@ -342,10 +343,6 @@ export default function RescheduleManual({
   };
 
   useEffect(() => {
-    setDatesOld(getValues().milestones);
-  }, [rescheduleData]);
-
-  useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (watch(name) > projectEndDate?.split("/").reverse().join("-")) {
         setModalLaterDate(true);
@@ -357,7 +354,7 @@ export default function RescheduleManual({
 
   const getRescheduleData = async () => {
     setIsLoading(true);
-
+    setLoading("loading");
     await api
       .post("/milestone/reshedule/view", {
         chapterId: chapterId === undefined ? 0 : chapterId,
@@ -367,6 +364,7 @@ export default function RescheduleManual({
         setRescheduleData(result.data);
         setDatesOld(getValues().milestones);
         setStopHere(result.data.milestones.length);
+        setLoading("");
       })
       .catch((error) => {
         console.log(error);
@@ -377,8 +375,7 @@ export default function RescheduleManual({
   };
 
   const resheduleSubmit = async (data) => {
-    setLoading(true);
-    console.log(data?.milestones?.slice(0, stopHere));
+    setLoading("sending");
     api
       .post("/milestone/reshedule/submit", {
         chapterId: chapterId === undefined ? 0 : chapterId,
@@ -397,7 +394,7 @@ export default function RescheduleManual({
         });
       })
       .finally(() => {
-        setLoading(false);
+        setLoading("");
       });
   };
 
@@ -418,7 +415,7 @@ export default function RescheduleManual({
             setModalConfirm(false);
             handleOnCloseRescheduleModal();
           }}
-          loading={loading}
+          loading={loading === "sending"}
           Button2Text="Continue"
           handleButton2Modal={handleSubmit(resheduleSubmit)}
         />
@@ -506,7 +503,7 @@ export default function RescheduleManual({
                     <h5 className="w-15">New Due Date</h5>
                   </div>
                   {/* Collapse list */}
-                  {rescheduleData?.milestones?.length > 0 &&
+                  {loading !== "loading" &&
                     rescheduleData?.milestones
                       ?.slice(0, stopHere)
                       .map((milestone, id) => (
@@ -581,9 +578,7 @@ export default function RescheduleManual({
                                 // }
                                 id={id}
                                 name={`milestones[${id}]endDate`}
-                                min={moment(projectStartDate).format(
-                                  "YYYY-DD-MM",
-                                )}
+                                min={watch(`milestones.${id}.startDate`)}
                                 defaultValue={milestone.milestoneEnd
                                   .split("-")
                                   .reverse()
@@ -641,9 +636,6 @@ export default function RescheduleManual({
                                   id={`${id}.${index}`}
                                   className="datepicker-hover"
                                   name={`milestones[${id}]tasks[${index}]taskStartDate`}
-                                  min={moment(projectStartDate).format(
-                                    "YYYY-DD-MM",
-                                  )}
                                   defaultValue={task.taskStart
                                     .split("-")
                                     .reverse()
@@ -667,8 +659,8 @@ export default function RescheduleManual({
                                   id={`${id}.${index}`}
                                   className="datepicker-hover"
                                   name={`milestones[${id}]tasks[${index}]taskEndDate`}
-                                  min={moment(projectStartDate).format(
-                                    "YYYY-DD-MM",
+                                  min={watch(
+                                    `milestones.${id}.tasks.${index}.taskStartDate`,
                                   )}
                                   defaultValue={task.taskEnd
                                     .split("-")
