@@ -1,78 +1,55 @@
-/* UserList Component (Parent of SingleUserCard.js)
- */
-import React from "react";
-import SingleUserCard from "./singleUserCard";
+import { useState, useEffect } from "react";
 import ListUsersControls from "./listUsersControls";
+import SingleUserCard from "./singleUserCard";
 
-class ListUsers extends React.Component {
-  constructor(props) {
-    super(props);
+export function ListUsers(props) {
+  const [removedDuplicatedUsers, setRemovedDuplicatedUsers] = useState([]);
 
-    this.state = {
-      users: [],
-    };
-  }
-
-  componentDidMount() {}
-
-  render() {
-    const howManyMembers = this.props.taskMemberList.length;
-    let removeDuplicatedUsers = this.props.taskMemberList;
-
-    removeDuplicatedUsers = removeDuplicatedUsers.filter(
+  useEffect(() => {
+    const membersList = props?.taskMemberList.filter(
       (user, index, self) =>
         index ===
         self.findIndex((t) => t.id === user.id && t.name === user.name),
     );
 
-    return (
-      <>
-        {howManyMembers !== 0 && this.props.membersLoaded === true && (
-          <ul
-            className={
-              this.props.simplecard === true
-                ? "member-list simple"
-                : "member-list"
-            }
-          >
-            {removeDuplicatedUsers.map((user) => {
-              return (
-                <SingleUserCard
-                  {...this.props}
-                  {...this.state}
-                  key={user.id}
-                  userId={user.id}
-                  userFirstName={user.name}
-                  userLastName={user.lastname}
-                  userRole={user.permissions.rol}
-                  deletepermission={this.props.permissions.delete}
-                  userPhoto={user.avatar}
-                ></SingleUserCard>
-              );
-            })}
-          </ul>
-        )}
+    setRemovedDuplicatedUsers(membersList);
+  }, [props]);
 
-        {howManyMembers === 0 && this.props.membersLoaded === true ? (
-          <p>No Task Members</p>
-        ) : (
-          ""
-        )}
+  return (
+    <>
+      {removedDuplicatedUsers.length !== 0 && props?.membersLoaded === true && (
+        <ul
+          className={
+            props?.simplecard === true ? "member-list simple" : "member-list"
+          }
+        >
+          {removedDuplicatedUsers.map((user) => {
+            return (
+              <SingleUserCard
+                {...props}
+                key={user.id}
+                userId={user.id}
+                userFirstName={user.name}
+                userLastName={user.lastname}
+                userRole={user.permissions.rol}
+                deletepermission={props?.permissions.delete}
+                userPhoto={user.avatar}
+              />
+            );
+          })}
+        </ul>
+      )}
 
-        {this.props.membersLoaded === false && <p>Loading...</p>}
+      {removedDuplicatedUsers.length === 0 && <p>No Task Members</p>}
 
-        {this.props.membersLoaded === true && (
-          <ListUsersControls
-            {...this.props}
-            {...this.state}
-            permissions={this.props.permissions}
-          />
-        )}
+      {props?.membersLoaded === false &&
+        removedDuplicatedUsers.length !== 0 && <p>Loading...</p>}
 
-        {/* }End if */}
-      </>
-    );
-  }
+      {props?.membersLoaded === true && (
+        <ListUsersControls {...props} permissions={props.permissions} />
+      )}
+
+      {/* }End if */}
+    </>
+  );
 }
-
-export default ListUsers;

@@ -9,6 +9,7 @@ import { Tooltip } from "../../components/tooltip/tooltip";
 import { EditBookModal } from "./components/editBookModal/editBookModal";
 import EditArticleModal from "./components/editArticleModal/editArticleModal";
 import Milestone from "./components/milestone/milestone";
+import { downloadFile } from "../../utils/downloadFile";
 
 import BriefViewer from "./components/briefViewer";
 
@@ -45,47 +46,51 @@ export function ArticleBookMilestone() {
 
   async function handleData() {
     setIsLoading(true);
-    const responseProject = await api
-      .get(`/project/${projectId}`)
-      .then((response) => {
-        setProject(response.data);
-        return response.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let responseProject;
 
     // if journals, then call this endpoint
     if (chapterId) {
-      await api
+      responseProject = await api
         .get(`/project/journal/${projectId}/detail/${chapterId}`)
         .then((response) => {
           setChapter(response.data);
+          setProject(response.data);
+          return response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      responseProject = await api
+        .get(`/project/${projectId}`)
+        .then((response) => {
+          setProject(response.data);
+          return response.data;
         })
         .catch((err) => {
           console.log(err);
         });
     }
 
-    await api
-      .get(`/file/get?path=${responseProject.pmbriefLink}`)
-      .then((response) => {
-        setFile64(response.data.content);
-        setMimeType(response.data.mimetype);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (responseProject.pmbriefLink) {
+      await api
+        .get(`/file/get?path=${responseProject.pmbriefLink}`)
+        .then((response) => {
+          setFile64(response.data.content);
+          setMimeType(response.data.mimetype);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     setIsLoading(false);
   }
 
   const handleDownload = async (filePath) => {
-    await api.get(`/file/get?path=${filePath}`).then((response) => {
-      const a = document.createElement("a"); // Create <a>
-      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-      a.download = response.data.file_name; // File name Here
-      a.click(); // Downloaded file
-    });
+    if (filePath) {
+      downloadFile(filePath);
+    }
   };
 
   const downloadFileNew = (fileURL, fileName) => {
@@ -499,7 +504,7 @@ export function ArticleBookMilestone() {
             <nav className="main-project-navigation">
               {!!parseInt(permissions?.milestones?.view) && (
                 <Link
-                  to={`/project/journal/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/journal/${project.project_id}/detail/${chapter.chapter_id}`}
                   className="active"
                 >
                   <i className="material-icons-outlined">view_day</i> Milestones
@@ -508,7 +513,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.vxe?.view) && (
                 <Link
-                  to={`/vxe/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/vxe/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">format_shapes</i>
                   PRO Editor
@@ -517,7 +522,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.assets?.view) && (
                 <Link
-                  to={`/project/assets/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/assets/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">folder</i>
                   Assets
@@ -526,7 +531,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.gallery?.view) && (
                 <Link
-                  to={`/project/gallery/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/gallery/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">collections</i>
                   Gallery
@@ -535,7 +540,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.books?.users?.view) && (
                 <Link
-                  to={`/project/users/${project.projectId}/detail/${chapter.chapter_id}`}
+                  to={`/project/users/${project.project_id}/detail/${chapter.chapter_id}`}
                 >
                   <i className="material-icons-outlined">group</i> Users
                 </Link>

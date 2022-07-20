@@ -931,6 +931,10 @@ p.sent-warning {
   animation: rotating 2s linear infinite;
 }
 
+.disabled-loading {
+  cursor: wait;
+}
+
 .save-users {
   min-width: 100px;
   justify-content: center;
@@ -966,7 +970,7 @@ div.public-DraftEditor-content p {
 div.DraftEditor-editorContainer,
 div.public-DraftEditor-content {
   height: max-content;
-  min-height: 66px;
+  min-height: 90px;
 }
 
 .select-chevron {

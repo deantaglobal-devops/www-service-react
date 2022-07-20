@@ -61,11 +61,20 @@ export function LoginReactJS() {
       const isSignInSuccessfully = await signIn({
         username: loginValue,
         password: passwordValue,
-      }).catch(() => setIsLoading(false));
+      }).catch((error) => {
+        setIsLoading(false);
+        if (error.message === "Network Error") {
+          navigate("/error");
+        }
+      });
 
       setIsLoading(false);
+
+      // remove it after demo
       if (isSignInSuccessfully?.user?.permissions?.rol === "Journal Editor") {
         navigate("/dashboard/journals");
+      } else if (isSignInSuccessfully?.user?.id === 15331) {
+        navigate("/dashboard/books");
       } else if (isSignInSuccessfully?.user) {
         navigate("/dashboard");
       } else {

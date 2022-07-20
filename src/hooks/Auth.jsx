@@ -137,7 +137,8 @@ function AuthProvider({ children }) {
     [data],
   );
 
-  const signOut = useCallback(() => {
+  const signOut = useCallback(async () => {
+    await api.post("VXE/OxygenLogUserUpdate");
     localStorage.removeItem("lanstad-token");
     localStorage.removeItem("lanstad-user");
     localStorage.removeItem("passwordJustReset");

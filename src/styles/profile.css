@@ -536,7 +536,7 @@ Dropdown Styles Only
 #profile-area fieldset.dropdown div.DdWrapper {
   position: relative;
   width: 100%;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
 }
 
 #profile-area fieldset.dropdown label {
@@ -607,7 +607,7 @@ Dropdown Styles Only
   display: none !important;
 }
 
-#image-details .general-infos input.off {
+#image-details .general-infos input {
   border-color: var(--lines);
   padding: 0.4em 0.7em;
 }

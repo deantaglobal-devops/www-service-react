@@ -53,16 +53,17 @@ export default function MilestoneDetails({
           if (
             // external
             (task.statusType == 2 &&
-              !!parseInt(data[0]?.permissions.tasks.external)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external)) ||
             // internal
             (task.statusType == 1 &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // not assigned or both
             ((task.statusType == 0 || task.statusType == 4) &&
-              !!parseInt(data[0]?.permissions.tasks.external) &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external) &&
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // Pm task
-            (task.statusType == 3 && !!parseInt(data[0]?.permissions.tasks.pm))
+            (task.statusType == 3 &&
+              !!parseInt(data[0]?.permissions?.tasks?.pm))
           ) {
             return task;
           }
@@ -473,7 +474,7 @@ export default function MilestoneDetails({
   return (
     <>
       <div className="existing-tasks-wrapper">
-        {openMessageCenter && taskId != 0 && taskId != undefined && (
+        {openMessageCenter && taskId !== 0 && taskId !== undefined && (
           <div id="side-slider-container" hidden>
             <MessagingCenter
               userId={user.id}
@@ -496,6 +497,7 @@ export default function MilestoneDetails({
               changeTaskStatus={(_action, _taskId, _status) =>
                 changeTaskStatus(_action, _taskId, _status)
               }
+              milestoneData={milestoneData}
               getMilestoneData={(_taskId) =>
                 getMilestoneData(milestoneData.milestoneId, _taskId)
               }
@@ -584,8 +586,8 @@ export default function MilestoneDetails({
                             id={`taskId-${task.taskId}`}
                             className={
                               taskEditing && taskId === task.taskId
-                                ? `task-details status-task-${task.statusId} task-editing`
-                                : `task-details status-task-${task.statusId}`
+                                ? `task-details task-details-milestones status-task-${task.statusId} task-editing`
+                                : `task-details task-details-milestones status-task-${task.statusId}`
                             }
                           >
                             <AddEditTask

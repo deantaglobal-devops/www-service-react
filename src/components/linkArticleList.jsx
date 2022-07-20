@@ -4,6 +4,7 @@ import { api } from "../services/api";
 import Modal from "./modal";
 import BasicButtonsSet from "./basicButtonsSet";
 import IssueCoverUpload from "./issueCoverUpload";
+import { downloadFile } from "../utils/downloadFile";
 
 class LinkArticleList extends React.Component {
   constructor(props) {
@@ -264,12 +265,9 @@ class LinkArticleList extends React.Component {
           // fileName = fileName.replace(/([^a-z0-9\s]+(?=.*\.))/gi, "-");
           // document.location.href = `/download/file/?filePath=${filePath}&fileName=${fileName}`;
 
-          await api.get(`/file/get?path=${filePath}`).then((response) => {
-            const a = document.createElement("a"); // Create <a>
-            a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-            a.download = response.data.file_name; // File name Here
-            a.click(); // Downloaded file
-          });
+          if (filePath) {
+            downloadFile(filePath);
+          }
         }
       });
   }

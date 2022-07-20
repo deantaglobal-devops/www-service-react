@@ -6,7 +6,7 @@ Doing this because props need to be passed in by the data attributes of the elem
 */
 import React from "react";
 import { api } from "../../services/api";
-import ListUsers from "./listUsers";
+import { ListUsers } from "./listUsers";
 import ListUsersPortal from "./listUsersPortal";
 
 class ListUsersWrapper extends React.Component {
@@ -52,9 +52,9 @@ class ListUsersWrapper extends React.Component {
 
   async componentDidMount() {
     // Fetch Task Members
+    let memberList = [];
     if (this.props.taskid) {
-      const taskMemberList = await this.getTaskUsers();
-      this.setState({ taskMemberList });
+      memberList = await this.getTaskUsers();
     }
 
     // Fetch Project Members
@@ -70,13 +70,14 @@ class ListUsersWrapper extends React.Component {
       // add this to state so we can use it on the render
       completeUsersList: projectMemberList,
       membersLoaded: true,
+      taskMemberList: memberList,
     });
   }
 
-  componentWillUnmount() {
-    // fix Warning: Can't perform a React state update on an unmounted component
-    this.setState = (state, callback) => {};
-  }
+  // componentWillUnmount() {
+  //   // fix Warning: Can't perform a React state update on an unmounted component
+  //   this.setState = (state, callback) => {};
+  // }
 
   async openModal() {
     this.setState({ isModalOpen: true });
@@ -138,11 +139,3 @@ class ListUsersWrapper extends React.Component {
 }
 
 export default ListUsersWrapper;
-
-// let taskUserManagement = document.querySelectorAll(".task-editing .member-management");
-// taskUserManagement.forEach((item) =>{
-//     ReactDOM.render(
-//         // passing in data attributes from HTML element as props to the components inside the render method
-//         <ListUsersWrapper {...(item.dataset)} />,
-//         item
-//     )});

@@ -9,6 +9,7 @@ export default function DashboardCard({
   handleHover,
   cardHovered,
   isBook,
+  userId,
 }) {
   const [flip, setFlip] = useState(false);
 
@@ -50,10 +51,14 @@ export default function DashboardCard({
               <div className="card-content">
                 <div className="col-sm-12 col-lg-3 pr-0">
                   <Link
-                    to={`/project/${project.id}`}
+                    to={
+                      isBook
+                        ? `/project/${project.id}`
+                        : `/project/journal/list/${project.id}`
+                    }
                     className="project-thumb-list-wrapper"
                   >
-                    {project.projectImage != "" && (
+                    {project.projectImage != "" && userId !== 15331 ? (
                       <img
                         src={`${
                           import.meta.env.VITE_URL_API_SERVICE
@@ -63,13 +68,28 @@ export default function DashboardCard({
                         className="project-thumb-list"
                         alt="project"
                       />
+                    ) : (
+                      // remove it after demo
+                      <img
+                        alt="project"
+                        src={project.projectImage}
+                        className="project-thumb-list"
+                      />
                     )}
                   </Link>
                 </div>
                 <div className="col-lg-9">
                   <div className="project-card-details">
                     <h3>
-                      <Link to={`/project/${project.id}`}>{project.title}</Link>
+                      <Link
+                        to={
+                          isBook
+                            ? `/project/${project.id}`
+                            : `/project/journal/list/${project.id}`
+                        }
+                      >
+                        {project.title}
+                      </Link>
                     </h3>
                     {isBook ? (
                       <div className="flex-list-blocks">

@@ -48,7 +48,9 @@ export default function MessagingHeader({ ...props }) {
   return (
     <>
       <div id="messaging-header">
-        <p>{`${projectCode} / ${projectName} / ${taskName}`}</p>
+        <p>{`${
+          projectCode ? `${projectCode} /` : ""
+        } ${projectName} / ${taskName}`}</p>
         <div className="message-header">
           <button
             className="deanta-button messaging-header-members"
