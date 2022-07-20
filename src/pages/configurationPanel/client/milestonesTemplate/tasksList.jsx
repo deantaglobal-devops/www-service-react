@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useForm } from "react-hook-form";
 
 import Modal from "../../../../components/Modal/modal";
 import { api } from "../../../../services/api";
@@ -10,36 +11,18 @@ export default function TasksList({ milestoneId }) {
   const [editTask, setEditTask] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [loading, setLoading] = useState("");
+  const [lastOrderId, setLastOrderId] = useState(0);
   const [modalTaskDelete, setModalTaskDelete] = useState(false);
+  const taskInput = useRef(null);
 
-  // Fields of form
-  const attrInitial = {
-    taskSkip: false,
-    taskFinal: false,
-    taskXMLUpload: false,
-    taskEditProcess: false,
-    taskEngine: false,
-    taskBookEnd: false,
-    taskLayout: false,
-    taskpre_editing: false,
-    taskQuality: false,
-    taskStyleEditing: false,
-    taskeProducts: false,
-  };
-  const [nameTask, setNameTask] = useState("");
-  const [attrTask, setAtrrTask] = useState(attrInitial);
-  const [typeTask, setTypeTask] = useState("");
-  const [startTask, setStartTask] = useState(0);
-  const [endTask, setEndTask] = useState(0);
-  const [complexTask, setComplexTask] = useState("");
-  const [errorEmpty, setErrorEmpty] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-  useEffect(() => {
-    getData();
-    setAddNewTask(false);
-  }, [milestoneId]);
-
-  async function getUser(userId) {
+  const getUser = async (userId) => {
     await api
       .get(`/user/${userId}`)
       .then((response) => {
@@ -48,7 +31,7 @@ export default function TasksList({ milestoneId }) {
       .catch((e) => {
         console.log(e);
       });
-  }
+  };
 
   async function getData() {
     setLoading(true);
@@ -60,12 +43,18 @@ export default function TasksList({ milestoneId }) {
       )
       .then((data) => {
         setData(data.data.tasklist);
+        setLastOrderId(data.data.tasklist.length);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
+  useEffect(() => {
+    getData();
+    setAddNewTask(false);
+  }, [milestoneId]);
 
   async function deleteTask(id) {
     await api
@@ -79,67 +68,53 @@ export default function TasksList({ milestoneId }) {
       });
   }
 
-  async function createTask() {
-    const attrSelects = Object.keys(attrTask).reduce((o, key) => {
-      attrTask[key] === true && (o[key] = attrTask[key]);
-      return o;
-    }, {});
-
+  async function createTask(data) {
     await api
       .post("/task-template/create", {
         milestone_id: milestoneId,
-        taskName: nameTask,
-        taskDescription: nameTask,
-        taskAttr: Object.keys(attrSelects).map(function (x) {
-          return x.replace("taskpre_editing", "taskpre-editing");
-        }),
-        tat_startDate: parseInt(startTask),
-        tat_endDate: parseInt(endTask),
-        task_type: parseInt(typeTask),
-        task_complexity: complexTask,
+        taskName: data.task_name,
+        taskDescription: data.task_name,
+        taskAttr: data.taskAttr,
+        tat_startDate: parseInt(data.tat_taskStartdate, 10),
+        tat_endDate: parseInt(data.tat_taskDuedate, 10),
+        task_type: data.task_type,
+        task_complexity: data.task_complexity,
         status_id: 1,
-        order_id: 1,
+        order_id: lastOrderId,
       })
       .then(() => {
         getData();
         setAddNewTask(false);
-        setErrorEmpty(false);
       })
       .catch((error) => {
-        setErrorEmpty(true);
         console.log(error);
       });
   }
 
-  async function updateTask() {
-    const attrSelects = Object.keys(attrTask).reduce((o, key) => {
-      attrTask[key] === true && (o[key] = attrTask[key]);
-      return o;
-    }, {});
-
+  async function updateTask(data) {
     await api
       .put("/task-template/update", {
         taskId,
-        taskName: nameTask,
-        taskAttr: Object.keys(attrSelects).map(function (x) {
-          return x.replace("taskpre_editing", "taskpre-editing");
-        }),
-        tat_startDate: parseInt(startTask),
-        tat_endDate: parseInt(endTask),
-        task_type: parseInt(typeTask),
-        task_complexity: complexTask,
+        taskName: data.task_name,
+        taskAttr: data.taskAttr,
+        tat_startDate: parseInt(data.tat_taskStartdate, 10),
+        tat_endDate: parseInt(data.tat_taskDuedate, 10),
+        task_type: data.task_type,
+        task_complexity: data.task_complexity,
         status_id: 1,
       })
       .then(() => {
         getData();
-        setEditTask(false);
-        setErrorEmpty(false);
+        setAddNewTask(false);
       })
       .catch((error) => {
-        setErrorEmpty(true);
         console.log(error);
       });
   }
+
+  const scrollToTaskInput = () => {
+    taskInput.current.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -158,7 +133,7 @@ export default function TasksList({ milestoneId }) {
     setData(items);
 
     items.map((item, index) => {
-      if (parseInt(item.order_id) !== index + 1) {
+      if (parseInt(item.order_id, 10) !== index + 1) {
         api
           .put("/task-template/order/update", {
             taskId: item.task_id,
@@ -189,1107 +164,405 @@ export default function TasksList({ milestoneId }) {
         </div>
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                {data.map((item, index) => {
-                  return (
-                    <Draggable
-                      key={item.task_id + index}
-                      draggableId={item.task_id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          className="task-add task-details task-editing"
-                          key={item.task_id + index}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style,
-                          )}
-                        >
-                          <div className="item-mlstn-template item-task-template">
-                            {!editTask && item.task_id !== taskId && (
-                              <div className="m-avatar-col">
-                                <div className="task-members">
-                                  {item.user_id &&
-                                  +item.user_id !== 0 &&
-                                  getUser(item.user_id).avatar ? (
-                                    <img
-                                      className="avatar"
-                                      src={`${
-                                        import.meta.env.URL_API_SERVICE
-                                      }/file/src/?path=${
-                                        getUser(item.user_id).avatar
-                                      }`}
-                                    />
-                                  ) : (
-                                    <div className="avatar">
-                                      <span className="material-icons-outlined">
-                                        person
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                            <div className="m-title-col">
-                              {editTask && item.task_id == taskId ? (
-                                <input
-                                  type="text"
-                                  id="newTaskName"
-                                  name="taskName"
-                                  placeholder="Type Task name here..."
-                                  style={{ marginLeft: 0 }}
-                                  onChange={(event) =>
-                                    setNameTask(event.target.value)
-                                  }
-                                  defaultValue={item.task_name}
-                                />
-                              ) : (
-                                <p className="daysTask">{item.task_name}</p>
-                              )}
-
-                              {errorEmpty &&
-                                nameTask === "" &&
-                                item.task_id == taskId && (
-                                  <span className="msg-error">
-                                    Enter Task Name
-                                  </span>
-                                )}
-                            </div>
-                            <div className="m-start-col">
-                              {editTask && item.task_id == taskId ? (
-                                <input
-                                  type="number"
-                                  id="tat_startDate"
-                                  name="tat_startDate"
-                                  placeholder="Type the start TAT days"
-                                  style={{ marginLeft: 0 }}
-                                  min="0"
-                                  max="999"
-                                  onChange={(event) =>
-                                    setStartTask(event.target.value)
-                                  }
-                                  defaultValue={item.tat_taskStartdate}
-                                />
-                              ) : (
-                                <p className="daysTask">
-                                  Day {item.tat_taskStartdate}
-                                </p>
-                              )}
-                              {errorEmpty &&
-                                (startTask === "" || +startTask === 0) &&
-                                item.task_id == taskId && (
-                                  <span className="msg-error">
-                                    Enter Start Date
-                                  </span>
-                                )}
-                            </div>
-                            <div className="m-due-col">
-                              {editTask && item.task_id == taskId ? (
-                                <input
-                                  type="number"
-                                  id="tat_endDate"
-                                  name="tat_endDate"
-                                  min="0"
-                                  max="999"
-                                  placeholder="Type the end TAT days"
-                                  style={{ marginLeft: 0 }}
-                                  onChange={(event) =>
-                                    setEndTask(event.target.value)
-                                  }
-                                  defaultValue={item.tat_taskDuedate}
-                                />
-                              ) : (
-                                <p className="daysTask">
-                                  Day {item.tat_taskDuedate}
-                                </p>
-                              )}
-                              {errorEmpty &&
-                                (endTask === "" || +endTask === 0) &&
-                                item.task_id == taskId && (
-                                  <span className="msg-error">
-                                    Enter End Date
-                                  </span>
-                                )}
-                            </div>
-                            {!editTask || item.task_id !== taskId ? (
-                              <div className="m-actions-col">
-                                <div className="actions-btns">
-                                  <i
-                                    className="material-icons-outlined"
-                                    onClick={() => {
-                                      setEditTask(true);
-                                      setAddNewTask(false);
-                                      setErrorEmpty("");
-                                      setTaskId(item.task_id);
-                                      setNameTask(item.task_name);
-                                      setStartTask(item.tat_taskStartdate);
-                                      setEndTask(item.tat_taskDuedate);
-                                      setTypeTask(item.task_type);
-                                      setComplexTask(item.task_complexity);
-                                      setAtrrTask({
-                                        ...attrTask,
-                                        taskSkip: item.task_skipend === "1",
-                                        taskEditProcess:
-                                          item.engine_process === "1",
-                                        taskXMLUpload: item.xml_upload === "1",
-                                        taskLayout: item.tasks_layout === "1",
-                                        taskEngine: item.engine_process === "1",
-                                        taskStyleEditing:
-                                          item.tasks_style_editing === "1",
-                                        taskeProducts:
-                                          item.tasks_e_products === "1",
-                                        taskFinal: item.final_upload === "1",
-                                        taskBookEnd: item.task_bookend === "1",
-                                        taskpre_editing:
-                                          item.tasks_pre_editing === "1",
-                                        taskQuality: item.tasks_quality === "1",
-                                      });
-                                    }}
-                                  >
-                                    edit
-                                  </i>
-                                  <i
-                                    className="material-icons-outlined"
-                                    onClick={() => {
-                                      setTaskId(item.task_id);
-                                      setModalTaskDelete(true);
-                                    }}
-                                  >
-                                    delete
-                                  </i>
-                                  <i
-                                    className="material-icons-outlined drag-item"
-                                    {...provided.dragHandleProps}
-                                  >
-                                    drag_indicator
-                                  </i>
-                                </div>
-                              </div>
-                            ) : (
-                              <div
-                                className="actions-task actions-milestone align-right"
-                                colSpan="2"
-                              >
-                                <a
-                                  href="#"
-                                  className="cancel-milestone cancel-icon"
-                                  onClick={() => {
-                                    setTaskId("");
-                                    setEditTask(false);
-                                    setErrorEmpty(false);
-                                  }}
-                                >
-                                  <i className="material-icons-outlined ">
-                                    close
-                                  </i>
-                                </a>
-                                <i
-                                  className="material-icons-outlined"
-                                  onClick={() => {
-                                    setTaskId(item.task_id);
-                                    setModalTaskDelete(true);
-                                  }}
-                                >
-                                  delete
-                                </i>
-                                <a
-                                  onClick={() => updateTask()}
-                                  className="save-milestone save-icon btn-icon"
-                                >
-                                  <i className="material-icons-outlined">
-                                    save
-                                  </i>
-                                </a>
-                              </div>
-                            )}
-                          </div>
-                          {editTask && item.task_id === taskId && (
-                            <>
-                              <div>
-                                <div className="milestone-label">
-                                  Task Attributes
-                                </div>
-                                <div
-                                  className="taskRow"
-                                  style={{
-                                    flexWrap: "wrap",
-                                  }}
-                                >
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskSkip"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskSkip"
-                                      name="taskSkip"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskSkip: !attrTask.taskSkip,
-                                        });
-                                      }}
-                                      defaultChecked={item.task_skipend === "1"}
-                                    />
-                                    <span>Skip</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskEngine"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskEngine"
-                                      name="taskEngine"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskEngine: !attrTask.taskEngine,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.engine_process === "1"
-                                      }
-                                    />
-                                    <span>Engine Process</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskXMLUpload"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskXMLUpload"
-                                      name="taskXMLUpload"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskXMLUpload:
-                                            !attrTask.taskXMLUpload,
-                                        });
-                                      }}
-                                      defaultChecked={item.xml_upload === "1"}
-                                    />
-                                    <span>XML Upload</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskEditProcess"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskEditProcess"
-                                      name="taskEditProcess"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskEditProcess:
-                                            !attrTask.taskEditProcess,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.editing_process === "1"
-                                      }
-                                    />
-                                    <span>Edit Process</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskLayout"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskLayout"
-                                      name="taskLayout"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskLayout: !attrTask.taskLayout,
-                                        });
-                                      }}
-                                      defaultChecked={item.tasks_layout === "1"}
-                                    />
-                                    <span>Layout</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskStyleEditing"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskStyleEditing"
-                                      name="taskStyleEditing"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskStyleEditing:
-                                            !attrTask.taskStyleEditing,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.tasks_style_editing === "1"
-                                      }
-                                    />
-                                    <span>Style Editing</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskeProducts"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskeProducts"
-                                      name="taskeProducts"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskeProducts:
-                                            !attrTask.taskeProducts,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.tasks_e_products === "1"
-                                      }
-                                    />
-                                    <span>eProducts</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskFinal"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskFinal"
-                                      name="taskFinal"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskFinal: !attrTask.taskFinal,
-                                        });
-                                      }}
-                                      defaultChecked={item.final_upload === "1"}
-                                    />
-                                    <span>Final</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskBookEnd"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskBookEnd"
-                                      name="taskBookEnd"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskBookEnd: !attrTask.taskBookEnd,
-                                        });
-                                      }}
-                                      defaultChecked={item.task_bookend === "1"}
-                                    />
-                                    <span>Task Bookend</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskpre_editing"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskpre_editing"
-                                      name="taskpre_editing"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskpre_editing:
-                                            !attrTask.taskpre_editing,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.tasks_pre_editing === "1"
-                                      }
-                                    />
-                                    <span>Pre-editing</span>
-                                  </label>
-
-                                  <label
-                                    className="pure-material-checkbox"
-                                    htmlFor="taskQuality"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="project-checkbox"
-                                      id="taskQuality"
-                                      name="taskQuality"
-                                      onChange={() => {
-                                        setAtrrTask({
-                                          ...attrTask,
-                                          taskQuality: !attrTask.taskQuality,
-                                        });
-                                      }}
-                                      defaultChecked={
-                                        item.tasks_quality === "1"
-                                      }
-                                    />
-                                    <span>Quality</span>
-                                  </label>
-                                  {errorEmpty &&
-                                    !Object.entries(attrTask).filter(
-                                      ([key, value]) => value === true,
-                                    ).length > 0 &&
-                                    item.task_id == taskId && (
-                                      <span className="msg-error">
-                                        Select Task Attributes
-                                      </span>
-                                    )}
-                                </div>
-                              </div>
-                              <div
-                                className="taskRow"
-                                data-id="1"
-                                id="milestoneRow-1"
-                              >
-                                <div
-                                  className="milestone-type-col"
-                                  onChange={(e) => {
-                                    setTypeTask(e.target.value);
-                                  }}
-                                >
-                                  <div className="milestone-label">
-                                    Task Type
-                                  </div>
-                                  <div className="taskRow">
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="1"
-                                        id="internal"
-                                        name="taskType"
-                                        defaultChecked={item.task_type === "1"}
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="internal"
-                                      >
-                                        Internal
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="2"
-                                        id="external"
-                                        name="taskType"
-                                        defaultChecked={item.task_type === "2"}
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="external"
-                                      >
-                                        External
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="3"
-                                        id="pm"
-                                        name="taskType"
-                                        defaultChecked={item.task_type === "3"}
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="pm"
-                                      >
-                                        PM
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="4"
-                                        id="both"
-                                        name="taskType"
-                                        defaultChecked={item.task_type === "4"}
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="both"
-                                      >
-                                        Both
-                                      </label>
-                                    </div>
-                                  </div>
-                                  {errorEmpty &&
-                                    (typeTask === "" || +typeTask === 0) &&
-                                    item.task_id == taskId && (
-                                      <span className="msg-error">
-                                        Select Task Type
-                                      </span>
-                                    )}
-                                </div>
-                              </div>
-                              <div className="taskRow">
-                                <div
-                                  className="milestone-type-col milestone-complexity-col"
-                                  onChange={(e) => {
-                                    setComplexTask(e.target.value);
-                                  }}
-                                >
-                                  <div className="milestone-label">
-                                    Task Complexity
-                                  </div>
-                                  <div className="taskRow">
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="1"
-                                        id="simple"
-                                        name="taskComplexity"
-                                        defaultChecked={
-                                          item.task_complexity === "1"
-                                        }
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="simple"
-                                      >
-                                        Simple
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="2"
-                                        id="Medium"
-                                        name="taskComplexity"
-                                        defaultChecked={
-                                          item.task_complexity === "2"
-                                        }
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="Medium"
-                                      >
-                                        Medium
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="3"
-                                        id="complex"
-                                        name="taskComplexity"
-                                        defaultChecked={
-                                          item.task_complexity === "3"
-                                        }
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="complex"
-                                      >
-                                        Complex
-                                      </label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                      <input
-                                        type="radio"
-                                        className="custom-control-input"
-                                        value="4"
-                                        id="superComplex"
-                                        name="taskComplexity"
-                                        defaultChecked={
-                                          item.task_complexity === "4"
-                                        }
-                                      />
-                                      <label
-                                        className="custom-control-label"
-                                        htmlFor="superComplex"
-                                      >
-                                        Super Complex
-                                      </label>
-                                    </div>
-                                  </div>
-                                  {errorEmpty &&
-                                    (complexTask === "" ||
-                                      +complexTask === 0) &&
-                                    item.task_id == taskId && (
-                                      <span className="msg-error">
-                                        Select Task Complexity
-                                      </span>
-                                    )}
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          <DropComponent
+            data={data}
+            getItemStyle={getItemStyle}
+            setTaskId={setTaskId}
+            setAddNewTask={setAddNewTask}
+            setEditTask={setEditTask}
+            reset={reset}
+            getUser={getUser}
+            setModalTaskDelete={setModalTaskDelete}
+            scrollToTaskInput={scrollToTaskInput}
+          />
         </DragDropContext>
       )}
 
-      {addNewTask && (
-        <div className="task-add task-details task-editing">
-          <div className="taskRow " data-id="1" id="milestoneRow-1">
-            <div className="m-title-col">
-              <input
-                type="text"
-                id="newTaskName"
-                name="taskName"
-                placeholder="Type Task name here..."
-                style={{ marginLeft: 0 }}
-                onChange={(event) => setNameTask(event.target.value)}
-                value={nameTask}
-              />
-              {errorEmpty && nameTask === "" && (
-                <span className="msg-error">Enter Task Name</span>
-              )}
-            </div>
-            <div className="m-start-col ws">
-              <div className="content-date">
+      <div ref={taskInput}>
+        {addNewTask && (
+          <div className="task-add task-details task-editing">
+            <div className="taskRow " data-id="1" id="milestoneRow-1">
+              <div className="m-title-col">
                 <input
-                  type="number"
-                  id="tat_startDate"
-                  name="tat_startDate"
-                  placeholder="Type the start TAT days"
+                  type="text"
+                  id="newTaskName"
+                  name="task_name"
+                  placeholder="Type Task name here..."
                   style={{ marginLeft: 0 }}
-                  min="0"
-                  onChange={(event) => setStartTask(event.target.value)}
-                  value={startTask}
+                  {...register("task_name", { required: true })}
                 />
+                {errors.task_name && (
+                  <span className="msg-error">Enter Task Name</span>
+                )}
               </div>
-              {errorEmpty && (startTask === "" || +startTask === 0) && (
-                <span className="msg-error">Enter Start Date</span>
-              )}
-            </div>
-            <div className="m-due-col ws">
-              <div className="content-date">
-                {/* <div className="milestone-label">End Day</div> */}
-                <input
-                  type="number"
-                  id="tat_endDate"
-                  name="tat_endDate"
-                  min="0"
-                  placeholder="Type the end TAT days"
-                  style={{ marginLeft: 0 }}
-                  onChange={(event) => setEndTask(event.target.value)}
-                  value={endTask}
-                />
+              <div className="m-start-col ws">
+                <div className="content-date">
+                  <input
+                    type="number"
+                    id="tat_startDate"
+                    name="tat_taskStartdate"
+                    placeholder="Type the start TAT days"
+                    style={{ marginLeft: 0 }}
+                    min="0"
+                    {...register("tat_taskStartdate", { required: true })}
+                  />
+                </div>
+                {errors.tat_taskStartdate && (
+                  <span className="msg-error">Enter Start Date</span>
+                )}
               </div>
-              {errorEmpty && (endTask === "" || +endTask === 0) && (
-                <span className="msg-error">Enter End Date</span>
-              )}
+              <div className="m-due-col ws">
+                <div className="content-date">
+                  {/* <div className="milestone-label">End Day</div> */}
+                  <input
+                    type="number"
+                    id="tat_endDate"
+                    name="tat_taskDuedate"
+                    min="0"
+                    placeholder="Type the end TAT days"
+                    style={{ marginLeft: 0 }}
+                    {...register("tat_taskDuedate", { required: true })}
+                  />
+                </div>
+                {errors.tat_taskDuedate && (
+                  <span className="msg-error">Enter End Date</span>
+                )}
+              </div>
+              <div
+                className="actions-task  actions-milestone align-right"
+                colSpan="2"
+              >
+                <button
+                  type="button"
+                  className="cancel-milestone cancel-icon"
+                  onClick={() => {
+                    setAddNewTask(false);
+                  }}
+                >
+                  <i className="material-icons-outlined ">close</i>
+                </button>
+                {!editTask ? (
+                  <button
+                    type="button"
+                    onClick={handleSubmit(createTask)}
+                    className="save-milestone save-icon"
+                  >
+                    <i className="material-icons-outlined">save</i>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleSubmit(updateTask)}
+                    className="save-milestone save-icon"
+                  >
+                    <i className="material-icons-outlined">save</i>
+                  </button>
+                )}
+              </div>
             </div>
-            <div
-              className="actions-task  actions-milestone align-right"
-              colSpan="2"
-            >
-              <a
-                href="#"
-                className="cancel-milestone cancel-icon"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Cancel"
-                onClick={() => {
-                  setAddNewTask(false);
-                  setErrorEmpty(false);
+            <div>
+              <div className="milestone-label">Task Attributes</div>
+              <div
+                className="taskRow"
+                style={{
+                  flexWrap: "wrap",
                 }}
               >
-                <i className="material-icons-outlined ">close</i>
-              </a>
-              <a
-                onClick={() => createTask()}
-                className="save-milestone save-icon"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Save"
-              >
-                <i className="material-icons-outlined">save</i>
-              </a>
-            </div>
-          </div>
-          <div>
-            <div className="milestone-label">Task Attributes</div>
-            <div
-              className="taskRow"
-              style={{
-                flexWrap: "wrap",
-              }}
-            >
-              <label className="pure-material-checkbox" htmlFor="taskSkip">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskSkip"
-                  name="taskSkip"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskSkip: !attrTask.taskSkip,
-                    });
-                  }}
-                />
-                <span>Skip</span>
-              </label>
+                <label className="pure-material-checkbox" htmlFor="taskSkip">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskSkip"
+                    name="taskAttr[0]"
+                    value="taskSkip"
+                    {...register("taskAttr")}
+                  />
+                  <span>Skip</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskEngine">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskEngine"
-                  name="taskEngine"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskEngine: !attrTask.taskEngine,
-                    });
-                  }}
-                />
-                <span>Engine Process</span>
-              </label>
+                <label className="pure-material-checkbox" htmlFor="taskEngine">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskEngine"
+                    name="taskAttr[1]"
+                    value="taskEngine"
+                    {...register("taskAttr")}
+                  />
+                  <span>Engine Process</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskXMLUpload">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskXMLUpload"
-                  name="taskXMLUpload"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskXMLUpload: !attrTask.taskXMLUpload,
-                    });
-                  }}
-                />
-                <span>XML Upload</span>
-              </label>
+                <label
+                  className="pure-material-checkbox"
+                  htmlFor="taskXMLUpload"
+                >
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskXMLUpload"
+                    name="taskAttr[2]"
+                    value="taskXMLUpload"
+                    {...register("taskAttr")}
+                  />
+                  <span>XML Upload</span>
+                </label>
 
-              <label
-                className="pure-material-checkbox"
-                htmlFor="taskEditProcess"
-              >
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskEditProcess"
-                  name="taskEditProcess"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskEditProcess: !attrTask.taskEditProcess,
-                    });
-                  }}
-                />
-                <span>Edit Process</span>
-              </label>
+                <label
+                  className="pure-material-checkbox"
+                  htmlFor="taskEditProcess"
+                >
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskEditProcess"
+                    name="taskAttr[3]"
+                    value="taskEditProcess"
+                    {...register("taskAttr")}
+                  />
+                  <span>Edit Process</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskLayout">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskLayout"
-                  name="taskLayout"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskLayout: !attrTask.taskLayout,
-                    });
-                  }}
-                />
-                <span>Layout</span>
-              </label>
+                <label className="pure-material-checkbox" htmlFor="taskLayout">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskLayout"
+                    name="taskAttr[4]"
+                    value="taskLayout"
+                    {...register("taskAttr")}
+                  />
+                  <span>Layout</span>
+                </label>
 
-              <label
-                className="pure-material-checkbox"
-                htmlFor="taskStyleEditing"
-              >
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskStyleEditing"
-                  name="taskStyleEditing"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskStyleEditing: !attrTask.taskStyleEditing,
-                    });
-                  }}
-                />
-                <span>Style Editing</span>
-              </label>
+                <label
+                  className="pure-material-checkbox"
+                  htmlFor="taskStyleEditing"
+                >
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskStyleEditing"
+                    name="taskAttr[5]"
+                    value="taskStyleEditing"
+                    {...register("taskAttr")}
+                  />
+                  <span>Style Editing</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskeProducts">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskeProducts"
-                  name="taskeProducts"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskeProducts: !attrTask.taskeProducts,
-                    });
-                  }}
-                />
-                <span>eProducts</span>
-              </label>
+                <label
+                  className="pure-material-checkbox"
+                  htmlFor="taskeProducts"
+                >
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskeProducts"
+                    name="taskAttr[6]"
+                    value="taskeProducts"
+                    {...register("taskAttr")}
+                  />
+                  <span>eProducts</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskFinal">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskFinal"
-                  name="taskFinal"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskFinal: !attrTask.taskFinal,
-                    });
-                  }}
-                />
-                <span>Final</span>
-              </label>
+                <label className="pure-material-checkbox" htmlFor="taskFinal">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskFinal"
+                    name="taskAttr[7]"
+                    value="taskFinal"
+                    {...register("taskAttr")}
+                  />
+                  <span>Final</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskBookEnd">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskBookEnd"
-                  name="taskBookEnd"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskBookEnd: !attrTask.taskBookEnd,
-                    });
-                  }}
-                />
-                <span>Task Bookend</span>
-              </label>
+                <label className="pure-material-checkbox" htmlFor="taskBookEnd">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskBookEnd"
+                    name="taskAttr[8]"
+                    value="taskBookEnd"
+                    {...register("taskAttr")}
+                  />
+                  <span>Task Bookend</span>
+                </label>
 
-              <label
-                className="pure-material-checkbox"
-                htmlFor="taskpre_editing"
-              >
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskpre_editing"
-                  name="taskpre_editing"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskpre_editing: !attrTask.taskpre_editing,
-                    });
-                  }}
-                />
-                <span>Pre-editing</span>
-              </label>
+                <label
+                  className="pure-material-checkbox"
+                  htmlFor="taskpre_editing"
+                >
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskpre_editing"
+                    name="taskAttr[9]"
+                    value="taskpre-editing"
+                    {...register("taskAttr")}
+                  />
+                  <span>Pre-editing</span>
+                </label>
 
-              <label className="pure-material-checkbox" htmlFor="taskQuality">
-                <input
-                  type="checkbox"
-                  className="project-checkbox"
-                  id="taskQuality"
-                  name="taskQuality"
-                  onChange={() => {
-                    setAtrrTask({
-                      ...attrTask,
-                      taskQuality: !attrTask.taskQuality,
-                    });
-                  }}
-                />
-                <span>Quality</span>
-              </label>
-            </div>
-            {errorEmpty &&
-              !Object.entries(attrTask).filter(([key, value]) => value === true)
-                .length > 0 && (
+                <label className="pure-material-checkbox" htmlFor="taskQuality">
+                  <input
+                    type="checkbox"
+                    className="project-checkbox"
+                    id="taskQuality"
+                    name="taskAttr[10]"
+                    {...register("taskAttr")}
+                  />
+                  <span>Quality</span>
+                </label>
+              </div>
+              {errors.taskAttr && (
                 <span className="msg-error">Select Task Attributes</span>
               )}
-          </div>
-          <div className="taskRow" data-id="1" id="milestoneRow-1">
-            <div
-              className="milestone-type-col"
-              onChange={(e) => {
-                setTypeTask(e.target.value);
-              }}
-            >
-              <div className="milestone-label">Task Type</div>
-              <div className="taskRow">
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="1"
-                    id="internal"
-                    name="taskType"
-                  />
-                  <label className="custom-control-label" htmlFor="internal">
-                    Internal
-                  </label>
+            </div>
+            <div className="taskRow" data-id="1" id="milestoneRow-1">
+              <div className="milestone-type-col">
+                <div className="milestone-label">Task Type</div>
+                <div className="taskRow">
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value="1"
+                      id="internal"
+                      name="task_type"
+                      {...register("task_type", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="internal">
+                      Internal
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value="2"
+                      id="external"
+                      name="task_type"
+                      {...register("task_type", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="external">
+                      External
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value="3"
+                      id="pm"
+                      name="task_type"
+                      {...register("task_type", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="pm">
+                      PM
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value="4"
+                      id="both"
+                      name="task_type"
+                      {...register("task_type", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="both">
+                      Both
+                    </label>
+                  </div>
                 </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="2"
-                    id="external"
-                    name="taskType"
-                  />
-                  <label className="custom-control-label" htmlFor="external">
-                    External
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="3"
-                    id="pm"
-                    name="taskType"
-                  />
-                  <label className="custom-control-label" htmlFor="pm">
-                    PM
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="4"
-                    id="both"
-                    name="taskType"
-                  />
-                  <label className="custom-control-label" htmlFor="both">
-                    Both
-                  </label>
-                </div>
+                {errors.task_type && (
+                  <span className="msg-error">Select Task Type</span>
+                )}
               </div>
-              {errorEmpty && (typeTask === "" || +typeTask === 0) && (
-                <span className="msg-error">Select Task Type</span>
-              )}
+            </div>
+            <div className="taskRow">
+              <div className="milestone-type-col milestone-complexity-col">
+                <div className="milestone-label">Task Complexity</div>
+                <div className="taskRow">
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value={1}
+                      id="simple"
+                      name="task_complexity"
+                      {...register("task_complexity", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="simple">
+                      Simple
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value={2}
+                      id="Medium"
+                      name="task_complexity"
+                      {...register("task_complexity", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="Medium">
+                      Medium
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value={3}
+                      id="complex"
+                      name="task_complexity"
+                      {...register("task_complexity", { required: true })}
+                    />
+                    <label className="custom-control-label" htmlFor="complex">
+                      Complex
+                    </label>
+                  </div>
+                  <div className="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      className="custom-control-input"
+                      value={4}
+                      id="superComplex"
+                      name="task_complexity"
+                      {...register("task_complexity", { required: true })}
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor="superComplex"
+                    >
+                      Super Complex
+                    </label>
+                  </div>
+                </div>
+                {errors.task_complexity && (
+                  <span className="msg-error">Select Task Complexity</span>
+                )}
+              </div>
             </div>
           </div>
-          <div className="taskRow">
-            <div
-              className="milestone-type-col milestone-complexity-col"
-              onChange={(e) => {
-                setComplexTask(e.target.value);
-              }}
-            >
-              <div className="milestone-label">Task Complexity</div>
-              <div className="taskRow">
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="1"
-                    id="simple"
-                    name="taskComplexity"
-                    defaultChecked={complexTask === "1"}
-                  />
-                  <label className="custom-control-label" htmlFor="simple">
-                    Simple
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="2"
-                    id="Medium"
-                    name="taskComplexity"
-                    defaultChecked={complexTask === "2"}
-                  />
-                  <label className="custom-control-label" htmlFor="Medium">
-                    Medium
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="3"
-                    id="complex"
-                    name="taskComplexity"
-                    defaultChecked={complexTask === "3"}
-                  />
-                  <label className="custom-control-label" htmlFor="complex">
-                    Complex
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    value="4"
-                    id="superComplex"
-                    name="taskComplexity"
-                    defaultChecked={complexTask === "4"}
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="superComplex"
-                  >
-                    Super Complex
-                  </label>
-                </div>
-              </div>
-              {errorEmpty && (complexTask === "" || +typeTask === 0) && (
-                <span className="msg-error">Select Task Complexity</span>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="secondary-navigation">
         <button
+          type="button"
           className="add-task"
           onClick={() => {
             setAddNewTask(true);
-            setNameTask("");
-            setTypeTask("");
-            setComplexTask("");
-            setStartTask("");
-            setEndTask("");
             setEditTask(false);
+            reset({
+              task_name: "",
+              tat_taskStartdate: "",
+              tat_taskDuedate: "",
+              task_type: "",
+              task_complexity: "",
+            });
           }}
         >
           <i className="material-icons-outlined">add</i>
@@ -1314,5 +587,145 @@ export default function TasksList({ milestoneId }) {
         }}
       />
     </>
+  );
+}
+
+function DropComponent({
+  data,
+  getItemStyle,
+  getUser,
+  setTaskId,
+  setEditTask,
+  setAddNewTask,
+  setModalTaskDelete,
+  reset,
+  scrollToTaskInput,
+}) {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+
+  if (!enabled) {
+    return null;
+  }
+
+  return (
+    <Droppable droppableId="droppableID">
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+          {data.map((item, index) => {
+            return (
+              <Draggable
+                key={item.task_id}
+                draggableId={item.task_id}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    className="task-add task-details task-editing"
+                    key={item.task_id}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getItemStyle(
+                      snapshot.isDragging,
+                      provided.draggableProps.style,
+                    )}
+                  >
+                    <div className="item-mlstn-template item-task-template">
+                      <div className="m-avatar-col">
+                        <div className="task-members">
+                          {item.user_id &&
+                          +item.user_id !== 0 &&
+                          getUser(item.user_id).avatar ? (
+                            <img
+                              alt={item.task.user_id}
+                              className="avatar"
+                              src={`${
+                                import.meta.env.URL_API_SERVICE
+                              }/file/src/?path=${getUser(item.user_id).avatar}`}
+                            />
+                          ) : (
+                            <div className="avatar">
+                              <i className="material-icons-outlined">person</i>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="m-title-col">
+                        <p className="daysTask">{item.task_name}</p>
+                      </div>
+                      <div className="m-start-col">
+                        <p className="daysTask">Day {item.tat_taskStartdate}</p>
+                      </div>
+                      <div className="m-due-col">
+                        <p className="daysTask">Day {item.tat_taskDuedate}</p>
+                      </div>
+                      <div className="m-actions-col">
+                        <div className="actions-btns">
+                          <button
+                            onClick={() => {
+                              setAddNewTask(true);
+                              setEditTask(true);
+                              reset({
+                                ...item,
+                                taskAttr: [
+                                  item.tasks_pre_editing !== "0" &&
+                                    "taskpre-editing",
+                                  item.tasks_layout !== "0" && "taskLayout",
+                                  item.task_skipend !== "0" && "taskSkip",
+                                  item.engine_process !== "0" &&
+                                    "taskEditProcess",
+                                  item.xml_upload !== "0" && "taskXMLUpload",
+                                  item.engine_process !== "0" && "taskEngine",
+                                  item.tasks_style_editing !== "0" &&
+                                    "taskStyleEditing",
+                                  item.tasks_e_products !== "0" &&
+                                    "taskeProducts",
+                                  item.task_bookend !== "0" && "taskBookEnd",
+                                  item.tasks_quality !== "0" && "taskQuality",
+                                ],
+                              });
+                              scrollToTaskInput();
+                              setTaskId(item.task_id);
+                            }}
+                            type="button"
+                          >
+                            <i className="material-icons-outlined">edit</i>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setTaskId(item.task_id);
+                              setModalTaskDelete(true);
+                            }}
+                            type="button"
+                          >
+                            <i className="material-icons-outlined">delete</i>
+                          </button>
+
+                          <i
+                            className="material-icons-outlined drag-item"
+                            {...provided.dragHandleProps}
+                          >
+                            drag_indicator
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Draggable>
+            );
+          })}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 }
