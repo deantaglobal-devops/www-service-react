@@ -35,6 +35,7 @@ export default function AddBookModal({
     categoryList: false,
     fileUpload: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // create a ref for the file input
   const inputRef = useRef(null);
@@ -125,7 +126,7 @@ export default function AddBookModal({
   const handleUpload = () => {
     if (
       data?.projectCode !== "" &&
-      data?.file?.fileData !== "" &&
+      data?.file.length > 0 &&
       data?.categoryList?.id !== ""
     ) {
       // let value = 0;
@@ -196,6 +197,7 @@ export default function AddBookModal({
     });
 
     const token = localStorage.getItem("lanstad-token");
+    setIsLoading(true);
 
     // For this endpoint we need to use fetch instead of axios.
     // Headers is not being created properly using axios
@@ -228,8 +230,10 @@ export default function AddBookModal({
         },
         (error) => {
           console.log("error", error);
+          setIsLoading(false);
         },
       );
+    setIsLoading(false);
   };
 
   const removeFileFromDragAndDropArea = (fileToBeRemoved) => {
@@ -391,7 +395,16 @@ export default function AddBookModal({
               className="btn btn-outline-primary"
               onClick={() => handleUpload()}
             >
-              Upload
+              {isLoading ? (
+                <>
+                  <i className="material-icons-outlined loading-icon-button">
+                    sync
+                  </i>{" "}
+                  Uploading
+                </>
+              ) : (
+                "Upload"
+              )}
             </button>
           </div>
         </>
