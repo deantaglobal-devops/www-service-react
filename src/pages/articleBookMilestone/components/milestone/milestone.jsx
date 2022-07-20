@@ -604,7 +604,7 @@ export default function Milestone({
           showFailToast={(message) => showFailToast(message)}
         />
       )}
-      <div className="col-lg-12">
+      <div className="w-100">
         {projectData?.milestones?.length > 0 &&
         !!parseInt(permissions?.milestones?.view) ? (
           <>
