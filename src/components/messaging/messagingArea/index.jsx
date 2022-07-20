@@ -457,10 +457,24 @@ function messagingArea({ ...props }) {
     return response;
   }
 
+  // Handling address emails
+  function handleStrArr(arr) {
+    if (arr) {
+      return arr?.replace(/\s/g, "").split(",").filter(Boolean);
+    }
+    return [];
+  }
+
   async function sendChat(data, mail) {
     let messageId = "";
     let attachments = [];
     let attachmentsIds = [];
+
+    let toAddress = handleStrArr(data.to.replace(" ", ""));
+
+    if (data.alertMembers) {
+      toAddress = toAddress.concat(memberList.map((user) => user.email));
+    }
 
     const attachmentsMerge = [...attachmentList, ...attachsAssetList];
     if (attachmentsMerge.length > 0) {
@@ -493,7 +507,7 @@ function messagingArea({ ...props }) {
         ),
         creatorId: user.id,
         attachments: attachmentsIds,
-        emailTo: data.to.replace(" ", ""),
+        emailTo: toAddress.length > 0 ? toAddress.join(", ") : "",
         emailCC: data.ccs.replace(" ", ""),
         alertedIds: memberList.map((user) => user.id).join(","),
         message_id_related: replyMsgId,
@@ -521,14 +535,6 @@ function messagingArea({ ...props }) {
 
   async function sendMail(data, attachments, messageId) {
     setLoading("send");
-
-    // Handling address emails
-    function handleStrArr(arr) {
-      if (arr) {
-        return arr?.replace(/\s/g, "").split(",").filter(Boolean);
-      }
-      return [];
-    }
 
     let ccsAddress = handleStrArr(data.ccs);
     const bccsAddress = handleStrArr(data.bccs);
