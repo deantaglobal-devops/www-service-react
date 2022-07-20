@@ -262,8 +262,8 @@ li span i {
 
 .lvl-1 {
   height: 560px;
-  max-width: 258px;
-  max-width: 255px;
+  max-width: 258px !important;
+  max-width: 255px !important;
   width: 100%;
 }
 
@@ -419,6 +419,7 @@ tr.milestoneRow {
 }
 
 .open-item {
+  line-height: 0 !important;
   all: unset;
   padding: 6px;
   border: 1px dashed transparent;
@@ -442,7 +443,8 @@ tr.milestoneRow {
 }
 
 .drag-item {
-  cursor: grab;
+  cursor: grab !important;
+  font-size: 20px;
   transition: 400ms all ease;
 }
 
