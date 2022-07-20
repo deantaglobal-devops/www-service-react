@@ -559,6 +559,9 @@ li.attachments-uploaded-item span.name {
 
 .options {
   padding: 20px 10px 10px;
+  background: #ffffff;
+  position: relative;
+  border-top: 1px solid #eee;
 }
 
 .options input,
