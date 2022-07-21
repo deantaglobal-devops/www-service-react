@@ -310,3 +310,9 @@ i.zipfile-download {
   position: absolute;
   bottom: 25px;
 }
+
+ul.list-link li {
+  color: var(--blue);
+  font-weight: 400;
+  cursor: pointer;
+}
