@@ -1039,3 +1039,7 @@ div.deanta-button-container span.deanta-more-buttons-dots {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.border-1 {
+  border: 1px solid !important;
+}

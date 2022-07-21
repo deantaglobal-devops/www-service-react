@@ -210,6 +210,7 @@ export default function Milestone({
 
   const changeTaskStatus = async (_action, _taskId, _status) => {
     setIsLoading(true);
+    let isCompleted = false;
     await api
       .post("/task/change/status", {
         action: _action,
@@ -292,12 +293,22 @@ export default function Milestone({
             updateCurrentTaskCol(milestoneId, activeTaskId);
           }
         }
-
+        isCompleted = true;
         // toggleMilestone(milestoneId);
         getMilestoneData(milestoneId);
       })
       .catch((err) => console.log(err));
     setIsLoading(false);
+    if(isCompleted && _action === 'finish') {
+      api.post("task/ce/level/assess", {
+        taskId: _taskId,
+        projectId: projectData.projectId,
+        chapterId:0 
+      }).then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.log(err));
+    }
   };
 
   const confirmReject = (_taskId) => {

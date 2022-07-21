@@ -117,3 +117,11 @@ a.link {
   color: var(--primary) !important;
   cursor: pointer;
 }
+
+.proba-modal .modal-content-container {
+  width: 430px;
+}
+
+.proba-modal{
+  font-size: 12px;
+}
