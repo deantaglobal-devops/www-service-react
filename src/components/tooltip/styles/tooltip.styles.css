@@ -13,6 +13,7 @@
   position: relative;
   line-height: 0;
   z-index: 999 !important;
+  width: 100%;
 }
 
 .Tooltip-Wrapper.behind {
@@ -119,7 +120,9 @@
 }
 
 .max-wdth {
-  max-width: 90%;
+  left: 0;
+  transform: translate(0, 10%);
+  max-width: 95%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
