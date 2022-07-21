@@ -14,7 +14,7 @@
 .modal-main {
   position: fixed;
   background: white;
-  width: 70%;
+  width: 70% !important;
   height: auto;
   overflow-y: initial !important;
   top: 50%;

@@ -5,3 +5,11 @@
   gap: 10px;
   margin-top: auto;
 }
+
+.footer-btn {
+  position: sticky;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  bottom: 0;
+  background-color: #fff;
+}

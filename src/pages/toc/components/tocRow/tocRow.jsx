@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../../../services/api";
+import { downloadFile } from "../../../../utils/downloadFile";
 
 export default function TocRow({
   permissions,
@@ -10,6 +11,7 @@ export default function TocRow({
   handleDeleteModal,
   handleChapterSelected,
   allChaptersSelected,
+  showCopyEditlevel,
 }) {
   const [chapterSelected, setChapterSelected] = useState(false);
 
@@ -27,17 +29,14 @@ export default function TocRow({
   const handleDownload = async (e, filePath) => {
     e.preventDefault();
 
-    await api.get(`/file/get?path=${filePath}`).then((response) => {
-      const a = document.createElement("a"); // Create <a>
-      a.href = `data:application/octet-stream;base64,${response.data.content}`; // File Base64 Goes here
-      a.download = response.data.file_name; // File name Here
-      a.click(); // Downloaded file
-    });
+    if (filePath) {
+      downloadFile(filePath);
+    }
   };
 
   return (
     <>
-      {!!parseInt(permissions?.toc.edit) && (
+      {!!parseInt(permissions?.toc?.edit) && (
         <td className="ws toc-checkbox-item">
           <i
             {...dragHandleProps}
@@ -94,6 +93,10 @@ export default function TocRow({
         <span className="chapterTitleElement">
           {chapter.name == "" ? "Untitled" : chapter.name}
         </span>
+      </td>
+
+      <td className="chapter-name">
+        <button type="button" onClick={(e) => showCopyEditlevel(e, chapter)} className="btn btn-outline-primary ml-2 border-1" >View</button>
       </td>
 
       {!!parseInt(permissions?.toc.edit) && (

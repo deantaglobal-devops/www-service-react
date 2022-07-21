@@ -8,6 +8,10 @@ import DashboardFilter from "./components/Filter/dashboardFilter";
 import Layout from "../../components/layout/Layout";
 import Loading from "../../components/loader/Loading";
 
+// remove it after demo
+import AddBookModal from "./components/addBookModal/addBookModal";
+import testBook from "../../assets/testBook.jpg";
+
 import "./styles/projectsDashboard.styles.css";
 
 export function ProjectsDashboard() {
@@ -19,6 +23,9 @@ export function ProjectsDashboard() {
   const [filterValues, setFilterValues] = useState([]);
   const [projects, setProjects] = useState([]);
 
+  // remove it after demo
+  const [openAddBookModal, setOpenAddBookModal] = useState(false);
+
   const limit = 29;
 
   const { user, permissions } = useAuth();
@@ -29,8 +36,124 @@ export function ProjectsDashboard() {
       projectType === "books" ? "Books" : "Journals"
     }`;
 
-    // fetching projects data
-    handleProjectsData();
+    const booksForDemo = [
+      {
+        author:
+          "Martin Locret-Collet, Simon Springer, Jennifer Mateer, and Maleea Acker",
+        bookcode: "INEM",
+        client: "Bloomsbury",
+        clientId: 9,
+        endDate: "31-08-2022",
+        id: 248166,
+        indexer: "",
+        isbn: "567547567865891321535",
+        milestones: [
+          {
+            id: 156380,
+            percentage: 0,
+            milestoneTitle: "Project analysis and scheduling",
+            milestoneStart: "30-06-2022",
+            milestoneEnd: "02-07-2022",
+          },
+          {
+            id: 156381,
+            percentage: 0,
+            milestoneTitle: "Copy editing",
+            milestoneStart: "04-07-2022",
+            milestoneEnd: "09-08-2022",
+          },
+        ],
+        percent: 26,
+        productionEditor: "Jaffar",
+        projectImage:
+          "https://images.unsplash.com/photo-1639690283395-b62444cf9a76?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        projectManager: "Tech Support Deanta",
+        projectType: "LXE",
+        startDate: "30-06-2022",
+        template: "",
+        title: "New field books",
+      },
+      {
+        author:
+          "Martin Locret-Collet, Simon Springer, Jennifer Mateer, and Maleea Acker",
+        bookcode: "INEM",
+        client: "Rowman and Littlefield",
+        clientId: 12,
+        endDate: "23-09-2022",
+        id: 248165,
+        indexer: "",
+        isbn: "9781538159100",
+        milestones: [
+          {
+            id: 156360,
+            percentage: 0,
+            milestoneTitle: "Project analysis and scheduling",
+            milestoneStart: "23-06-2022",
+            milestoneEnd: "27-06-2022",
+          },
+          {
+            id: 156361,
+            percentage: 0,
+            milestoneTitle: "Copy-Editing",
+            milestoneStart: "28-06-2022",
+            milestoneEnd: "06-07-2022",
+          },
+        ],
+        percent: 40,
+        productionEditor: "Mary Wheelehan",
+        projectImage:
+          "https://images.unsplash.com/photo-1621827979802-6d778e161b28?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        projectManager: "Tech Support Deanta",
+        projectType: "LXE",
+        startDate: "23-06-2022",
+        template: "RL_Rowman 01_6x9_v2_BA_for_typecoded_324x520.7",
+        title: "Locret-Collet  et al_9781538159100",
+      },
+      {
+        author: "Lisa LaMonica",
+        bookcode: "WIPR",
+        client: "Rowman and Littlefield",
+        clientId: 12,
+        endDate: "23-09-2022",
+        id: 248164,
+        indexer: "",
+        isbn: "9789354401572",
+        milestones: [
+          {
+            id: 156352,
+            percentage: 0,
+            milestoneTitle: "Project analysis and scheduling",
+            milestoneStart: "23-06-2022",
+            milestoneEnd: "27-06-2022",
+          },
+          {
+            id: 156353,
+            percentage: 0,
+            milestoneTitle: "Copy-Editing",
+            milestoneStart: "28-06-2022",
+            milestoneEnd: "06-07-2022",
+          },
+        ],
+        percent: 20,
+        productionEditor: "Jehanne Schweitzer",
+        projectImage:
+          "https://images.unsplash.com/photo-1612541831162-96d8fe7558f9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        projectManager: "Tech Support Deanta",
+        projectType: "LXE",
+        startDate: "23-06-2022",
+        template: "RL_Rowman 01_6x9_v2_BA_for_typecoded_324x520.7",
+        title: "DST book project",
+      },
+    ];
+
+    // remove it after demo
+    if (user?.id === 15331) {
+      setFilterProjects(booksForDemo);
+      getFilterValues(booksForDemo);
+    } else {
+      // fetching projects data
+      handleProjectsData();
+    }
   }, [projectType]);
 
   const getFilterValues = (projects) => {
@@ -123,6 +246,14 @@ export function ProjectsDashboard() {
     }
   };
 
+  const handleAddBook = () => {
+    setOpenAddBookModal(true);
+  };
+
+  const handleOnCloseAddBookModal = () => {
+    setOpenAddBookModal(false);
+  };
+
   return (
     <Layout
       iconActive={projectType === "books" ? "Books" : "Journals"}
@@ -130,6 +261,19 @@ export function ProjectsDashboard() {
       user={user}
     >
       {isLoading && <Loading loadingText="loading..." />}
+
+      {/* remove it after demo
+        remove AddBookModal
+      */}
+      {openAddBookModal && (
+        <AddBookModal
+          openAddBookModal={openAddBookModal}
+          handleOnCloseAddBookModal={() => handleOnCloseAddBookModal()}
+          // handleAddNewProject={(projectCode, category, file) =>
+          //   handleAddNewProject(projectCode, category, file)
+          // }
+        />
+      )}
 
       {/* Header */}
       <div className="page-header row no-gutters pt-4">
@@ -152,8 +296,8 @@ export function ProjectsDashboard() {
       </div>
       {/* End Header */}
 
-      <div className="d-flex mb-2 mt-2 buttons-project-dashboard-container">
-        <div className="nav-tags p-0">
+      <div className="d-flex align-items-center row mb-2 mt-2">
+        <div className="nav-tags col-9 pl-0">
           <Link
             to={
               projectType === "books"
@@ -172,16 +316,32 @@ export function ProjectsDashboard() {
           </Link>
         </div>
 
+        {/* user for demo purpose
+          remove it after demo
+        */}
+        {user?.id === 15331 && (
+          <button
+            type="button"
+            className="btn btn-outline-primary add-book mt-3 mr-3"
+            onClick={() => handleAddBook()}
+          >
+            Add Book
+          </button>
+        )}
+
         {filterValues && (
           <DashboardFilter
             values={filterValues}
             selectedProject={handleProjectSelected}
+            userId={user?.id}
           />
         )}
       </div>
 
       <div className="row" id="projects-card-container">
         {filterProjects?.slice(start, start + limit).map((project) => (
+          // remove it after demo
+          // remove userId
           <DashboardCard
             project={project}
             permissions={permissions}
@@ -189,6 +349,7 @@ export function ProjectsDashboard() {
             key={project.id}
             cardHovered={cardHovered}
             isBook={projectType === "books"}
+            userId={user?.id}
           />
         ))}
 

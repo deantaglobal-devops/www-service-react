@@ -6,6 +6,7 @@ import "./styles/dashboardFilter.styles.css";
 export default function DashboardFilter({
   values,
   selectedProject = () => {},
+  userId,
 }) {
   const [clientSelected, setClientSelected] = useState({
     id: 0,
@@ -22,19 +23,39 @@ export default function DashboardFilter({
   };
 
   return (
-    <div className="w-full p-0 dashboard-filters">
-      <div className="">
-        <Dropdown
-          label="Client"
-          name="companyFilter"
-          id="companyFilter"
-          value={clientSelected?.value}
-          valuesDropdown={values}
-          handleOnChange={(e) => handleOnChange(e)}
-          iconName="keyboard_arrow_down"
-          iconClassName="material-icons"
-        />
-      </div>
-    </div>
+    <>
+      {/* remove it after demo */}
+      {userId === 15331 ? (
+        <div className="filter-container">
+          <div className="">
+            <Dropdown
+              label="Client"
+              name="companyFilter"
+              id="companyFilter"
+              value={clientSelected?.value}
+              valuesDropdown={values}
+              handleOnChange={(e) => handleOnChange(e)}
+              iconName="keyboard_arrow_down"
+              iconClassName="material-icons"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="col-3 w-full">
+          <div className="">
+            <Dropdown
+              label="Client"
+              name="companyFilter"
+              id="companyFilter"
+              value={clientSelected?.value}
+              valuesDropdown={values}
+              handleOnChange={(e) => handleOnChange(e)}
+              iconName="keyboard_arrow_down"
+              iconClassName="material-icons"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

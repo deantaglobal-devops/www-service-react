@@ -22,3 +22,15 @@ iframe {
 .title-pro-editor {
   max-width: 110ch;
 }
+
+iframe#iframe-id {
+  transition: 400ms ease all;
+  height: calc(100% - 80px);
+  z-index: 999 !important;
+  top: 130px;
+}
+
+.focus-mode-up {
+  top: 0px !important;
+  height: calc(100% + 80px) !important;
+}

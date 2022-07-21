@@ -20,6 +20,13 @@
   margin: 0;
 }
 
+.task-details input:focus {
+  border: 1px solid var(--blue);
+}
+
+.task-details.task-details-milestones > div {
+  margin-right: 10px !important;
+}
 .task-details > div {
   overflow: hidden;
   margin-right: 10px;
@@ -120,7 +127,7 @@
   transition: opacity ease 0.2s;
   opacity: 0;
   border: 0px;
-  cursor: pointer;
+  cursor: grab;
   background-color: transparent;
   color: var(--secondary);
   margin-right: -0.5rem;
@@ -128,6 +135,10 @@
   display: flex;
   position: absolute;
   right: -4px;
+}
+
+.dragger-column i {
+  font-size: 25px !important;
 }
 
 .task-details:hover .dragger-column {
@@ -155,7 +166,12 @@
   pointer-events: all;
 }
 
-[id*='milestoneDetails'] .task-editing input {
+[id*="milestoneDetails"] {
+  cursor: default;
+  color: var(--dark) !important;
+}
+
+[id*="milestoneDetails"] .task-editing input {
   pointer-events: all !important;
   padding: 10px 10px 8px;
   font-size: 12px;
@@ -296,7 +312,7 @@
 }
 
 .avatar-task::after {
-  content: '';
+  content: "";
   background-color: var(--secondary);
   display: block;
   width: 100%;
@@ -408,7 +424,7 @@ Task Members Section
   border: var(--border-thickness) var(--background-color) solid;
   border-radius: var(--image-size);
 
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   position: absolute;
@@ -428,7 +444,7 @@ Task Members Section
     Member List Cards Wrapper
 */
 
-[id*='taskId'] ul.member-list {
+[id*="taskId"] ul.member-list {
   max-height: unset;
   overflow: unset;
 
@@ -438,7 +454,7 @@ Task Members Section
   align-items: stretch;
 }
 
-[id*='taskId'] ul.member-list.simple {
+[id*="taskId"] ul.member-list.simple {
   max-width: 200px;
 }
 
@@ -448,7 +464,7 @@ Task Members Section
     // Purposefully being over discriptive and using .ss class to "scope" the CSS to this component only.
 */
 
-[id*='taskId'] ul.member-list li img {
+[id*="taskId"] ul.member-list li img {
   --imageSize: 35px;
   width: var(--imageSize);
   height: var(--imageSize);
@@ -465,25 +481,25 @@ Task Members Section
   color: white;
 }
 
-[id*='taskId'] ul.member-list li > div {
+[id*="taskId"] ul.member-list li > div {
   display: flex;
   flex-direction: column;
 }
 
-[id*='taskId'] ul.member-list li h3 {
+[id*="taskId"] ul.member-list li h3 {
   color: var(--dark);
   font-size: 12px;
   line-height: unset;
   margin-bottom: 0;
 }
 
-[id*='taskId'] ul.member-list li p.role {
+[id*="taskId"] ul.member-list li p.role {
   margin-bottom: 0;
   color: var(--secondary);
   font-size: 9px;
 }
 
-[id*='taskId'] ul.member-list li button.remove-user {
+[id*="taskId"] ul.member-list li button.remove-user {
   opacity: 0;
   margin-left: auto;
   border-radius: 20vh;
@@ -495,29 +511,29 @@ Task Members Section
   display: flex;
 }
 
-[id*='taskId'] ul.member-list li button.remove-user i {
+[id*="taskId"] ul.member-list li button.remove-user i {
   position: relative !important;
   right: unset;
   top: unset !important;
   transition: color 0.2s ease;
 }
 
-[id*='taskId'] ul.member-list li button.remove-user:focus i,
-[id*='taskId'] ul.member-list li button.remove-user:hover i {
+[id*="taskId"] ul.member-list li button.remove-user:focus i,
+[id*="taskId"] ul.member-list li button.remove-user:hover i {
   color: var(--dark);
 }
 
-[id*='taskId'] ul.member-list li:hover button.remove-user,
-[id*='taskId'] ul.member-list li:focus-within button.remove-user {
+[id*="taskId"] ul.member-list li:hover button.remove-user,
+[id*="taskId"] ul.member-list li:focus-within button.remove-user {
   opacity: 1;
 }
 
-[id*='taskId'] ul.member-list li.simple {
+[id*="taskId"] ul.member-list li.simple {
   max-height: unset;
   box-shadow: unset;
 }
 
-[id*='taskId'] .secondary-navigation {
+[id*="taskId"] .secondary-navigation {
   margin: 0 !important;
   display: flex;
   align-items: center;
@@ -527,7 +543,7 @@ Task Members Section
   align-items: self-start;
 }
 
-[id*='taskId'] .secondary-navigation > button {
+[id*="taskId"] .secondary-navigation > button {
   border: 0;
   background: none;
   display: flex;
@@ -537,7 +553,7 @@ Task Members Section
   color: var(--secondary);
 }
 
-[id*='taskId'] .secondary-navigation > button i {
+[id*="taskId"] .secondary-navigation > button i {
   position: relative !important;
   top: unset !important;
   font-size: 17px;
@@ -639,16 +655,16 @@ button.add-task {
   }
 }
 
-[class*='member-modal-'] input {
+[class*="member-modal-"] input {
   border: 1px solid red;
   pointer-events: unset !important;
 }
 
-[class*='member-modal-'] {
+[class*="member-modal-"] {
   z-index: 200;
 }
 
-[class*='member-modal-'] .container {
+[class*="member-modal-"] .container {
   /* position: relative; */
   /* border: 1px solid red; */
 
@@ -666,22 +682,22 @@ button.add-task {
   z-index: 11;
 }
 
-[class*='member-modal-'] .container header {
+[class*="member-modal-"] .container header {
   display: flex;
   justify-content: space-between;
 }
 
-[class*='member-modal-'] .container .user-search {
+[class*="member-modal-"] .container .user-search {
   position: relative;
 }
 
-[class*='member-modal-'] .container .user-search > i {
+[class*="member-modal-"] .container .user-search > i {
   color: var(--secondary);
   font-size: 15px;
   z-index: 2;
 }
 
-[class*='member-modal-'] .container .user-search > .clear-search {
+[class*="member-modal-"] .container .user-search > .clear-search {
   border: 0px solid transparent;
   background-color: transparent;
   position: absolute;
@@ -698,7 +714,7 @@ button.add-task {
   cursor: pointer;
 }
 
-[class*='member-modal-'] .container .user-search > .clear-search > i {
+[class*="member-modal-"] .container .user-search > .clear-search > i {
   position: relative !important;
   top: unset !important;
   left: unset !important;
@@ -707,14 +723,14 @@ button.add-task {
   align-self: center;
 }
 
-[class*='member-modal-'] .container header button.close-button {
+[class*="member-modal-"] .container header button.close-button {
   transform: translate(25px, -25px);
   position: unset;
   right: unset;
   top: unset !important;
 }
 
-[class*='member-modal-'] .container header button.close-button {
+[class*="member-modal-"] .container header button.close-button {
   background: none;
   border: 0;
   font-size: 18px;
@@ -726,7 +742,7 @@ button.add-task {
   transition: 0.3s;
 }
 
-[class*='member-modal-'] .background {
+[class*="member-modal-"] .background {
   position: fixed;
   top: 0;
   left: 0;
@@ -740,13 +756,13 @@ button.add-task {
   margin-right: 2vw;
 }
 
-input ~ div[class*='is-invalid'] {
+input ~ div[class*="is-invalid"] {
   display: none !important;
   visibility: hidden;
   padding: 0px 0;
 }
 
-.is-invalid ~ div[class*='is-invalid'] {
+.is-invalid ~ div[class*="is-invalid"] {
   display: block !important;
   visibility: visible;
   padding: 10px 0;

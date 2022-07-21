@@ -15,19 +15,6 @@ export default function NewJournal(props) {
     { id: "4", value: "NLM/MathML" },
   ];
 
-  // getting project manager list
-  const projectManagerList = props.clientData.companyhasuserList.filter(
-    (item) => {
-      if (item.role.toLowerCase() === "project manager") {
-        if (item.role.toLowerCase().includes("project manager")) {
-          return item;
-        }
-      }
-    },
-  );
-
-  const [isLoading, setIsLoading] = useState(false);
-
   const issueFrequencyList = [
     { id: "1", value: "Annual" },
     { id: "2", value: "Semi-Annual" },
@@ -42,51 +29,63 @@ export default function NewJournal(props) {
   ];
 
   // complexity type
-  const complexityListType = [
-    { id: "1", value: "Only Text" },
-    { id: "2", value: "Text with few Figures and Tables" },
-    { id: "3", value: "Text with few Figures, Tables and Box" },
-    { id: "4", value: "Text with few Figures, Tables, Extract and Box" },
-    { id: "5", value: "Text with few Figures, Tables, Extract, List and Box" },
-    {
-      id: "7",
-      value: "Text with few Figures, Tables, Extract, List, Math and Box",
-    },
-    { id: "8", value: "Text with more than 50 Figures, Tables and Box" },
-    {
-      id: "9",
-      value: "Text with more than 50 Figures, Tables, Extract and Box",
-    },
-    {
-      id: "10",
-      value: "Text with more than 50 Figures, Tables, Extract, List and Box",
-    },
-    {
-      id: "11",
-      value:
-        "Text with more than 50 Figures, Tables, Extract, List, Math and Box",
-    },
-    { id: "12", value: "Text with more than 100 Figures and Tables" },
-    { id: "13", value: "Text with more than 100 Figures, Tables and Box" },
-    {
-      id: "14",
-      value: "Text with more than 100 Figures, Tables, Extract and Box",
-    },
-    {
-      id: "15",
-      value: "Text with more than 100 Figures, Tables, Extract, List and Box",
-    },
-    {
-      id: "16",
-      value:
-        "Text with more than 100 Figures, Tables, Extract, List, Math and Box",
-    },
-    { id: "17", value: "Table Project" },
-    { id: "18", value: "Design Project" },
-    { id: "19", value: "Math Project" },
-    { id: "20", value: "High Complex Project" },
-  ];
+  // const complexityListType = [
+  //   { id: "1", value: "Only Text" },
+  //   { id: "2", value: "Text with few Figures and Tables" },
+  //   { id: "3", value: "Text with few Figures, Tables and Box" },
+  //   { id: "4", value: "Text with few Figures, Tables, Extract and Box" },
+  //   { id: "5", value: "Text with few Figures, Tables, Extract, List and Box" },
+  //   {
+  //     id: "7",
+  //     value: "Text with few Figures, Tables, Extract, List, Math and Box",
+  //   },
+  //   { id: "8", value: "Text with more than 50 Figures, Tables and Box" },
+  //   {
+  //     id: "9",
+  //     value: "Text with more than 50 Figures, Tables, Extract and Box",
+  //   },
+  //   {
+  //     id: "10",
+  //     value: "Text with more than 50 Figures, Tables, Extract, List and Box",
+  //   },
+  //   {
+  //     id: "11",
+  //     value:
+  //       "Text with more than 50 Figures, Tables, Extract, List, Math and Box",
+  //   },
+  //   { id: "12", value: "Text with more than 100 Figures and Tables" },
+  //   { id: "13", value: "Text with more than 100 Figures, Tables and Box" },
+  //   {
+  //     id: "14",
+  //     value: "Text with more than 100 Figures, Tables, Extract and Box",
+  //   },
+  //   {
+  //     id: "15",
+  //     value: "Text with more than 100 Figures, Tables, Extract, List and Box",
+  //   },
+  //   {
+  //     id: "16",
+  //     value:
+  //       "Text with more than 100 Figures, Tables, Extract, List, Math and Box",
+  //   },
+  //   { id: "17", value: "Table Project" },
+  //   { id: "18", value: "Design Project" },
+  //   { id: "19", value: "Math Project" },
+  //   { id: "20", value: "High Complex Project" },
+  // ];
 
+  // getting project manager list
+  const projectManagerList = props?.clientData?.companyhasuserList.filter(
+    (item) => {
+      if (item.role.toLowerCase() === "project manager") {
+        if (item.role.toLowerCase().includes("project manager")) {
+          return item;
+        }
+      }
+    },
+  );
+
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
     title: "",
     subTitle: "",
@@ -122,8 +121,7 @@ export default function NewJournal(props) {
   const [inputList, setInputList] = useState([{ journalEditor: "" }]);
   const [categoryList, setCategoryList] = useState([]);
   const [typeList, setTypeList] = useState([]);
-  const [collectFootnote, setCollectFootnote] = useState("0");
-
+  // const [collectFootnote, setCollectFootnote] = useState("0");
   const [validateForm, setValidateForm] = useState({
     title: false,
     publisher: false,
@@ -139,6 +137,12 @@ export default function NewJournal(props) {
   useEffect(() => {
     handlingData();
   }, []);
+
+  useEffect(() => {
+    if (data.type.id > 0) {
+      handleType(data.type.id);
+    }
+  }, [data.type]);
 
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -156,12 +160,6 @@ export default function NewJournal(props) {
     list.splice(index, 1);
     setInputList(list);
   };
-
-  useEffect(() => {
-    if (data.type.id > 0) {
-      handleType(data.type.id);
-    }
-  }, [data.type]);
 
   const handleType = (typeval) => {
     let categoryArr = [];

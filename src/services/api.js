@@ -11,7 +11,7 @@ export const api = axios.create({
     Accept: "application/json",
     "Content-type": "application/json",
   },
-  timeout: 60000,
+  timeout: 300000,
   transformRequest: [
     (data) => ({ ...getData, ...data }),
     ...axios.defaults.transformRequest,

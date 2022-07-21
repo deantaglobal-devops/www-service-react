@@ -262,8 +262,8 @@ li span i {
 
 .lvl-1 {
   height: 560px;
-  max-width: 258px;
-  max-width: 255px;
+  max-width: 258px !important;
+  max-width: 255px !important;
   width: 100%;
 }
 
@@ -411,20 +411,15 @@ tr.milestoneRow {
   max-height: 35px;
 }
 
+.item-mlstn-template .m-avatar-col .avatar > i {
+  font-size: 19px;
+}
+
 .actions-btns {
   display: flex;
   gap: 10px;
   align-items: center;
   justify-content: flex-end;
-}
-
-.open-item {
-  all: unset;
-  padding: 6px;
-  border: 1px dashed transparent;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 400ms all ease;
 }
 
 .open-item i {
@@ -442,12 +437,29 @@ tr.milestoneRow {
 }
 
 .drag-item {
-  cursor: grab;
+  cursor: grab !important;
+  font-size: 20px;
   transition: 400ms all ease;
 }
 
+.open-item {
+  line-height: 0 !important;
+  all: unset;
+  padding: 6px;
+  border: 1px dashed transparent;
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 400ms all ease;
+}
+
+.actions-btns button {
+  all: unset;
+  line-height: 0;
+}
 .actions-btns i {
   cursor: pointer;
+  font-size: 18px;
 }
 
 .milestone-add > div.milestoneRow .actions-milestone {
@@ -481,7 +493,7 @@ tr.milestoneRow {
 
 .taskRow {
   width: 100%;
-  /* display: flex; */
+  display: flex;
   gap: 15px;
 }
 
@@ -508,6 +520,16 @@ tr.milestoneRow {
   width: 40%;
   justify-content: flex-end;
   align-items: center;
+}
+
+.actions-task button {
+  all: unset;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.actions-task button:hover i {
+  color: var(--lan-blue);
 }
 
 .task-add {
@@ -554,6 +576,10 @@ td.m-title-col {
 .tasks-space {
   background: #eee;
   padding: 10px 0;
+}
+
+[id*="milestoneDetails"]:hover {
+  color: var(--dark) !important;
 }
 
 .skeleton-parent {

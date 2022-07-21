@@ -78,7 +78,6 @@ export function Profile(props) {
     let newNumber = "";
     let newEmail = "";
 
-    console.log("id", id);
     switch (id) {
       case "phone":
         newNumber = event.target.value

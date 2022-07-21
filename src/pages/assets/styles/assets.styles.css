@@ -11,8 +11,13 @@
   top: -3px;
 }
 
-tr td:first-child,
-tr td:first-child input {
+.table-assets tr:hover td,
+.table-assets tr:hover td input {
+  color: #0067f4;
+}
+
+.table-assets tr td:first-child,
+.table-assets tr td:first-child input {
   cursor: pointer;
 }
 
@@ -31,11 +36,6 @@ tr:hover .icon-line {
 
 .files a.off {
   opacity: 0.6;
-}
-
-tr:hover td,
-tr:hover td input {
-  color: #0067f4;
 }
 
 .hide {
@@ -328,7 +328,7 @@ input.select-all {
   position: absolute;
   right: 7px;
   font-size: 15px;
-  top: 24px;
+  top: 30px;
   color: var(--placeholder);
 }
 

@@ -13,6 +13,8 @@
 }
 .notificationTab > div {
   display: flex;
+  line-height: 1.4;
+  gap: 10px;
   align-items: flex-start;
   flex-direction: column;
   color: #909295;

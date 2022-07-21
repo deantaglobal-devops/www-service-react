@@ -48,7 +48,6 @@ export function Notification() {
     await api
       .get(`/notifications/${user.realCompanyId}/${user.id}`)
       .then((response) => {
-        console.log("response.data", response.data);
         setNotificationsList(response.data);
       })
       .catch((err) => {
@@ -196,8 +195,14 @@ export function Notification() {
           unseenNotificationsIds.push(tab.id);
         }
 
+        const title =
+          tab.notifications[0]?.chapter_id !== "0"
+            ? `${tab.notifications[0]?.abbreviation} - ${tab.notifications[0]?.chapterNo}`
+            : tab.menuTitle;
+
         return {
-          menuTitle: tab.menuTitle ? tab.menuTitle : tab,
+          menuTitle: title ?? tab,
+          titleProject: tab.menuTitle ?? tab,
           text: tab.description,
           date: dateTimeFunction(tab.update_date, "date"),
           time: dateTimeFunction(tab.update_date, "time"),
@@ -274,7 +279,6 @@ export function Notification() {
         // array of unseen notifications for this column
         unseenNotificationsIds.push(notificationOnThisObject.id);
       }
-
       return {
         // not sure why we have this as menuTitle in the third column
         menuTitle: "sd",

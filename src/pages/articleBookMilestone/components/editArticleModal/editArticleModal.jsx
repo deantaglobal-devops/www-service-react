@@ -309,17 +309,17 @@ export default function EditArticleModal({
               />
             </div>
 
-            {/* Word count without references */}
+            {/* Word count */}
             <div className="wrap-field-label">
               <label className="label-form">
-                Word count without references
+                Word count
               </label>
               <input type="text" {...register("wordCount")} name="wordCount" />
             </div>
 
-            {/* Reference word count */}
+            {/* Word count without references */}
             <div className="wrap-field-label">
-              <label className="label-form">Reference word count</label>
+              <label className="label-form">Word count without references</label>
               <input
                 type="text"
                 {...register("referenceWordCount")}

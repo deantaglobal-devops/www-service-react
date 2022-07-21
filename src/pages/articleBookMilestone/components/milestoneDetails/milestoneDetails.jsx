@@ -53,16 +53,17 @@ export default function MilestoneDetails({
           if (
             // external
             (task.statusType == 2 &&
-              !!parseInt(data[0]?.permissions.tasks.external)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external)) ||
             // internal
             (task.statusType == 1 &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // not assigned or both
             ((task.statusType == 0 || task.statusType == 4) &&
-              !!parseInt(data[0]?.permissions.tasks.external) &&
-              !!parseInt(data[0]?.permissions.tasks.internal)) ||
+              !!parseInt(data[0]?.permissions?.tasks?.external) &&
+              !!parseInt(data[0]?.permissions?.tasks?.internal)) ||
             // Pm task
-            (task.statusType == 3 && !!parseInt(data[0]?.permissions.tasks.pm))
+            (task.statusType == 3 &&
+              !!parseInt(data[0]?.permissions?.tasks?.pm))
           ) {
             return task;
           }
@@ -467,13 +468,16 @@ export default function MilestoneDetails({
 
     await api
       .post("/milestone/reordertasks", { reorderedList })
+      .then(() => {
+        setIsLoading(false);
+      })
       .catch((err) => console.log(err));
   };
 
   return (
     <>
       <div className="existing-tasks-wrapper">
-        {openMessageCenter && taskId != 0 && taskId != undefined && (
+        {openMessageCenter && taskId !== 0 && taskId !== undefined && (
           <div id="side-slider-container" hidden>
             <MessagingCenter
               userId={user.id}
@@ -496,6 +500,7 @@ export default function MilestoneDetails({
               changeTaskStatus={(_action, _taskId, _status) =>
                 changeTaskStatus(_action, _taskId, _status)
               }
+              milestoneData={milestoneData}
               getMilestoneData={(_taskId) =>
                 getMilestoneData(milestoneData.milestoneId, _taskId)
               }
@@ -560,137 +565,24 @@ export default function MilestoneDetails({
 
         {milestoneData?.tasks?.length > 0 && (
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="column-1">
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  isdraggingover={snapshot.isDraggingOver.toString()}
-                  key="column-1"
-                >
-                  {milestoneData?.tasks?.map((task, index) => (
-                    <Draggable
-                      draggableId={task.taskId.toString()}
-                      index={index}
-                      key={task.taskId}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          {...provided.draggableProps}
-                          ref={provided.innerRef}
-                          isdragging={snapshot.isDragging.toString()}
-                        >
-                          <div
-                            id={`taskId-${task.taskId}`}
-                            className={
-                              taskEditing && taskId === task.taskId
-                                ? `task-details status-task-${task.statusId} task-editing`
-                                : `task-details status-task-${task.statusId}`
-                            }
-                          >
-                            <AddEditTask
-                              task={task}
-                              data={data[0]}
-                              chapterId={chapterId}
-                              confirmReject={(_taskId) =>
-                                confirmReject(_taskId)
-                              }
-                              confirmFinish={(
-                                _taskId,
-                                _projectId,
-                                _taskName,
-                                _taskPath,
-                                _statusType,
-                              ) =>
-                                confirmFinish(
-                                  _taskId,
-                                  _projectId,
-                                  _taskName,
-                                  _taskPath,
-                                  _statusType,
-                                )
-                              }
-                              taskStartClicked={(
-                                _taskId,
-                                _projectId,
-                                _taskName,
-                                _taskPath,
-                                _statusType,
-                                _milestoneId,
-                              ) =>
-                                taskStartClicked(
-                                  _taskId,
-                                  _projectId,
-                                  _taskName,
-                                  _taskPath,
-                                  _statusType,
-                                  _milestoneId,
-                                )
-                              }
-                              changeTaskStatus={(_action, _taskId, _status) =>
-                                changeTaskStatus(_action, _taskId, _status)
-                              }
-                              go2MessagingCenter={(
-                                _taskId,
-                                _projectId,
-                                _taskName,
-                                _taskPath,
-                                _taskStatusType,
-                                _openByCommunicatioButton,
-                                _milestoneId,
-                              ) =>
-                                go2MessagingCenter(
-                                  _taskId,
-                                  _projectId,
-                                  _taskName,
-                                  _taskPath,
-                                  _taskStatusType,
-                                  _openByCommunicatioButton,
-                                  _milestoneId,
-                                )
-                              }
-                              invoiceProcess={(
-                                _action,
-                                _projectId,
-                                _taskId,
-                                _status,
-                              ) =>
-                                invoiceProcess(
-                                  _action,
-                                  _projectId,
-                                  _taskId,
-                                  _status,
-                                )
-                              }
-                              setIsLoading={(value) => setIsLoading(value)}
-                              milestoneData={milestoneData}
-                              setMilestoneData={(value) =>
-                                setMilestoneData(value)
-                              }
-                              setTaskEditing={(value) => setTaskEditing(value)}
-                              taskEditing={taskEditing}
-                              setTaskId={(value) => setTaskId(value)}
-                              taskId={taskId}
-                              project={project}
-                              newTask={false}
-                              setNewTask={(value) => setNewTask(value)}
-                              toggleMilestone={(milestoneId) =>
-                                toggleMilestone(milestoneId)
-                              }
-                              getMilestoneData={(milestoneId, _taskId) =>
-                                getMilestoneData(milestoneId, _taskId)
-                              }
-                              dragHandleProps={provided.dragHandleProps}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            <DropComponent
+              milestoneData={milestoneData}
+              getMilestoneData={getMilestoneData}
+              toggleMilestone={toggleMilestone}
+              setNewTask={setNewTask}
+              project={project}
+              setTaskId={setTaskId}
+              setTaskEditing={setTaskEditing}
+              setMilestoneData={setMilestoneData}
+              setIsLoading={setIsLoading}
+              data={data}
+              chapterId={chapterId}
+              confirmReject={confirmReject}
+              taskStartClicked={taskStartClicked}
+              changeTaskStatus={changeTaskStatus}
+              go2MessagingCenter={go2MessagingCenter}
+              invoiceProcess={invoiceProcess}
+            />
           </DragDropContext>
         )}
       </div>
@@ -791,5 +683,161 @@ export default function MilestoneDetails({
         </>
       )}
     </>
+  );
+}
+
+function DropComponent({
+  milestoneData,
+  taskEditing,
+  taskId,
+  getMilestoneData,
+  toggleMilestone,
+  setNewTask,
+  project,
+  setTaskId,
+  setTaskEditing,
+  setMilestoneData,
+  setIsLoading,
+  data,
+  chapterId,
+  confirmReject,
+  taskStartClicked,
+  changeTaskStatus,
+  go2MessagingCenter,
+  invoiceProcess,
+}) {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+
+  if (!enabled) {
+    return null;
+  }
+
+  return (
+    <Droppable droppableId="column-1">
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          isdraggingover={snapshot.isDraggingOver.toString()}
+          key="column-1"
+        >
+          {milestoneData?.tasks?.map((task, index) => (
+            <Draggable
+              draggableId={task.taskId.toString()}
+              index={index}
+              key={task.taskId}
+            >
+              {(provided, snapshot) => (
+                <div
+                  {...provided.draggableProps}
+                  ref={provided.innerRef}
+                  isdragging={snapshot.isDragging.toString()}
+                >
+                  <div
+                    id={`taskId-${task.taskId}`}
+                    className={
+                      taskEditing && taskId === task.taskId
+                        ? `task-details task-details-milestones status-task-${task.statusId} task-editing`
+                        : `task-details task-details-milestones status-task-${task.statusId}`
+                    }
+                  >
+                    <AddEditTask
+                      task={task}
+                      data={data[0]}
+                      chapterId={chapterId}
+                      confirmReject={(_taskId) => confirmReject(_taskId)}
+                      confirmFinish={(
+                        _taskId,
+                        _projectId,
+                        _taskName,
+                        _taskPath,
+                        _statusType,
+                      ) =>
+                        confirmFinish(
+                          _taskId,
+                          _projectId,
+                          _taskName,
+                          _taskPath,
+                          _statusType,
+                        )
+                      }
+                      taskStartClicked={(
+                        _taskId,
+                        _projectId,
+                        _taskName,
+                        _taskPath,
+                        _statusType,
+                        _milestoneId,
+                      ) =>
+                        taskStartClicked(
+                          _taskId,
+                          _projectId,
+                          _taskName,
+                          _taskPath,
+                          _statusType,
+                          _milestoneId,
+                        )
+                      }
+                      changeTaskStatus={(_action, _taskId, _status) =>
+                        changeTaskStatus(_action, _taskId, _status)
+                      }
+                      go2MessagingCenter={(
+                        _taskId,
+                        _projectId,
+                        _taskName,
+                        _taskPath,
+                        _taskStatusType,
+                        _openByCommunicatioButton,
+                        _milestoneId,
+                      ) =>
+                        go2MessagingCenter(
+                          _taskId,
+                          _projectId,
+                          _taskName,
+                          _taskPath,
+                          _taskStatusType,
+                          _openByCommunicatioButton,
+                          _milestoneId,
+                        )
+                      }
+                      invoiceProcess={(_action, _projectId, _taskId, _status) =>
+                        invoiceProcess(_action, _projectId, _taskId, _status)
+                      }
+                      setIsLoading={(value) => setIsLoading(value)}
+                      milestoneData={milestoneData}
+                      setMilestoneData={(value) => setMilestoneData(value)}
+                      setTaskEditing={(value) => setTaskEditing(value)}
+                      taskEditing={taskEditing}
+                      setTaskId={(value) => setTaskId(value)}
+                      taskId={taskId}
+                      project={project}
+                      newTask={false}
+                      setNewTask={(value) => setNewTask(value)}
+                      toggleMilestone={(milestoneId) =>
+                        toggleMilestone(milestoneId)
+                      }
+                      getMilestoneData={(milestoneId, _taskId) =>
+                        getMilestoneData(milestoneId, _taskId)
+                      }
+                      dragHandleProps={provided.dragHandleProps}
+                    />
+                  </div>
+                </div>
+              )}
+            </Draggable>
+          ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 }

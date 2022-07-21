@@ -72,6 +72,7 @@ export function NavBar({
   const removeTokens = () => {
     localStorage.removeItem("magic-code");
     localStorage.removeItem("lanstad-token");
+    localStorage.removeItem("lanstad-user");
   };
 
   const updateActivity = () => {
@@ -190,11 +191,13 @@ export function NavBar({
           searchData[0].id !== 0 ? (
             <ul className="results shadow">
               {searchData?.map((data) => (
-                <li key={data.id}>
-                  <Link to={data.url} replace>
-                    <p className="title">{data.project_title}</p>
-                    <span className="projectType">{data.project_type}</span>
-                  </Link>
+                <li key={data?.id}>
+                  {/* <Link to={data.url}> */}
+                  <a href={`${origin}/${data.url}`}>
+                    <p className="search-bar-title">{data?.project_title}</p>
+                    <span className="projectType">{data?.project_type}</span>
+                  </a>
+                  {/* </Link> */}
                 </li>
               ))}
             </ul>

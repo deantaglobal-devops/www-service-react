@@ -25,7 +25,7 @@ function InfoDetails({ ...props }) {
           </ul>
         </li>
 
-        {toEmailedList.length > 0 && (
+        {toEmailedList?.filter(Boolean).length > 0 && (
           <li className="messageInfo-list-item">
             <h4 className="messageInfo-subtitle">Emailed to:</h4>
             <ul className="messageInfo-list">
@@ -39,7 +39,7 @@ function InfoDetails({ ...props }) {
             </ul>
           </li>
         )}
-        {ccEmailedList.length > 0 && (
+        {ccEmailedList?.filter(Boolean).length > 0 && (
           <li className="messageInfo-list-item">
             <h4 className="messageInfo-subtitle">CC'd:</h4>
             <ul className="messageInfo-list">
