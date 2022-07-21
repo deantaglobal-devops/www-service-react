@@ -259,15 +259,9 @@ export function NavBar({
             ) : (
               <p>
                 Please refresh this page or visit{" "}
-                <a
-                  href="#"
-                  onClick={() => {
-                    signOut();
-                  }}
-                  className="link"
-                >
+                <Link to="/login" rel="noreferrer" className="link">
                   Login Page
-                </a>
+                </Link>
                 <br />
                 to regain access to Lanstad
               </p>
