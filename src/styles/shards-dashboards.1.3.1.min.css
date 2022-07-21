@@ -10494,6 +10494,7 @@ a.toggle-project-information:hover {
 .singular-block-information p {
   color: var(--dark);
   margin: 0;
+  font-weight: 500;
   word-break: break-all;
 }
 
@@ -10757,8 +10758,9 @@ img.project-thumb-list {
 
 /********** PM Brief and Mar ***********/
 .panel-default {
-  margin-top: 4px;
-  height: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
 }
 
 .panel-default .accordion-toggle {

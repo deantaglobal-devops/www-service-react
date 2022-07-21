@@ -413,9 +413,6 @@ export function ArticleBookMilestone() {
                                       : "accordion-toggle supporting-info"
                                   }
                                   role="button"
-                                  data-toggle="collapse"
-                                  data-parent="#accordion"
-                                  href="#collapseOne"
                                   aria-expanded="true"
                                   aria-controls="collapseOne"
                                   onClick={(e) =>
@@ -445,48 +442,50 @@ export function ArticleBookMilestone() {
                                   )}
                                 </a>
                               </div>
-                              <div
-                                id="collapseOne"
-                                className="panel-collapse collapse in"
-                                role="tabpanel"
-                                aria-labelledby="headingOne"
-                              >
-                                <div className="panel-body">
-                                  <ul>
-                                    {project.pmbriefLink &&
-                                    mimeType.includes("pdf") ? (
-                                      <li
-                                        onClick={() => {
-                                          setModalBrief(true);
-                                        }}
-                                      >
-                                        <a>Project Manager Brief</a>
-                                      </li>
-                                    ) : (
-                                      <a
-                                        href="#"
-                                        onClick={() => {
-                                          handleDownload(project.pmbriefLink);
-                                        }}
-                                      >
-                                        Project Manager Brief
-                                      </a>
-                                    )}
-
-                                    {project.marSheetLink && (
-                                      <li>
-                                        <a
-                                          href={`/file/src/?download=1&path=${project.marSheetLink}`}
-                                          target="_blank"
-                                          rel="noreferrer"
+                              {!collapseSupportingInformation && (
+                                <div
+                                  id="collapseOne"
+                                  className="panel-collapse in"
+                                  role="tabpanel"
+                                  aria-labelledby="headingOne"
+                                >
+                                  <div className="panel-body">
+                                    <ul className="list-link">
+                                      {project.pmbriefLink &&
+                                      mimeType.includes("pdf") ? (
+                                        <li
+                                          onClick={() => {
+                                            setModalBrief(true);
+                                          }}
                                         >
-                                          Material Analysis Report
+                                          <a>Project Manager Brief</a>
+                                        </li>
+                                      ) : (
+                                        <a
+                                          href="#"
+                                          onClick={() => {
+                                            handleDownload(project.pmbriefLink);
+                                          }}
+                                        >
+                                          Project Manager Brief
                                         </a>
-                                      </li>
-                                    )}
-                                  </ul>
+                                      )}
+
+                                      {project.marSheetLink && (
+                                        <li>
+                                          <a
+                                            href={`/file/src/?download=1&path=${project.marSheetLink}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                          >
+                                            Material Analysis Report
+                                          </a>
+                                        </li>
+                                      )}
+                                    </ul>
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </div>
                           </div>
                         )}
