@@ -1,7 +1,4 @@
 export async function blockFullScreenHide() {
-  document.getElementById("mainSideBar").style.pointerEvents = "none";
-  document.getElementById("mainSideBar").style.opacity = 0.2;
-
   document.querySelector(".main-navbar.sticky-top").style.pointerEvents =
     "none";
   document.querySelector(".main-navbar.sticky-top").style.opacity = 0.2;
@@ -20,9 +17,6 @@ export async function blockFullScreenHide() {
 }
 
 export async function blockFullScreenShow() {
-  document.getElementById("mainSideBar").style.pointerEvents = "none";
-  document.getElementById("mainSideBar").style.opacity = 0.2;
-
   document.querySelector(".main-navbar.sticky-top").style.pointerEvents =
     "none";
   document.querySelector(".main-navbar.sticky-top").style.opacity = 0.2;
