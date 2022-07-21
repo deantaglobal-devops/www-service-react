@@ -26,11 +26,16 @@ export default function TocRow({
     handleChapterSelected(chapter.id);
   };
 
-  const handleDownload = async (e, filePath) => {
+  const handleDownload = async (e, filePath, fileFormat) => {
     e.preventDefault();
 
     if (filePath) {
-      downloadFile(filePath);
+      downloadFile(
+        filePath,
+        chapter?.name === ""
+          ? `Untitled.${fileFormat}`
+          : `${chapter?.name}.${fileFormat}`,
+      );
     }
   };
 
@@ -186,7 +191,7 @@ export default function TocRow({
             !!parseInt(permissions?.toc.download) && (
               <a
                 onClick={(e) => {
-                  handleDownload(e, file.link);
+                  handleDownload(e, file?.link, file?.format);
                 }}
                 key={file.link}
                 href="#"
