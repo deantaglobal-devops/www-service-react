@@ -87,15 +87,21 @@ export default function InvoiceModal({
       formData.append("invoiveOtherDesc", invoiceData.otherDescription);
     }
 
+    const token = localStorage.getItem("lanstad-token");
+
     if (invoiceData?.invoiceDetails?.length > 0) {
-      await fetch("/call/calendar/invoice/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      await fetch(
+        `${import.meta.env.VITE_URL_API_SERVICE}/call/calendar/invoice/submit`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Lanstad-Token": token,
+          },
+          mode: "no-cors",
+          body: formData,
         },
-        mode: "no-cors",
-        body: formData,
-      })
+      )
         .then((res) => res.json())
         .then(
           (result) => {
