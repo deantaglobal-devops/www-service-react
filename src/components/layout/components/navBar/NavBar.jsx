@@ -55,7 +55,7 @@ export function NavBar({
       const lastAcivity = localStorage.getItem("lastActvity");
       const difTime = Math.abs(new Date(lastAcivity) - new Date());
       const secToExpire = Math.floor(difTime / 1000);
-      if (secToExpire >= 10) {
+      if (secToExpire >= 900) {
         setAlertSession(true);
         clearInterval(timeInterval);
       }
