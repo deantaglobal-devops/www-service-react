@@ -55,7 +55,7 @@ export function NavBar({
       const lastAcivity = localStorage.getItem("lastActvity");
       const difTime = Math.abs(new Date(lastAcivity) - new Date());
       const secToExpire = Math.floor(difTime / 1000);
-      if (secToExpire >= 900) {
+      if (secToExpire >= 10) {
         setAlertSession(true);
         clearInterval(timeInterval);
       }
@@ -259,15 +259,9 @@ export function NavBar({
             ) : (
               <p>
                 Please refresh this page or visit{" "}
-                <a
-                  href="#"
-                  onClick={() => {
-                    signOut();
-                  }}
-                  className="link"
-                >
+                <Link to="/login" rel="noreferrer" className="link">
                   Login Page
-                </a>
+                </Link>
                 <br />
                 to regain access to Lanstad
               </p>
