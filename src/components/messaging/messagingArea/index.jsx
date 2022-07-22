@@ -477,6 +477,7 @@ function messagingArea({ ...props }) {
     }
 
     const attachmentsMerge = [...attachmentList, ...attachsAssetList];
+
     if (attachmentsMerge.length > 0) {
       await uploadLocalFiles(attachmentsMerge);
       attachments = await Promise.all(
