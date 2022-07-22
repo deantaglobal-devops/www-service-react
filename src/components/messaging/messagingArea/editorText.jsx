@@ -159,7 +159,7 @@ export function EditorText({ ...props }) {
         file.size / 1024 / 1024 <= fileSizeLimit &&
         attachmentList?.filter((item) => item.name === file.name).length === 0
       ) {
-        setFileList((state) => [...state, file]);
+        setFileList(filesSelected);
       }
     });
 
@@ -418,7 +418,6 @@ export function EditorText({ ...props }) {
                 </li>
                 <li
                   onClick={() => {
-                    // uploadRef.current.click();
                     setUploadFilesModal(true);
                     setDropdownAttach(false);
                   }}
@@ -514,10 +513,10 @@ export function EditorText({ ...props }) {
                   )}
                 </div>
               </div>
-              {fileList.length > 0 && (
+              {attachmentList.length > 0 && (
                 <div className="list-files">
                   <p className="title">Your attached files:</p>
-                  {fileList.map((item) => (
+                  {attachmentList.map((item) => (
                     <p className="filename" key={item.name}>
                       {item.name}
                     </p>
