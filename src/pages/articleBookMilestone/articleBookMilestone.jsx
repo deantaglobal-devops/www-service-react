@@ -474,9 +474,13 @@ export function ArticleBookMilestone() {
                                       {project.marSheetLink && (
                                         <li>
                                           <a
-                                            href={`/file/src/?download=1&path=${project.marSheetLink}`}
                                             target="_blank"
                                             rel="noreferrer"
+                                            onClick={() => {
+                                              handleDownload(
+                                                project.marSheetLink,
+                                              );
+                                            }}
                                           >
                                             Material Analysis Report
                                           </a>
