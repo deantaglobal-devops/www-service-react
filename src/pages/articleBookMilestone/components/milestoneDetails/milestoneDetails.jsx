@@ -582,6 +582,21 @@ export default function MilestoneDetails({
               data={data}
               chapterId={chapterId}
               confirmReject={(_taskId) => confirmReject(_taskId)}
+              confirmFinish={(
+                _taskId,
+                _projectId,
+                _taskName,
+                _taskPath,
+                _statusType,
+              ) =>
+                confirmFinish(
+                  _taskId,
+                  _projectId,
+                  _taskName,
+                  _taskPath,
+                  _statusType,
+                )
+              }
               taskStartClicked={(
                 _taskId,
                 _projectId,
