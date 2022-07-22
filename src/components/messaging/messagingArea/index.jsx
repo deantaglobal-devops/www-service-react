@@ -656,7 +656,7 @@ function messagingArea({ ...props }) {
   }
 
   async function uploadLocalFiles(files) {
-    const newArrayOfFiles = await Promise.all(
+    await Promise.all(
       files.map(async (file) => {
         if (file.upload) {
           const newId = await addAssetInProject(file.file_path, file.name);
@@ -666,7 +666,6 @@ function messagingArea({ ...props }) {
         return file;
       }),
     );
-    setAttachmentList(newArrayOfFiles);
   }
 
   async function addAssetInProject(filePath, file) {
