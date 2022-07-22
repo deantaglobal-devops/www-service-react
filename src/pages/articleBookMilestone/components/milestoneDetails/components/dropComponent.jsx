@@ -19,6 +19,7 @@ export function DropComponent({
   confirmReject,
   taskStartClicked,
   changeTaskStatus,
+  confirmFinish,
   go2MessagingCenter,
   invoiceProcess,
 }) {
