@@ -173,7 +173,7 @@ export default function Milestone({
         ..._milestoneData,
         realCompanyId: user.realCompanyId,
         projectClient: projectData.client,
-        companyId: projectData.companyId,
+        companyId: projectData?.companyId || projectData?.company_id,
         permissions,
         taskPath,
         projectName: _milestoneData.projectName,
@@ -423,8 +423,8 @@ export default function Milestone({
     await api
       .post("/milestone/update", {
         milestoneUpdateArray,
-        projectId: projectData.projectId,
-        companyId: projectData?.companyId,
+        projectId: projectData?.projectId || projectData?.project_id,
+        companyId: projectData?.companyId || projectData?.company_id,
         chapterId: chapter?.chapter_id > 0 ? chapter?.chapter_id : 0,
       })
       .then(() => {
@@ -485,12 +485,8 @@ export default function Milestone({
         ...newMilestoneData,
         [e.target.name]: e.target.value,
         orderId: projectData?.milestones?.length + 1,
-        projectId: chapter?.chapter_id
-          ? projectData?.project_id
-          : projectData?.projectId,
-        companyId: chapter?.chapter_id
-          ? projectData?.company_id
-          : projectData?.companyId,
+        projectId: projectData?.projectId || projectData?.project_id,
+        companyId: projectData?.companyId || projectData?.company_id,
         chapterId: chapter?.chapter_id ? chapter?.chapter_id : 0,
       });
     }
@@ -568,7 +564,7 @@ export default function Milestone({
           specialInstructionsValue={projectData?.special_instruction}
           setProjectData={(value) => setProjectData(value)}
           projectData={projectData}
-          projectId={projectData?.projectId}
+          projectId={projectData?.projectId || projectData?.project_id}
           chapterId={chapter?.chapter_id}
         />
       )}
@@ -580,7 +576,7 @@ export default function Milestone({
           checklistValue={projectData?.checklist}
           setProjectData={(value) => setProjectData(value)}
           projectData={projectData}
-          projectId={projectData?.projectId}
+          projectId={projectData?.projectId || projectData?.project_id}
           chapterId={chapter?.chapter_id}
         />
       )}
@@ -590,17 +586,13 @@ export default function Milestone({
           openRescheduleModal={openRescheduleModal}
           closeRescheduleModal={() => setOpenRescheduleModal(false)}
           handleOnCloseRescheduleModal={(e) => closeModals(e)}
-          projectId={
-            chapter?.chapter_id
-              ? projectData?.project_id
-              : projectData?.projectId
-          }
+          projectId={projectData?.projectId || projectData?.project_id}
           chapterId={chapter?.chapter_id}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           projectStartDate={projectData?.startDate}
           projectEndDate={projectData?.endDate}
-          companyId={projectData?.companyId}
+          companyId={projectData?.companyId || projectData?.company_id}
           showFailToast={(message) => showFailToast(message)}
         />
       )}
