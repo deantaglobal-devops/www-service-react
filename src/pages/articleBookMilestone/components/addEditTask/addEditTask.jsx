@@ -291,6 +291,7 @@ export default function AddEditTask({
   };
 
   const editTaskInformation = (e, _taskId) => {
+    console.log("here on editTaskInformation - _taskId", _taskId);
     e.preventDefault();
     setTaskId(_taskId);
     setTaskEditing(true);
@@ -747,6 +748,14 @@ export default function AddEditTask({
         </div>
       </div>
       <div className="due-col">
+        {console.log(
+          "taskEditing",
+          taskEditing,
+          "taskId",
+          taskId,
+          "task.taskId",
+          task.taskId,
+        )}
         {(taskEditing && taskId === task.taskId) || newTask ? (
           <>
             <DatePicker
