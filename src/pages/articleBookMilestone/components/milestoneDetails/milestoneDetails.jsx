@@ -565,10 +565,6 @@ export default function MilestoneDetails({
 
         {milestoneData?.tasks?.length > 0 && (
           <DragDropContext onDragEnd={onDragEnd}>
-            {console.log(
-              "heree on milestone datails - taskEditing",
-              taskEditing,
-            )}
             <DropComponent
               milestoneData={milestoneData}
               getMilestoneData={(milestoneId, _taskId) =>

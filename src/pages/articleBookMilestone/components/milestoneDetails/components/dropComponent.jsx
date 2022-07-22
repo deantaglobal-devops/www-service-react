@@ -24,8 +24,6 @@ export function DropComponent({
 }) {
   const [enabled, setEnabled] = useState(false);
 
-  console.log("22222heree on milestone datails - taskEditing", taskEditing);
-
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
 
