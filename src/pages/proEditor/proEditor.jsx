@@ -496,11 +496,11 @@ export function ProEditorPage() {
               id="iframe-id"
             ></iframe> */}
                   {/* <iframe
-              title="iFrame Journals Pro Editor"
-              src={`http://localhost:3131/vxe/${project?.projectId}/${chapter?.chapter_id}`}
-              frameBorder="0"
-              id="iframe-id"
-            /> */}
+                    title="iFrame Journals Pro Editor"
+                    src={`http://localhost:3131/vxe/${project?.projectId}/${chapter?.chapter_id}`}
+                    frameBorder="0"
+                    id="iframe-id"
+                  /> */}
                   <iframe
                     title="iFrame Journals Pro Editor"
                     src={`${import.meta.env.VITE_VXE_JNL_SERVICE}/vxe/${

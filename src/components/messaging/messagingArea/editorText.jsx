@@ -396,6 +396,7 @@ export function EditorText({ ...props }) {
           type="button"
           className="deanta-button formatting-button formatting-attachment"
           onClick={() => setDropdownAttach(!dropdownAttach)}
+          ref={refDropDown}
         >
           <i className="material-icons-outlined">attach_file</i>
 
@@ -405,7 +406,7 @@ export function EditorText({ ...props }) {
             </span>
           )}
           {dropdownAttach && (
-            <div className="dropdown-menu-comms" ref={refDropDown}>
+            <div className="dropdown-menu-comms">
               <p>Attach files from:</p>
               <ul>
                 <li

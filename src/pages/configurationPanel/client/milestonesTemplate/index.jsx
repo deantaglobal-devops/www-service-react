@@ -442,171 +442,14 @@ function MilestoneList(props) {
               </div>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {dataMilestones.map((milestone, index) => {
-                      return (
-                        <Draggable
-                          key={milestone.milestone_id + index}
-                          draggableId={milestone.milestone_id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <>
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                className="item-mlstn-template"
-                                style={getItemStyle(
-                                  snapshot.isDragging,
-                                  provided.draggableProps.style,
-                                )}
-                              >
-                                <div className="m-title-col">
-                                  {!editMilestone ? (
-                                    <span>{milestone.milestone_title}</span>
-                                  ) : (
-                                    <>
-                                      <input
-                                        type="text"
-                                        name={`milestone[${index}]milestone_title`}
-                                        defaultValue={milestone.milestone_title}
-                                        {...register(
-                                          `milestone.${index}.milestone_title`,
-                                          { required: true },
-                                        )}
-                                      />
-
-                                      {/* {errors.milestone[index]
-                                          ?.milestone_title && (
-                                          <span className="msg-error">
-                                            Enter valid Milestone Name
-                                          </span>
-                                        )} */}
-                                    </>
-                                  )}
-                                </div>
-
-                                <div className="m-start-col">
-                                  {!editMilestone ? (
-                                    <span>Day {milestone.tat_startDate}</span>
-                                  ) : (
-                                    <>
-                                      <input
-                                        type="number"
-                                        name={`milestone[${index}]tat_startDate`}
-                                        min="0"
-                                        max="999"
-                                        defaultValue={`${milestone.tat_startDate}`}
-                                        {...register(
-                                          `milestone.${index}.tat_startDate`,
-                                          { required: true },
-                                        )}
-                                      />
-
-                                      {/* {errors.milestone[index]
-                                            ?.tat_startDate && (
-                                            <span className="msg-error">
-                                              Enter valid end TAT day
-                                            </span>
-                                          )} */}
-                                    </>
-                                  )}
-                                </div>
-
-                                <div className="m-due-col">
-                                  {!editMilestone ? (
-                                    <span>Day {milestone.tat_endDate}</span>
-                                  ) : (
-                                    <>
-                                      <input
-                                        type="number"
-                                        name={`milestone[${index}]tat_endDate`}
-                                        defaultValue={milestone.tat_endDate}
-                                        {...register(
-                                          `milestone.${index}.tat_endDate`,
-                                          { required: true },
-                                        )}
-                                        min="0"
-                                        max="999"
-                                      />
-                                      {/* {errors.milestone[index]
-                                            ?.tat_endDate && (
-                                            <span className="msg-error">
-                                              Enter valid start TAT day
-                                            </span>
-                                          )} */}
-                                    </>
-                                  )}
-                                </div>
-
-                                <div className="m-actions-col">
-                                  {!editMilestone ? (
-                                    <div className="actions-btns">
-                                      <button
-                                        type="button"
-                                        className="open-item"
-                                        onClick={() =>
-                                          milestoneIdSelected ===
-                                          milestone.milestone_id
-                                            ? setMilestoneIdSelected("")
-                                            : setMilestoneIdSelected(
-                                                milestone.milestone_id,
-                                              )
-                                        }
-                                      >
-                                        <i className="material-icons-outlined">
-                                          {milestoneIdSelected ===
-                                          milestone.milestone_id
-                                            ? "keyboard_arrow_up"
-                                            : "keyboard_arrow_down"}
-                                        </i>
-                                      </button>
-                                      <i
-                                        className="material-icons-outlined drag-item"
-                                        {...provided.dragHandleProps}
-                                      >
-                                        drag_indicator
-                                      </i>
-                                    </div>
-                                  ) : (
-                                    <i
-                                      onClick={() => {
-                                        setMilestoneIdSelected(
-                                          milestone.milestone_id,
-                                        );
-                                        setModalMilestoneDelete(true);
-                                      }}
-                                      className="material-icons-outlined delete-icon delete-item"
-                                      data-toggle="tooltip"
-                                      data-placement="top"
-                                      title="Delete"
-                                    >
-                                      delete
-                                    </i>
-                                  )}
-                                </div>
-                              </div>
-                              {milestoneIdSelected ===
-                                milestone.milestone_id && (
-                                <div className="tasks-space ">
-                                  <div>
-                                    <TasksList
-                                      milestoneId={milestone.milestone_id}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <DropComponent
+                data={dataMilestones}
+                editMilestone={editMilestone}
+                setMilestoneIdSelected={setMilestoneIdSelected}
+                milestoneIdSelected={milestoneIdSelected}
+                setModalMilestoneDelete={setModalMilestoneDelete}
+                getItemStyle={getItemStyle}
+              />
             </DragDropContext>
           </div>
         )}
@@ -629,6 +472,189 @@ function MilestoneList(props) {
         }}
       />
     </>
+  );
+}
+
+function DropComponent({
+  data,
+  getItemStyle,
+  editMilestone,
+  setMilestoneIdSelected,
+  milestoneIdSelected,
+  setModalMilestoneDelete,
+}) {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+
+  if (!enabled) {
+    return null;
+  }
+
+  return (
+    <Droppable droppableId="droppableID">
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+          {data.map((milestone, index) => {
+            return (
+              <Draggable
+                key={milestone.milestone_id}
+                draggableId={milestone.milestone_id}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <>
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      className="item-mlstn-template"
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style,
+                      )}
+                    >
+                      <div className="m-title-col">
+                        {!editMilestone ? (
+                          <span>{milestone.milestone_title}</span>
+                        ) : (
+                          <>
+                            <input
+                              type="text"
+                              name={`milestone[${index}]milestone_title`}
+                              defaultValue={milestone.milestone_title}
+                              {...register(
+                                `milestone.${index}.milestone_title`,
+                                { required: true },
+                              )}
+                            />
+
+                            {/* {errors.milestone[index]
+                              ?.milestone_title && (
+                              <span className="msg-error">
+                                Enter valid Milestone Name
+                              </span>
+                            )} */}
+                          </>
+                        )}
+                      </div>
+
+                      <div className="m-start-col">
+                        {!editMilestone ? (
+                          <span>Day {milestone.tat_startDate}</span>
+                        ) : (
+                          <>
+                            <input
+                              type="number"
+                              name={`milestone[${index}]tat_startDate`}
+                              min="0"
+                              max="999"
+                              defaultValue={`${milestone.tat_startDate}`}
+                              {...register(`milestone.${index}.tat_startDate`, {
+                                required: true,
+                              })}
+                            />
+
+                            {/* {errors.milestone[index]
+                                ?.tat_startDate && (
+                                <span className="msg-error">
+                                  Enter valid end TAT day
+                                </span>
+                              )} */}
+                          </>
+                        )}
+                      </div>
+
+                      <div className="m-due-col">
+                        {!editMilestone ? (
+                          <span>Day {milestone.tat_endDate}</span>
+                        ) : (
+                          <>
+                            <input
+                              type="number"
+                              name={`milestone[${index}]tat_endDate`}
+                              defaultValue={milestone.tat_endDate}
+                              {...register(`milestone.${index}.tat_endDate`, {
+                                required: true,
+                              })}
+                              min="0"
+                              max="999"
+                            />
+                            {/* {errors.milestone[index]
+                                ?.tat_endDate && (
+                                <span className="msg-error">
+                                  Enter valid start TAT day
+                                </span>
+                              )} */}
+                          </>
+                        )}
+                      </div>
+
+                      <div className="m-actions-col">
+                        {!editMilestone ? (
+                          <div className="">
+                            <button
+                              type="button"
+                              className="open-item"
+                              onClick={() =>
+                                milestoneIdSelected === milestone.milestone_id
+                                  ? setMilestoneIdSelected("")
+                                  : setMilestoneIdSelected(
+                                      milestone.milestone_id,
+                                    )
+                              }
+                            >
+                              <i className="material-icons-outlined">
+                                {milestoneIdSelected === milestone.milestone_id
+                                  ? "keyboard_arrow_up"
+                                  : "keyboard_arrow_down"}
+                              </i>
+                            </button>
+                            <i
+                              className="material-icons-outlined drag-item"
+                              {...provided.dragHandleProps}
+                            >
+                              drag_indicator
+                            </i>
+                          </div>
+                        ) : (
+                          <i
+                            onClick={() => {
+                              setMilestoneIdSelected(milestone.milestone_id);
+                              setModalMilestoneDelete(true);
+                            }}
+                            className="material-icons-outlined delete-icon delete-item"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Delete"
+                          >
+                            delete
+                          </i>
+                        )}
+                      </div>
+                    </div>
+                    {milestoneIdSelected === milestone.milestone_id && (
+                      <div className="tasks-space ">
+                        <div>
+                          <TasksList milestoneId={milestone.milestone_id} />
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </Draggable>
+            );
+          })}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 }
 

@@ -297,7 +297,7 @@ export function ProjectsDashboard() {
       {/* End Header */}
 
       <div className="d-flex align-items-center row mb-2 mt-2">
-        <div className="nav-tags col-9">
+        <div className="nav-tags col-9 pl-0">
           <Link
             to={
               projectType === "books"

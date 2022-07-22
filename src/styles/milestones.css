@@ -20,6 +20,10 @@
   margin: 0;
 }
 
+.task-details input:focus {
+  border: 1px solid var(--blue);
+}
+
 .task-details.task-details-milestones > div {
   margin-right: 10px !important;
 }

@@ -433,7 +433,7 @@ function messagingArea({ ...props }) {
 
   async function validateEmail(emails) {
     const response = await api
-      .post("/validate-emails", emails)
+      .post("/validate-emails", { emails })
       .then((res) => {
         const invalid = Object.entries(res.data).filter(
           ([key, value]) => value === "Invalid",

@@ -11,6 +11,7 @@ export default function TocRow({
   handleDeleteModal,
   handleChapterSelected,
   allChaptersSelected,
+  showCopyEditlevel,
 }) {
   const [chapterSelected, setChapterSelected] = useState(false);
 
@@ -40,7 +41,7 @@ export default function TocRow({
 
   return (
     <>
-      {!!parseInt(permissions?.toc.edit) && (
+      {!!parseInt(permissions?.toc?.edit) && (
         <td className="ws toc-checkbox-item">
           <i
             {...dragHandleProps}
@@ -97,6 +98,10 @@ export default function TocRow({
         <span className="chapterTitleElement">
           {chapter.name == "" ? "Untitled" : chapter.name}
         </span>
+      </td>
+
+      <td className="chapter-name">
+        <button type="button" onClick={(e) => showCopyEditlevel(e, chapter)} className="btn btn-outline-primary ml-2 border-1" >View</button>
       </td>
 
       {!!parseInt(permissions?.toc.edit) && (

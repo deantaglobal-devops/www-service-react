@@ -40,6 +40,14 @@
 .MenuTab_tab:hover .title {
   color: var(--primary);
 }
+.MenuTab_tab p {
+  margin-bottom: 0;
+  width: 100%;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .tab.menuTabBar-permission {
   padding: 0 calc(var(--spacing) * 1.5) !important;

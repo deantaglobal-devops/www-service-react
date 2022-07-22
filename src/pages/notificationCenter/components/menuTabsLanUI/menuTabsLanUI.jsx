@@ -18,56 +18,47 @@ export default function MenuTabsLanUI({ ...props }) {
     return null;
   }
 
-  const listItem = (item) => {
-    return (
-      <li key={item.menuId} data-id={item.menuId}>
-        {props.isNotifications ? (
-          <NotificationTab
-            onClick={(event) =>
-              onClick(event, item.menuId, props.columnNumber, "NotificationTab")
-            }
-            title={item.text}
-            date={item.date}
-            time={item.time}
-            read={item.read}
-            link={item.link}
-            id={item.menuId}
-            listofItems={item.nextColumn}
-          />
-        ) : (
-          <MenuTabLanUI
-            text={item.menuTitle}
-            id={item.menuId}
-            secondColumn={
-              item.notificationCount !== undefined &&
-              Number(item.notificationCount) > 0 && (
-                <NotificationCount text={item.notificationCount} />
-              )
-            }
-            active={props.activeItem === item.menuId && true}
-            onClick={(event) =>
-              onClick(event, item.menuId, props.columnNumber, "MenuTab")
-            }
-          />
-        )}
-      </li>
-    );
-  };
-
   return (
     <ul className="menuTabs undefined MenuTabs_menuTabs">
       {props.listOfItems.map((item, i) => {
         return (
-          <>
-            {console.log(props.columnNumber)}
-            {props.columnNumber !== 2 ? (
-              listItem(item)
+          <li key={item.menuId} data-id={item.menuId}>
+            {props.isNotifications ? (
+              <NotificationTab
+                onClick={(event) =>
+                  onClick(
+                    event,
+                    item.menuId,
+                    props.columnNumber,
+                    "NotificationTab",
+                  )
+                }
+                title={item.text}
+                date={item.date}
+                time={item.time}
+                read={item.read}
+                link={item.link}
+                id={item.menuId}
+                listofItems={item.nextColumn}
+              />
             ) : (
-              <Tooltip content={item.titleProject} direction="top max-wdth">
-                {listItem(item)}
-              </Tooltip>
+              <MenuTabLanUI
+                text={item.menuTitle}
+                id={item.menuId}
+                secondColumn={
+                  item.notificationCount !== undefined &&
+                  Number(item.notificationCount) > 0 && (
+                    <NotificationCount text={item.notificationCount} />
+                  )
+                }
+                titleProject={item.titleProject}
+                active={props.activeItem === item.menuId && true}
+                onClick={(event) =>
+                  onClick(event, item.menuId, props.columnNumber, "MenuTab")
+                }
+              />
             )}
-          </>
+          </li>
         );
       })}
     </ul>

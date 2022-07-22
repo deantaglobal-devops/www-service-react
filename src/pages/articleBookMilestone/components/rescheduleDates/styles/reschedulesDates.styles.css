@@ -143,8 +143,12 @@ div.changed-task {
   position: absolute;
   top: 40px;
   left: 0;
-  height: calc(100% - 150px);
+  height: calc(100% - 152px);
   background: #eee;
+}
+
+.line-three:last-child::after {
+  height: calc(100% - 98px);
 }
 
 .datepicker-hover {

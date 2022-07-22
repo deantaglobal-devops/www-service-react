@@ -454,6 +454,7 @@ ul.notification-list > li.notification-box:last-of-type {
   -webkit-box-align: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
+  padding-bottom: 20px;
 }
 
 #notification .notifications > div.undefined ul li {
@@ -492,6 +493,7 @@ ul.notification-list > li.notification-box:last-of-type {
 
 #notification .notifications > div.undefined ul li button {
   --border-color: var(--lines);
+  width: 100%;
   border: none;
   border-bottom: 1px solid var(--border-color);
   border-right: none;

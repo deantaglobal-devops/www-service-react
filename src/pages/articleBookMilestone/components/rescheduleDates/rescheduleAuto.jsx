@@ -53,7 +53,7 @@ export default function RescheduleManual({
       if (ids[1] && datesOld[+ids[0]]) {
         for (
           let indexTask = +ids[1];
-          indexTask < datesOld[+ids[0]].tasks.length - 1;
+          indexTask < datesOld[+ids[0]].tasks.length || 0;
           indexTask += 1
         ) {
           let newDateTaskStart = "";
@@ -61,36 +61,75 @@ export default function RescheduleManual({
           let newDateTaskEndCurrent = "";
 
           const element = datesOld[+ids[0]].tasks[indexTask + 1];
-          const iniDateTaskStart = element?.taskStartDate;
-          const iniDateTaskEnd = element?.taskEndDate;
+
+          if (element) {
+            const iniDateTaskStart = element?.taskStartDate;
+            const iniDateTaskEnd = element?.taskEndDate;
+
+            if (differentDays < 0) {
+              let daysStart = differentDays;
+              newDateTaskStart = moment(iniDateTaskStart, "YYYY-MM-DD");
+              while (daysStart < 0) {
+                newDateTaskStart = newDateTaskStart.subtract(1, "d");
+                if (
+                  moment(newDateTaskStart).isoWeekday() !== 6 &&
+                  moment(newDateTaskStart).isoWeekday() !== 7
+                ) {
+                  daysStart += 1;
+                }
+              }
+
+              let daysEnd = differentDays;
+              newDateTaskEnd = moment(iniDateTaskEnd, "YYYY-MM-DD");
+              while (daysEnd < 0) {
+                newDateTaskEnd = newDateTaskEnd.subtract(1, "d");
+                if (
+                  moment(newDateTaskEnd).isoWeekday() !== 6 &&
+                  moment(newDateTaskEnd).isoWeekday() !== 7
+                ) {
+                  daysEnd += 1;
+                }
+              }
+            } else {
+              let daysStart = differentDays;
+              newDateTaskStart = moment(iniDateTaskStart, "YYYY-MM-DD");
+              while (daysStart > 0) {
+                newDateTaskStart = newDateTaskStart.add(1, "d");
+                if (
+                  moment(newDateTaskStart).isoWeekday() !== 6 &&
+                  moment(newDateTaskStart).isoWeekday() !== 7
+                ) {
+                  daysStart -= 1;
+                }
+              }
+
+              let daysEnd = differentDays;
+              newDateTaskEnd = moment(iniDateTaskEnd, "YYYY-MM-DD");
+              while (daysEnd > 0) {
+                newDateTaskEnd = newDateTaskEnd.add(1, "d");
+                if (
+                  moment(newDateTaskEnd).isoWeekday() !== 6 &&
+                  moment(newDateTaskEnd).isoWeekday() !== 7
+                ) {
+                  daysEnd -= 1;
+                }
+              }
+            }
+
+            setValue(
+              `milestones[${+ids[0]}].tasks.${indexTask + 1}.taskEndDate`,
+              newDateTaskEnd.format("YYYY-MM-DD"),
+            );
+            setValue(
+              `milestones[${+ids[0]}].tasks.${indexTask + 1}.taskStartDate`,
+              newDateTaskStart.format("YYYY-MM-DD"),
+            );
+          }
+
           const currentDateTaskEnd =
-            datesOld[+ids[0]].tasks[indexTask + 1].taskEndDate;
+            datesOld[+ids[0]].tasks[indexTask].taskEndDate;
 
           if (differentDays < 0) {
-            let daysStart = differentDays;
-            newDateTaskStart = moment(iniDateTaskStart, "YYYY-MM-DD");
-            while (daysStart < 0) {
-              newDateTaskStart = newDateTaskStart.subtract(1, "d");
-              if (
-                moment(newDateTaskStart).isoWeekday() !== 6 &&
-                moment(newDateTaskStart).isoWeekday() !== 7
-              ) {
-                daysStart += 1;
-              }
-            }
-
-            let daysEnd = differentDays;
-            newDateTaskEnd = moment(iniDateTaskEnd, "YYYY-MM-DD");
-            while (daysEnd < 0) {
-              newDateTaskEnd = newDateTaskEnd.subtract(1, "d");
-              if (
-                moment(newDateTaskEnd).isoWeekday() !== 6 &&
-                moment(newDateTaskEnd).isoWeekday() !== 7
-              ) {
-                daysEnd += 1;
-              }
-            }
-
             let daysEndCurrent = differentDays;
             newDateTaskEndCurrent = moment(currentDateTaskEnd, "YYYY-MM-DD");
             while (daysEndCurrent < 0) {
@@ -103,30 +142,6 @@ export default function RescheduleManual({
               }
             }
           } else {
-            let daysStart = differentDays;
-            newDateTaskStart = moment(iniDateTaskStart, "YYYY-MM-DD");
-            while (daysStart > 0) {
-              newDateTaskStart = newDateTaskStart.add(1, "d");
-              if (
-                moment(newDateTaskStart).isoWeekday() !== 6 &&
-                moment(newDateTaskStart).isoWeekday() !== 7
-              ) {
-                daysStart -= 1;
-              }
-            }
-
-            let daysEnd = differentDays;
-            newDateTaskEnd = moment(iniDateTaskEnd, "YYYY-MM-DD");
-            while (daysEnd > 0) {
-              newDateTaskEnd = newDateTaskEnd.add(1, "d");
-              if (
-                moment(newDateTaskEnd).isoWeekday() !== 6 &&
-                moment(newDateTaskEnd).isoWeekday() !== 7
-              ) {
-                daysEnd -= 1;
-              }
-            }
-
             let daysEndCurrent = differentDays;
             newDateTaskEndCurrent = moment(currentDateTaskEnd, "YYYY-MM-DD");
             while (daysEndCurrent > 0) {
@@ -140,15 +155,6 @@ export default function RescheduleManual({
             }
           }
 
-          setValue(
-            `milestones[${+ids[0]}].tasks.${indexTask + 1}.taskEndDate`,
-            newDateTaskEnd.format("YYYY-MM-DD"),
-          );
-          setValue(
-            `milestones[${+ids[0]}].tasks.${indexTask + 1}.taskStartDate`,
-            newDateTaskStart.format("YYYY-MM-DD"),
-          );
-
           if (e.target.name.includes("taskStartDate")) {
             setValue(
               `milestones[${+ids[0]}].tasks.${indexTask}.taskEndDate`,
@@ -161,39 +167,77 @@ export default function RescheduleManual({
       // Auto reschedule to milestones
       for (
         let indexMilestone = +ids[0];
-        indexMilestone < datesOld.length - 1;
+        indexMilestone < datesOld.length;
         indexMilestone += 1
       ) {
         const element = datesOld[indexMilestone + 1];
-        const startDay = element?.startDate;
-        const endDay = element?.endDate;
+
+        if (element) {
+          const startDay = element?.startDate;
+          const endDay = element?.endDate;
+          if (differentDays < 0) {
+            let daysStart = differentDays;
+            newDateStart = moment(startDay, "YYYY-MM-DD");
+            while (daysStart < 0) {
+              newDateStart = newDateStart.subtract(1, "d");
+              if (
+                moment(newDateStart).isoWeekday() !== 6 &&
+                moment(newDateStart).isoWeekday() !== 7
+              ) {
+                daysStart += 1;
+              }
+            }
+
+            let daysEnd = differentDays;
+            newDateEnd = moment(endDay, "YYYY-MM-DD");
+            while (daysEnd < 0) {
+              newDateEnd = newDateEnd.subtract(1, "d");
+              if (
+                moment(newDateEnd).isoWeekday() !== 6 &&
+                moment(newDateEnd).isoWeekday() !== 7
+              ) {
+                daysEnd += 1;
+              }
+            }
+          } else {
+            let daysStart = differentDays;
+            newDateStart = moment(startDay, "YYYY-MM-DD");
+            while (daysStart > 0) {
+              newDateStart = newDateStart.add(1, "d");
+
+              if (
+                moment(newDateStart).isoWeekday() !== 6 &&
+                moment(newDateStart).isoWeekday() !== 7
+              ) {
+                daysStart -= 1;
+              }
+            }
+
+            let daysEnd = differentDays;
+            newDateEnd = moment(endDay, "YYYY-MM-DD");
+            while (daysEnd > 0) {
+              newDateEnd = newDateEnd.add(1, "d");
+              if (
+                moment(newDateEnd).isoWeekday() !== 6 &&
+                moment(newDateEnd).isoWeekday() !== 7
+              ) {
+                daysEnd -= 1;
+              }
+            }
+          }
+          setValue(
+            `milestones[${indexMilestone + 1}].endDate`,
+            newDateEnd.format("YYYY-MM-DD"),
+          );
+          setValue(
+            `milestones[${indexMilestone + 1}].startDate`,
+            newDateStart.format("YYYY-MM-DD"),
+          );
+        }
+
         const endDayCurrent = datesOld[indexMilestone].endDate;
 
         if (differentDays < 0) {
-          let daysStart = differentDays;
-          newDateStart = moment(startDay, "YYYY-MM-DD");
-          while (daysStart < 0) {
-            newDateStart = newDateStart.subtract(1, "d");
-            if (
-              moment(newDateStart).isoWeekday() !== 6 &&
-              moment(newDateStart).isoWeekday() !== 7
-            ) {
-              daysStart += 1;
-            }
-          }
-
-          let daysEnd = differentDays;
-          newDateEnd = moment(endDay, "YYYY-MM-DD");
-          while (daysEnd < 0) {
-            newDateEnd = newDateEnd.subtract(1, "d");
-            if (
-              moment(newDateEnd).isoWeekday() !== 6 &&
-              moment(newDateEnd).isoWeekday() !== 7
-            ) {
-              daysEnd += 1;
-            }
-          }
-
           let daysEndCurr = differentDays;
           newDateEndCurrent = moment(endDayCurrent, "YYYY-MM-DD");
           while (daysEndCurr < 0) {
@@ -206,31 +250,6 @@ export default function RescheduleManual({
             }
           }
         } else {
-          let daysStart = differentDays;
-          newDateStart = moment(startDay, "YYYY-MM-DD");
-          while (daysStart > 0) {
-            newDateStart = newDateStart.add(1, "d");
-
-            if (
-              moment(newDateStart).isoWeekday() !== 6 &&
-              moment(newDateStart).isoWeekday() !== 7
-            ) {
-              daysStart -= 1;
-            }
-          }
-
-          let daysEnd = differentDays;
-          newDateEnd = moment(endDay, "YYYY-MM-DD");
-          while (daysEnd > 0) {
-            newDateEnd = newDateEnd.add(1, "d");
-            if (
-              moment(newDateEnd).isoWeekday() !== 6 &&
-              moment(newDateEnd).isoWeekday() !== 7
-            ) {
-              daysEnd -= 1;
-            }
-          }
-
           let daysEndCurr = differentDays;
           newDateEndCurrent = moment(endDayCurrent, "YYYY-MM-DD");
           while (daysEndCurr > 0) {
@@ -251,20 +270,12 @@ export default function RescheduleManual({
           );
         }
 
-        setValue(
-          `milestones[${indexMilestone + 1}].endDate`,
-          newDateEnd.format("YYYY-MM-DD"),
-        );
-        setValue(
-          `milestones[${indexMilestone + 1}].startDate`,
-          newDateStart.format("YYYY-MM-DD"),
-        );
-
         // Auto reschedule to next tasks of milestones
         const index = !ids[1] ? indexMilestone : indexMilestone + 1;
+
         for (
           let indexTask = 0;
-          indexTask < datesOld[index].tasks.length;
+          indexTask < datesOld[index].tasks?.length || 0;
           indexTask += 1
         ) {
           let newDateTaskStart = "";
@@ -685,17 +696,19 @@ export default function RescheduleManual({
                               </p>
                             </div>
                           ))}
-                          <div style={{ textAlign: "right", paddingTop: 20 }}>
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={() => {
-                                setStopHere(id + 1);
-                              }}
-                            >
-                              Stop changes here
-                            </button>
-                          </div>
+                          {rescheduleData?.milestones?.length - 1 !== id && (
+                            <div style={{ textAlign: "right", paddingTop: 20 }}>
+                              <button
+                                type="button"
+                                className="btn btn-outline-primary"
+                                onClick={() => {
+                                  setStopHere(id + 1);
+                                }}
+                              >
+                                Stop changes here
+                              </button>
+                            </div>
+                          )}
                         </div>
                       ))}
                 </div>
