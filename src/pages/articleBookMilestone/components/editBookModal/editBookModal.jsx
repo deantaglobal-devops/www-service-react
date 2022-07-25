@@ -1121,7 +1121,7 @@ export function EditBookModal({
                 <Dropdown
                   label="Type"
                   name="typeCategory"
-                  value={editBookData?.typeCategory?.valu ?? ""}
+                  value={editBookData?.typeCategory?.value ?? ""}
                   valuesDropdown={editBookData?.TypeList.map((type) => {
                     return {
                       id: type.type_id,
