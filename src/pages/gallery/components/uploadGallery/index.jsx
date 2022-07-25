@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../../../services/api";
 
 import SideSlider from "../../../../components/sideSlider/SideSlider";
+import { OutsideAlerter } from "../../../../components/outsideAlerter/useOutsideAlerter";
 
 const fileSizeLimit = import.meta.env.VITE_REACT_APP_FILE_SIZE_LIMIT;
 
@@ -112,140 +113,142 @@ export default function GalleryUpload({ show, set, chapter, project }) {
 
   return (
     <div className={show ? "open" : ""} id="side-slider-container">
-      <SideSlider
-        SIDESLIDER_PROPS={{
-          SliderHeader: sliderHeader,
-          SliderStatus: show,
-          SliderWidth: sliderWidth,
-        }}
-        showSlider={() => set(false)}
-      >
-        <form
-          id="file-upload-form"
-          encType="multipart/form-data"
-          action="/upload/image"
-          method="post"
+      <OutsideAlerter>
+        <SideSlider
+          SIDESLIDER_PROPS={{
+            SliderHeader: sliderHeader,
+            SliderStatus: show,
+            SliderWidth: sliderWidth,
+          }}
+          showSlider={() => set(false)}
         >
-          <p>
-            Drop files to upload or <span>Click here to select</span>
-          </p>
-          <input
-            id="file-upload"
-            accept=".png, .jpg, .jpeg, .tif, .eps"
-            type="file"
-            name="fileUpload"
-            onChange={handleChange}
-          />
-        </form>
-        {file && (
-          <div className="progress-upload" id="progress-upload">
-            <div className="content-box">
-              <img className="thumb-img" src={file} />
-              <div className="project-card-details-gallery">
-                <div className="progress-status">
-                  <div className="progress progress-sm">
-                    <div
-                      className="progress-bar bg-success progress-per"
-                      role="progressbar"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    />
-                  </div>
-                </div>
-              </div>
-              <i
-                className="material-icons-outlined delete-file-from-upload hide"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Delete"
-              >
-                delete_outline
-              </i>
-              <div className="wrap-field-label figureNameInput ">
-                <label className="label-form">Title</label>
-                <input
-                  required
-                  className={
-                    invalid && nameFile === ""
-                      ? "default-input-text is-invalid"
-                      : "default-input-text"
-                  }
-                  maxLength="45"
-                  type="text"
-                  name="filename"
-                  onChange={(e) => {
-                    setNameFile(e.target.value);
-                  }}
-                />
-                {invalid && nameFile === "" && (
-                  <span className="validation-error-figurename">
-                    Please enter a figure name
-                  </span>
-                )}
-              </div>
-              <div className="wrap-field-label last-f mt-3">
-                <fieldset className="chooseRole dropdown">
-                  <div className="DdWrapper">
-                    <label htmlFor="roleSelect">Task</label>
-                    <div className="styled-select TaskNameInput">
-                      <select
-                        id="taskupload"
-                        required
-                        onChange={(e) => {
-                          setTaskFile(e.target.value);
-                        }}
-                        defaultValue={taskFile}
-                      >
-                        <option value="select">Select Task</option>
-                        {taskData?.map((galleryList, index) => (
-                          <option
-                            value={galleryList.taskId}
-                            key={galleryList.taskId + index}
-                          >
-                            {galleryList.taskName}
-                          </option>
-                        ))}
-                        ;
-                      </select>
-                      {invalid && taskFile === "select" && (
-                        <span className="validation-error-taskname">
-                          Please any one task
-                        </span>
-                      )}
+          <form
+            id="file-upload-form"
+            encType="multipart/form-data"
+            action="/upload/image"
+            method="post"
+          >
+            <p>
+              Drop files to upload or <span>Click here to select</span>
+            </p>
+            <input
+              id="file-upload"
+              accept=".png, .jpg, .jpeg, .tif, .eps"
+              type="file"
+              name="fileUpload"
+              onChange={handleChange}
+            />
+          </form>
+          {file && (
+            <div className="progress-upload" id="progress-upload">
+              <div className="content-box">
+                <img className="thumb-img" src={file} />
+                <div className="project-card-details-gallery">
+                  <div className="progress-status">
+                    <div className="progress progress-sm">
+                      <div
+                        className="progress-bar bg-success progress-per"
+                        role="progressbar"
+                        aria-valuenow="75"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      />
                     </div>
                   </div>
-                </fieldset>
+                </div>
+                <i
+                  className="material-icons-outlined delete-file-from-upload hide"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Delete"
+                >
+                  delete_outline
+                </i>
+                <div className="wrap-field-label figureNameInput ">
+                  <label className="label-form">Title</label>
+                  <input
+                    required
+                    className={
+                      invalid && nameFile === ""
+                        ? "default-input-text is-invalid"
+                        : "default-input-text"
+                    }
+                    maxLength="45"
+                    type="text"
+                    name="filename"
+                    onChange={(e) => {
+                      setNameFile(e.target.value);
+                    }}
+                  />
+                  {invalid && nameFile === "" && (
+                    <span className="validation-error-figurename">
+                      Please enter a figure name
+                    </span>
+                  )}
+                </div>
+                <div className="wrap-field-label last-f mt-3">
+                  <fieldset className="chooseRole dropdown">
+                    <div className="DdWrapper">
+                      <label htmlFor="roleSelect">Task</label>
+                      <div className="styled-select TaskNameInput">
+                        <select
+                          id="taskupload"
+                          required
+                          onChange={(e) => {
+                            setTaskFile(e.target.value);
+                          }}
+                          defaultValue={taskFile}
+                        >
+                          <option value="select">Select Task</option>
+                          {taskData?.map((galleryList, index) => (
+                            <option
+                              value={galleryList.taskId}
+                              key={galleryList.taskId + index}
+                            >
+                              {galleryList.taskName}
+                            </option>
+                          ))}
+                          ;
+                        </select>
+                        {invalid && taskFile === "select" && (
+                          <span className="validation-error-taskname">
+                            Please any one task
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div className="float-right">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={() => set(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  id="project-update-btn"
+                  className="btn btn-outline-primary ml-1"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
               </div>
             </div>
-            <div className="float-right">
-              <button
-                type="button"
-                className="btn btn-outline-primary"
-                onClick={() => set(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                id="project-update-btn"
-                className="btn btn-outline-primary ml-1"
-                onClick={handleSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        )}
-      </SideSlider>
+          )}
+        </SideSlider>
+      </OutsideAlerter>
 
-      {messageToast && (
+      {/* {messageToast && (
         <Toast
           type={typeToast}
           text={messageToast}
           handleToastOnClick={() => setMessageToast("")}
         />
-      )}
+      )} */}
     </div>
   );
 }
