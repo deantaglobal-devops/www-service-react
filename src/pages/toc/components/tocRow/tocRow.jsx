@@ -11,6 +11,7 @@ export default function TocRow({
   handleDeleteModal,
   handleChapterSelected,
   allChaptersSelected,
+  showCopyEditlevel,
 }) {
   const [chapterSelected, setChapterSelected] = useState(false);
 
@@ -25,17 +26,22 @@ export default function TocRow({
     handleChapterSelected(chapter.id);
   };
 
-  const handleDownload = async (e, filePath) => {
+  const handleDownload = async (e, filePath, fileFormat) => {
     e.preventDefault();
 
     if (filePath) {
-      downloadFile(filePath);
+      downloadFile(
+        filePath,
+        chapter?.name === ""
+          ? `Untitled.${fileFormat}`
+          : `${chapter?.name}.${fileFormat}`,
+      );
     }
   };
 
   return (
     <>
-      {!!parseInt(permissions?.toc.edit) && (
+      {!!parseInt(permissions?.toc?.edit) && (
         <td className="ws toc-checkbox-item">
           <i
             {...dragHandleProps}
@@ -92,6 +98,10 @@ export default function TocRow({
         <span className="chapterTitleElement">
           {chapter.name == "" ? "Untitled" : chapter.name}
         </span>
+      </td>
+
+      <td className="chapter-name">
+        <button type="button" onClick={(e) => showCopyEditlevel(e, chapter)} className="btn btn-outline-primary ml-2 border-1" >View</button>
       </td>
 
       {!!parseInt(permissions?.toc.edit) && (
@@ -181,7 +191,7 @@ export default function TocRow({
             !!parseInt(permissions?.toc.download) && (
               <a
                 onClick={(e) => {
-                  handleDownload(e, file.link);
+                  handleDownload(e, file?.link, file?.format);
                 }}
                 key={file.link}
                 href="#"

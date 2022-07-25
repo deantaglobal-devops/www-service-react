@@ -16,6 +16,7 @@ export function DownloadAttachment() {
       .then((response) => response.data.token);
 
     const filePath = searchParams.get("file");
+    const fileName = searchParams.get("name");
 
     const file = await api
       .get(`/file/get?path=/resources/${filePath}`, {
@@ -29,7 +30,7 @@ export function DownloadAttachment() {
 
     const a = document.createElement("a"); // Create <a>
     a.href = `data:application/octet-stream;base64,${file.content}`; // File Base64 Goes here
-    a.download = file.file_name; // File name Here
+    a.download = fileName; // File name Here
     a.click(); // Downloaded file
 
     return <></>;

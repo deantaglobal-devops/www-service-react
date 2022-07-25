@@ -433,7 +433,7 @@ function messagingArea({ ...props }) {
 
   async function validateEmail(emails) {
     const response = await api
-      .post("/validate-emails", emails)
+      .post("/validate-emails", { emails })
       .then((res) => {
         const invalid = Object.entries(res.data).filter(
           ([key, value]) => value === "Invalid",
@@ -457,12 +457,27 @@ function messagingArea({ ...props }) {
     return response;
   }
 
+  // Handling address emails
+  function handleStrArr(arr) {
+    if (arr) {
+      return arr?.replace(/\s/g, "").split(",").filter(Boolean);
+    }
+    return [];
+  }
+
   async function sendChat(data, mail) {
     let messageId = "";
     let attachments = [];
     let attachmentsIds = [];
 
+    let toAddress = handleStrArr(data.to.replace(" ", ""));
+
+    if (data.alertMembers) {
+      toAddress = toAddress.concat(memberList.map((user) => user.email));
+    }
+
     const attachmentsMerge = [...attachmentList, ...attachsAssetList];
+
     if (attachmentsMerge.length > 0) {
       await uploadLocalFiles(attachmentsMerge);
       attachments = await Promise.all(
@@ -493,7 +508,7 @@ function messagingArea({ ...props }) {
         ),
         creatorId: user.id,
         attachments: attachmentsIds,
-        emailTo: data.to.replace(" ", ""),
+        emailTo: toAddress.length > 0 ? toAddress.join(", ") : "",
         emailCC: data.ccs.replace(" ", ""),
         alertedIds: memberList.map((user) => user.id).join(","),
         message_id_related: replyMsgId,
@@ -521,14 +536,6 @@ function messagingArea({ ...props }) {
 
   async function sendMail(data, attachments, messageId) {
     setLoading("send");
-
-    // Handling address emails
-    function handleStrArr(arr) {
-      if (arr) {
-        return arr?.replace(/\s/g, "").split(",").filter(Boolean);
-      }
-      return [];
-    }
 
     let ccsAddress = handleStrArr(data.ccs);
     const bccsAddress = handleStrArr(data.bccs);
@@ -649,7 +656,7 @@ function messagingArea({ ...props }) {
   }
 
   async function uploadLocalFiles(files) {
-    const newArrayOfFiles = await Promise.all(
+    await Promise.all(
       files.map(async (file) => {
         if (file.upload) {
           const newId = await addAssetInProject(file.file_path, file.name);
@@ -659,7 +666,6 @@ function messagingArea({ ...props }) {
         return file;
       }),
     );
-    setAttachmentList(newArrayOfFiles);
   }
 
   async function addAssetInProject(filePath, file) {
@@ -949,32 +955,33 @@ function messagingArea({ ...props }) {
                     </i>
                   </div>
                 </div>
-
-                <div className="options-template">
-                  <div className="wrap-field-label">
-                    <label htmlFor="senderName" className="label-form">
-                      Sender name:
-                    </label>
-                    <select name="senderName" {...register("senderName")}>
-                      <option value={`${user.name} ${user.lastname}`}>
-                        {`${user.name} ${user.lastname}`}
-                      </option>
-                      {+permissions?.chatroom?.sender_name_selection === 1 &&
-                        Object.keys(userNameList)?.map((item) => (
-                          <optgroup label={item} key={item}>
-                            {userNameList[item].map((user) => (
-                              <option key={user} value={user}>
-                                {user}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                    </select>
-                    <i className="material-icons-outlined select-chevron">
-                      expand_more
-                    </i>
+                {props.chapterId !== 0 && (
+                  <div className="options-template">
+                    <div className="wrap-field-label">
+                      <label htmlFor="senderName" className="label-form">
+                        Sender name:
+                      </label>
+                      <select name="senderName" {...register("senderName")}>
+                        <option value={`${user.name} ${user.lastname}`}>
+                          {`${user.name} ${user.lastname}`}
+                        </option>
+                        {+permissions?.chatroom?.sender_name_selection === 1 &&
+                          Object.keys(userNameList)?.map((item) => (
+                            <optgroup label={item} key={item}>
+                              {userNameList[item].map((user) => (
+                                <option key={user} value={user}>
+                                  {user}
+                                </option>
+                              ))}
+                            </optgroup>
+                          ))}
+                      </select>
+                      <i className="material-icons-outlined select-chevron">
+                        expand_more
+                      </i>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {loading === "usetemplate" || loading === "templatelist" ? (

@@ -313,7 +313,7 @@ function ClientTemplate(props) {
   return (
     <>
       <div className="templates_milestones">
-        <div className="notifications-configuration-panel roles">
+        <div className=" notifications notifications-configuration-panel roles">
           <div className="undefined lvl-1">
             <h2 className="h2">Type</h2>
             {typeList?.length > 0 && (

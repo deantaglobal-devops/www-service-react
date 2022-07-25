@@ -314,12 +314,12 @@ function ListAsset({
               </Tooltip>
             )}
 
-            {!!parseInt(permissions.assets.download) && (
+            {!!parseInt(permissions?.assets?.download) && (
               <Tooltip content="Download" direction="top">
                 <a
                   className="download-file"
                   onClick={() => {
-                    downloadFile(asset.file_path);
+                    downloadFile(asset?.file_path, asset?.name);
                   }}
                 >
                   <i className="material-icons-outlined ">save_alt</i>
