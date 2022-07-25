@@ -261,7 +261,7 @@ export function EditJournal({ show, permissions, journalData, handleClose }) {
       const token = localStorage.getItem("lanstad-token");
 
       const requestOptions = {
-        method: "PUT",
+        method: "POST",
         headers: { "Lanstad-token": token },
         body: formData,
         // mode: "no-cors",
