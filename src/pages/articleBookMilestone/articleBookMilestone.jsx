@@ -44,6 +44,19 @@ export function ArticleBookMilestone() {
     handleData();
   }, []);
 
+  function getProject() {
+    const response = api
+      .get(`/project/${projectId}`)
+      .then((response) => {
+        setProject(response.data);
+        return response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return response;
+  }
+
   async function handleData() {
     setIsLoading(true);
     let responseProject;
@@ -52,8 +65,9 @@ export function ArticleBookMilestone() {
     if (chapterId) {
       responseProject = await api
         .get(`/project/journal/${projectId}/detail/${chapterId}`)
-        .then((response) => {
-          setChapter(response.data);
+        .then(async (response) => {
+          const projectInfo = await getProject();
+          setChapter(projectInfo);
           setProject(response.data);
           return response.data;
         })
@@ -61,15 +75,7 @@ export function ArticleBookMilestone() {
           console.log(err);
         });
     } else {
-      responseProject = await api
-        .get(`/project/${projectId}`)
-        .then((response) => {
-          setProject(response.data);
-          return response.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      responseProject = await getProject();
     }
 
     if (responseProject.pmbriefLink) {
@@ -197,7 +203,7 @@ export function ArticleBookMilestone() {
             <EditArticleModal
               openEditArticleModal={openEditArticleModal}
               handleOnCloseEditArticleModal={() => closeModals()}
-              chapter={chapter}
+              chapter={project}
             />
           )}
 
@@ -207,10 +213,8 @@ export function ArticleBookMilestone() {
               {/* Journals (Article) */}
               {chapter ? (
                 <>
-                  <h3>
-                    {project?.client} — {project?.title}
-                  </h3>
-                  <h2>{chapter?.chapter_title}</h2>
+                  <h3>{chapter?.title}</h3>
+                  <h2>{project?.chapter_title}</h2>
                 </>
               ) : (
                 // Books
@@ -291,37 +295,37 @@ export function ArticleBookMilestone() {
                     <div className="project-information-blocks full-size">
                       <div className="singular-block-information">
                         <label>ARTICLE ID</label>
-                        <p>{chapter?.chapterNo}</p>
+                        <p>{project?.chapterNo}</p>
                       </div>
                       <div className="singular-block-information">
                         <label>AUTHOR</label>
-                        <p>{chapter?.author}</p>
+                        <p>{project?.author}</p>
                       </div>
                       <div className="singular-block-information">
                         <label>DOI</label>
-                        <p>{chapter?.DOI}</p>
+                        <p>{project?.DOI}</p>
                       </div>
                       <div className="singular-block-information">
                         <label>START DATE</label>
-                        <p>{moment(chapter?.startDate).format("DD/MM/YYYY")}</p>
+                        <p>{moment(project?.startDate).format("DD/MM/YYYY")}</p>
                       </div>
                       <div className="singular-block-information">
                         <label>TARGET DATE</label>
-                        <p>{moment(chapter?.endDate).format("DD/MM/YYYY")}</p>
+                        <p>{moment(project?.endDate).format("DD/MM/YYYY")}</p>
                       </div>
                       <div className="singular-block-information">
                         <label>PROGRESS</label>
                         <div className="project-card-details">
                           <div className="progress-status">
                             <div className="label-bar-status">
-                              <label>{chapter?.percent}% completed</label>
+                              <label>{project?.percent}% completed</label>
                             </div>
                             <div className="progress progress-sm">
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: `${chapter?.percent}%` }}
-                                aria-valuenow={`${chapter?.percent}`}
+                                style={{ width: `${project?.percent}%` }}
+                                aria-valuenow={`${project?.percent}`}
                                 aria-valuemin="0"
                                 aria-valuemax="100"
                               />
@@ -507,7 +511,7 @@ export function ArticleBookMilestone() {
             <nav className="main-project-navigation">
               {!!parseInt(permissions?.milestones?.view) && (
                 <Link
-                  to={`/project/journal/${project.project_id}/detail/${chapter.chapter_id}`}
+                  to={`/project/journal/${project.project_id}/detail/${project.chapter_id}`}
                   className="active"
                 >
                   <i className="material-icons-outlined">view_day</i> Milestones
@@ -516,7 +520,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.vxe?.view) && (
                 <Link
-                  to={`/vxe/${project.project_id}/detail/${chapter.chapter_id}`}
+                  to={`/vxe/${project.project_id}/detail/${project.chapter_id}`}
                 >
                   <i className="material-icons-outlined">format_shapes</i>
                   PRO Editor
@@ -525,7 +529,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.assets?.view) && (
                 <Link
-                  to={`/project/assets/${project.project_id}/detail/${chapter.chapter_id}`}
+                  to={`/project/assets/${project.project_id}/detail/${project.chapter_id}`}
                 >
                   <i className="material-icons-outlined">folder</i>
                   Assets
@@ -534,7 +538,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.gallery?.view) && (
                 <Link
-                  to={`/project/gallery/${project.project_id}/detail/${chapter.chapter_id}`}
+                  to={`/project/gallery/${project.project_id}/detail/${project.chapter_id}`}
                 >
                   <i className="material-icons-outlined">collections</i>
                   Gallery
@@ -543,7 +547,7 @@ export function ArticleBookMilestone() {
 
               {!!parseInt(permissions?.books?.users?.view) && (
                 <Link
-                  to={`/project/users/${project.project_id}/detail/${chapter.chapter_id}`}
+                  to={`/project/users/${project.project_id}/detail/${project.chapter_id}`}
                 >
                   <i className="material-icons-outlined">group</i> Users
                 </Link>
@@ -621,7 +625,7 @@ export function ArticleBookMilestone() {
             project={project}
             user={user}
             permissions={permissions}
-            chapter={chapter}
+            chapter={project}
             skipEproofing={skipEproofing}
             showFailToast={(message) => showFailToast(message)}
           />

@@ -477,6 +477,7 @@ function messagingArea({ ...props }) {
     }
 
     const attachmentsMerge = [...attachmentList, ...attachsAssetList];
+
     if (attachmentsMerge.length > 0) {
       await uploadLocalFiles(attachmentsMerge);
       attachments = await Promise.all(
@@ -655,7 +656,7 @@ function messagingArea({ ...props }) {
   }
 
   async function uploadLocalFiles(files) {
-    const newArrayOfFiles = await Promise.all(
+    await Promise.all(
       files.map(async (file) => {
         if (file.upload) {
           const newId = await addAssetInProject(file.file_path, file.name);
@@ -665,7 +666,6 @@ function messagingArea({ ...props }) {
         return file;
       }),
     );
-    setAttachmentList(newArrayOfFiles);
   }
 
   async function addAssetInProject(filePath, file) {
@@ -955,32 +955,33 @@ function messagingArea({ ...props }) {
                     </i>
                   </div>
                 </div>
-
-                <div className="options-template">
-                  <div className="wrap-field-label">
-                    <label htmlFor="senderName" className="label-form">
-                      Sender name:
-                    </label>
-                    <select name="senderName" {...register("senderName")}>
-                      <option value={`${user.name} ${user.lastname}`}>
-                        {`${user.name} ${user.lastname}`}
-                      </option>
-                      {+permissions?.chatroom?.sender_name_selection === 1 &&
-                        Object.keys(userNameList)?.map((item) => (
-                          <optgroup label={item} key={item}>
-                            {userNameList[item].map((user) => (
-                              <option key={user} value={user}>
-                                {user}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                    </select>
-                    <i className="material-icons-outlined select-chevron">
-                      expand_more
-                    </i>
+                {props.chapterId !== 0 && (
+                  <div className="options-template">
+                    <div className="wrap-field-label">
+                      <label htmlFor="senderName" className="label-form">
+                        Sender name:
+                      </label>
+                      <select name="senderName" {...register("senderName")}>
+                        <option value={`${user.name} ${user.lastname}`}>
+                          {`${user.name} ${user.lastname}`}
+                        </option>
+                        {+permissions?.chatroom?.sender_name_selection === 1 &&
+                          Object.keys(userNameList)?.map((item) => (
+                            <optgroup label={item} key={item}>
+                              {userNameList[item].map((user) => (
+                                <option key={user} value={user}>
+                                  {user}
+                                </option>
+                              ))}
+                            </optgroup>
+                          ))}
+                      </select>
+                      <i className="material-icons-outlined select-chevron">
+                        expand_more
+                      </i>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {loading === "usetemplate" || loading === "templatelist" ? (
