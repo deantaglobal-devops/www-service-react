@@ -274,7 +274,7 @@ export function EditJournal({ show, permissions, journalData, handleClose }) {
 
       if (responseData) {
         setIsLoading(false);
-        // window.location.reload();
+        window.location.reload();
       }
 
       setIsLoading(false);
