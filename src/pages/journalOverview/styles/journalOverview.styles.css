@@ -238,19 +238,6 @@ fieldset.dropdown select {
   /* font-weight: 500; */
 }
 
-.slider {
-  /* overflow-y: hidden;
-  max-height: 190px;
-  height: 190px; */
-  transition-property: all;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.slider.closed {
-  max-height: 0;
-}
-
 .green-dot {
   color: var(--success);
 }
