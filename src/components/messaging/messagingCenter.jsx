@@ -8,6 +8,7 @@ import MessagingArea from "./messagingArea/index";
 
 import SideSlider from "../sideSlider/SideSlider";
 import SliderLoading from "../sliderLoading/SliderLoading";
+import { OutsideAlerter } from "../outsideAlerter/useOutsideAlerter";
 
 import "../../styles/style-messaging.css";
 
@@ -171,70 +172,72 @@ export default function MessagingCenter(props) {
 
   if (slider.SliderStatus) {
     return (
-      <SideSlider
-        SIDESLIDER_PROPS={slider}
-        showSlider={() => {
-          setSlider({ ...slider, SliderStatus: false });
-          handleCloseModal();
-        }}
-        draggable
-        toolTipMsgIntro="This button allow you resize this modal horizontally"
-      >
-        <div id="messaging-room">
-          {!loading ? (
-            <>
-              <MessagingHeader
-                memberList={memberList}
-                updateMembers={() => getMembers(taskId)}
-                {...props}
-              />
-              <MessagingBodyNew
-                {...props}
-                memberList={memberList}
-                messageList={messageList}
-                reply={(to) => setReply(to)}
-                replyMsgId={(id) => setReplyMsgId(id)}
-                forward={(message, _attach) => {
-                  setForward(message);
-                  setAttachForm(_attach);
-                }}
-              />
+      <OutsideAlerter>
+        <SideSlider
+          SIDESLIDER_PROPS={slider}
+          showSlider={() => {
+            setSlider({ ...slider, SliderStatus: false });
+            handleCloseModal();
+          }}
+          draggable
+          toolTipMsgIntro="This button allow you resize this modal horizontally"
+        >
+          <div id="messaging-room">
+            {!loading ? (
+              <>
+                <MessagingHeader
+                  memberList={memberList}
+                  updateMembers={() => getMembers(taskId)}
+                  {...props}
+                />
+                <MessagingBodyNew
+                  {...props}
+                  memberList={memberList}
+                  messageList={messageList}
+                  reply={(to) => setReply(to)}
+                  replyMsgId={(id) => setReplyMsgId(id)}
+                  forward={(message, _attach) => {
+                    setForward(message);
+                    setAttachForm(_attach);
+                  }}
+                />
 
-              <MessagingArea
-                {...props}
-                memberList={memberList}
-                hasMessage={messageList.length}
-                updateMessages={() => {
-                  getMessages(user.realCompanyId, taskId);
-                  updateMessages();
-                }}
-                updateMembers={() => getMembers(taskId)}
-                replyMsgId={replyMsgId}
-                reply={reply}
-                setReply={setReply}
-                forward={forward}
-                setForward={setForward}
-                attachForm={attachForm}
-                setAttachForm={setAttachForm}
-                setStatusMsg={setStatusMsg}
-              />
-            </>
-          ) : (
-            <SliderLoading />
-          )}
-          {statusMsg && (
-            <p
-              className={`sent-warning ${
-                statusMsg.includes("successfully")
-                  ? "text-success"
-                  : "text-error"
-              }`}
-            >
-              {statusMsg}
-            </p>
-          )}
-        </div>
-      </SideSlider>
+                <MessagingArea
+                  {...props}
+                  memberList={memberList}
+                  hasMessage={messageList.length}
+                  updateMessages={() => {
+                    getMessages(user.realCompanyId, taskId);
+                    updateMessages();
+                  }}
+                  updateMembers={() => getMembers(taskId)}
+                  replyMsgId={replyMsgId}
+                  reply={reply}
+                  setReply={setReply}
+                  forward={forward}
+                  setForward={setForward}
+                  attachForm={attachForm}
+                  setAttachForm={setAttachForm}
+                  setStatusMsg={setStatusMsg}
+                />
+              </>
+            ) : (
+              <SliderLoading />
+            )}
+            {statusMsg && (
+              <p
+                className={`sent-warning ${
+                  statusMsg.includes("successfully")
+                    ? "text-success"
+                    : "text-error"
+                }`}
+              >
+                {statusMsg}
+              </p>
+            )}
+          </div>
+        </SideSlider>
+      </OutsideAlerter>
     );
   }
 }
