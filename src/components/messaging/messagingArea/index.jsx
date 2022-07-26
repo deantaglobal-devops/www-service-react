@@ -955,7 +955,8 @@ function messagingArea({ ...props }) {
                     </i>
                   </div>
                 </div>
-                {props.chapterId !== 0 && (
+
+                {props.chapterId !== 0 ? (
                   <div className="options-template">
                     <div className="wrap-field-label">
                       <label htmlFor="senderName" className="label-form">
@@ -979,6 +980,21 @@ function messagingArea({ ...props }) {
                       <i className="material-icons-outlined select-chevron">
                         expand_more
                       </i>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="options-email-senderName ">
+                    <div className="wrap-field-label">
+                      <label className="label-form" htmlFor="senderName">
+                        Sender name:
+                      </label>
+                      <input
+                        id="senderName"
+                        name="senderName"
+                        type="text"
+                        value={`${user.name} ${user.lastname}`}
+                        {...register("senderName")}
+                      />
                     </div>
                   </div>
                 )}
