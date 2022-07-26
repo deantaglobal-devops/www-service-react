@@ -689,8 +689,15 @@ li.attachments-uploaded-item span.name {
 .options-email-to input,
 .options-email-subject input,
 .options-email-subject label,
-.options-email-to label {
+.options-email-to label,
+.options-email-senderName label,
+.options-email-senderName input {
   cursor: default;
+}
+
+.options-email-senderName {
+  margin-top: 9px;
+  cursor: pointer;
 }
 
 .options-email,
@@ -975,7 +982,7 @@ div.public-DraftEditor-content {
 
 .select-chevron {
   position: absolute;
-  top: 13px;
+  top: 18px;
   left: calc(100% - 23px);
   font-size: 12px;
   color: #bcbebf;
