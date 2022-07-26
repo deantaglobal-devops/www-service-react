@@ -24,10 +24,10 @@ export default function AddBookModal({
   const [error, setError] = useState("");
   // const [completed, setCompleted] = useState(0);
   const [isUploaded, setIsUploaded] = useState(false);
-  const [categoryList, setCategoryList] = useState([]);
+  // const [categoryList, setCategoryList] = useState([]);
   const [errorMessage, setErrorMessage] = useState({
-    projectCode: "",
-    categoryList: "",
+    // projectCode: "",
+    // categoryList: "",
     fileUpload: "",
   });
   const [validateForm, setValidateForm] = useState({
@@ -40,22 +40,22 @@ export default function AddBookModal({
   // create a ref for the file input
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    const handleCategoryList = async () => {
-      const categoriesList = await api
-        .get("/company/categories")
-        .then((response) => {
-          return response.data[0].categoryList.map((category) => {
-            return {
-              id: category.category_id,
-              value: category.category_name,
-            };
-          });
-        });
-      setCategoryList(categoriesList);
-    };
-    handleCategoryList();
-  }, []);
+  // useEffect(() => {
+  //   const handleCategoryList = async () => {
+  //     const categoriesList = await api
+  //       .get("/company/categories")
+  //       .then((response) => {
+  //         return response.data[0].categoryList.map((category) => {
+  //           return {
+  //             id: category.category_id,
+  //             value: category.category_name,
+  //           };
+  //         });
+  //       });
+  //     setCategoryList(categoriesList);
+  //   };
+  //   handleCategoryList();
+  // }, []);
 
   const fileTypeChecker = (file) => {
     if (
@@ -105,29 +105,29 @@ export default function AddBookModal({
     });
   };
 
-  const handleOnChangeDropdown = (e) => {
-    if (e) {
-      const eleValue = JSON.parse(e.target.getAttribute("data-id"));
+  // const handleOnChangeDropdown = (e) => {
+  //   if (e) {
+  //     const eleValue = JSON.parse(e.target.getAttribute("data-id"));
 
-      setData({
-        ...data,
-        categoryList: { id: eleValue.id, value: eleValue.value },
-      });
-    }
-  };
+  //     setData({
+  //       ...data,
+  //       categoryList: { id: eleValue.id, value: eleValue.value },
+  //     });
+  //   }
+  // };
 
-  const handleInputOnChange = (e) => {
-    setData({
-      ...data,
-      projectCode: e?.target?.value,
-    });
-  };
+  // const handleInputOnChange = (e) => {
+  //   setData({
+  //     ...data,
+  //     projectCode: e?.target?.value,
+  //   });
+  // };
 
   const handleUpload = () => {
     if (
-      data?.projectCode !== "" &&
-      data?.file.length > 0 &&
-      data?.categoryList?.id !== ""
+      // data?.projectCode !== "" &&
+      data?.file.length > 0
+      // data?.categoryList?.id !== ""
     ) {
       // let value = 0;
       // setInterval(() => {
@@ -139,14 +139,14 @@ export default function AddBookModal({
       handleAddNewProject(data?.projectCode, data?.categoryList, data?.file);
     } else {
       setErrorMessage({
-        projectCode: data?.projectCode === "" ? "Project code is required" : "",
-        categoryList:
-          data?.categoryList?.id === "" ? "Category is required" : "",
+        // projectCode: data?.projectCode === "" ? "Project code is required" : "",
+        // categoryList:
+        //   data?.categoryList?.id === "" ? "Category is required" : "",
         fileUpload: data?.file.length === 0 ? "File is required" : "",
       });
       setValidateForm({
-        projectCode: data?.projectCode === "",
-        categoryList: data?.categoryList?.id === "",
+        // projectCode: data?.projectCode === "",
+        // categoryList: data?.categoryList?.id === "",
         fileUpload: (data?.file.length === 0) === "",
       });
     }
@@ -204,9 +204,8 @@ export default function AddBookModal({
     await fetch(
       `${
         import.meta.env.VITE_URL_API_SERVICE
-      }/file/upload/project?project_code=${projectCode}&category_id=${
-        category.id
-      }`,
+        // }/file/upload/project?project_code=${projectCode}&category_id=${
+      }/file/upload/project`,
       {
         method: "POST",
         body: bodyFormData,
@@ -218,12 +217,19 @@ export default function AddBookModal({
       .then((res) => res.json())
       .then(
         (response) => {
+          console.log("response", response);
           if (response?.error?.message === "project already exists") {
             setErrorMessage({
               ...errorMessage,
               projectCode: "Project already exists",
             });
             setValidateForm({ categoryList: false, projectCode: true });
+          } else if (response?.error?.message) {
+            setErrorMessage({
+              ...errorMessage,
+              fileUpload: "Error while creating the project, please try again.",
+            });
+            // setValidateForm({ categoryList: false, projectCode: true });
           } else {
             setIsUploaded(true);
           }
@@ -301,7 +307,7 @@ export default function AddBookModal({
             </button>
           </div>
           {/* Project Code */}
-          <Input
+          {/* <Input
             label="Project Code *"
             name="projectCode"
             id="projectCode"
@@ -323,7 +329,7 @@ export default function AddBookModal({
               titleError={errorMessage?.categoryList}
               hasError={validateForm?.categoryList}
             />
-          </div>
+          </div> */}
           <div className="upload-file-container">
             {/* <span>Uploaded file must be in .zip format</span> */}
             <form id="add-book-file-upload-form">
