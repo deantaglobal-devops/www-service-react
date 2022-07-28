@@ -15,7 +15,8 @@
   padding: 0.4rem 0.6rem;
 }
 
-.link-unlink button i {
+.link-unlink button i,
+.link button i {
   font-size: 16px;
   margin-right: 0.4em;
 }
@@ -150,8 +151,9 @@ fieldset.dropdown select {
 }
 
 .blankPage {
-  background-color: #f9f9f9;
-  padding: 10px !important;
+  background-color: #b3b3b3;
+  color: #fff !important;
+  vertical-align: middle !important;
 }
 
 .articleTile {

@@ -21,6 +21,7 @@ import { LstPage } from "../pages/lst/lst";
 import { ConfigurationPanel } from "../pages/configurationPanel/configurationPanel";
 import { DownloadAttachment } from "../pages/downloadAttachment/downloadAttachment";
 import { PageNotFound } from "../pages/pageNotFound/pageNotFound";
+import ArticleView from "../pages/issues/components/articleview/articleView";
 
 export function LanstadRoutes() {
   return (
@@ -63,6 +64,11 @@ export function LanstadRoutes() {
         <Route
           path="/project/journal/list/:projectId"
           element={<JournalOverview />}
+        />
+        {/* Issue Manage */}
+        <Route
+          path="/project/journal/list/:projectId/issues/:issueId"
+          element={<ArticleView />}
         />
 
         {/* Milestone - books and Journals */}
