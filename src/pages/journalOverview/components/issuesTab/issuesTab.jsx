@@ -1,44 +1,16 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../../../services/api";
-import LinkArticleList from "../../../../components/linkArticleList";
-import SlideDrawer from "../../../../components/sliderDrawer/sliderDrawer";
 import EditIssue from "./Modals/editIssue/editIssue";
 
 import GenericCover from "../../../../assets/covers/generic.png";
 
 export function IssuesTab(props) {
   const [issues, setIssues] = useState(props?.issues);
-  const [issuesProps, setIssuesProps] = useState({});
+  // const [issuesProps, setIssuesProps] = useState({});
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [issueData, setIssueData] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
-
-  const handleArticleOnClick = async (issueId, volumeNum, issueNum) => {
-    await api
-      .get(`/project/journal/${props?.project?.projectId}/issues/${issueId}`)
-      .then((response) => {
-        drawerToggleClickHandler();
-
-        const newData = {
-          issuesList: response.data,
-          projectId: props?.project?.projectId,
-          issueId,
-          volumeNum,
-          issueNum,
-        };
-
-        setIssuesProps(newData);
-      });
-  };
-
-  const drawerToggleClickHandler = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-  const backdropClickHandler = () => {
-    setDrawerOpen(false);
-    setIssuesProps([]);
-  };
 
   const getIssue = async (issueId) => {
     const bodyRequest = {
@@ -97,21 +69,6 @@ export function IssuesTab(props) {
     setIssues(newIssues);
   };
 
-  const handleIssue = (fileName, issueId, projectId) => {
-    if (fileName !== "" && issueId !== "") {
-      const issueUpdated = issues?.map((issue) => {
-        if (issue.issue_id == issueId) {
-          return {
-            ...issue,
-            issue_image: fileName,
-          };
-        }
-        return issue;
-      });
-      setIssues(issueUpdated);
-    }
-  };
-
   return (
     <>
       {openEditModal && (
@@ -123,19 +80,6 @@ export function IssuesTab(props) {
           updateIssue={(issueUpdated) => updateIssue(issueUpdated)}
         />
       )}
-      <SlideDrawer
-        show={drawerOpen}
-        SliderHeader="Manage Issue"
-        close={() => backdropClickHandler()}
-      >
-        {Object.keys(issuesProps).length > 0 &&
-          issuesProps.constructor === Object && (
-            <LinkArticleList
-              ISSUE_PROPS={issuesProps}
-              handleIssue={handleIssue}
-            />
-          )}
-      </SlideDrawer>
       {props?.permissions?.journals?.issues?.view && (
         <div
           className={
@@ -227,23 +171,17 @@ export function IssuesTab(props) {
                             </div>
                           </div>
                           <div className="actions-available">
-                            {props?.permissions?.journals?.articles?.edit && (
-                              <a
-                                onClick={() =>
-                                  handleArticleOnClick(
-                                    issue.issue_id,
-                                    issue.volume_num,
-                                    issue.issue_num,
-                                  )
-                                }
-                                className="action-bottom"
-                              >
-                                <i className="material-icons-outlined">
-                                  attachment
-                                </i>{" "}
-                                Articles
-                              </a>
-                            )}
+                            {
+                              // eslint-disable-next-line react/destructuring-assignment
+                              props?.permissions?.journals?.articles?.edit && (
+                                <Link
+                                  // eslint-disable-next-line react/destructuring-assignment
+                                  to={`/project/journal/list/${props?.project?.projectId}/issues/${issue.issue_id}`}
+                                >
+                                  Manage
+                                </Link>
+                              )
+                            }
                             {props?.permissions?.journals?.issues?.edit && (
                               <a
                                 onClick={() => getIssue(issue.issue_id)}

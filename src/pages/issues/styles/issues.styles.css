@@ -1,0 +1,26 @@
+.cstm-link-icon {
+  font-size: 16px;
+}
+
+.cstm-link-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+}
+
+.issueTab .active {
+  background: none !important;
+}
+
+.blank-list {
+  position: relative;
+  top: -20px;
+}
+
+.cstm-del-style {
+  vertical-align: middle;
+  font-size: 20px;
+  padding: 5px 20px;
+  color: #fff;
+  float: right;
+}
