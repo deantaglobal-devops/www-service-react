@@ -9,12 +9,14 @@ export default function Modal({
   content,
   loading,
   classCustom,
+  listData,
   button1Text,
   handleButton1Modal = () => {},
   Button2Text,
   handleButton2Modal = () => {},
   Button3Text,
   handleButton3Modal = () => {},
+  linkArticle = () => {},
 }) {
   const divStyle = {
     display: displayModal ? "block" : "none",
@@ -44,9 +46,38 @@ export default function Modal({
           dangerouslySetInnerHTML={{ __html: body }}
         />
         {content && content}
+        {listData?.length > 0 ? (
+          listData.map((data, index) => {
+            return (
+              <div
+                key={`key-${index}`}
+                className="row link-list-container px-0"
+              >
+                <div className="col-9 link-list-view">
+                  {data.articleId} - {data.chapterTitle}
+                </div>
+                <div className="col-3">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary mr-2 float-right cstm-link-btn p-1 px-2"
+                    onClick={() => linkArticle(data.chapterID)}
+                  >
+                    <i className="material-icons-outlined cstm-link-icon px-1">
+                      link
+                    </i>{" "}
+                    Link
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="col-12 no-data-link">No data</div>
+        )}
         <div className="modal-footer-container">
           {button1Text && (
             <button
+              type="button"
               className="btn-container modal-cancel-button-container"
               onClick={() => handleButton1Modal()}
             >
@@ -55,6 +86,7 @@ export default function Modal({
           )}
           {Button2Text && (
             <button
+              type="button"
               disabled={loading}
               className="btn-container deanta-button-outlined"
               onClick={() => handleButton2Modal()}
@@ -73,6 +105,7 @@ export default function Modal({
           )}
           {Button3Text && (
             <button
+              type="button"
               className="btn-container deanta-button-outlined"
               onClick={() => handleButton3Modal()}
             >
