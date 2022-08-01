@@ -654,17 +654,17 @@ export default function AddEditTask({
       );
     } else if (data === 2) {
       downloadFile(
-        "/data/storage/epublishing/resources/20220729-180657.566760.637947148175667615.zip",
+        "/resources/20220729-180657.566760.637947148175667615.zip",
         "CCC and TR.zip",
       );
     } else if (data === 3) {
       downloadFile(
-        "/data/storage/epublishing/resources/20220729-180648.937220.637947148089372232.zip",
+        "/resources/20220729-180648.937220.637947148089372232.zip",
         "Application Files.zip",
       );
     } else {
       downloadFile(
-        "/data/storage/epublishing/resources/20220729-180703.691780.637947148236917834.zip",
+        "/resources/20220729-180703.691780.637947148236917834.zip",
         "Images.zip",
       );
     }
