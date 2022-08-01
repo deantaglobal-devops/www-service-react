@@ -7,6 +7,7 @@ import ListUsersWrapper from "../../../../components/userList/listUsers-wrapper"
 import Modal from "../../../../components/Modal/modal";
 import SpecialInstructionsTaskModal from "../specialInstructionsTaskModal/specialInstructionsTaskModal";
 import ModalForm from "../../../../components/ModalForm/modalForm";
+import { downloadFile } from "../../../../utils/downloadFile";
 
 import "./styles/addEditTask.styles.css";
 
@@ -45,6 +46,12 @@ export default function AddEditTask({
   const [filePack, setFilePack] = useState(0);
   const [imgPack, setImgPack] = useState(0);
   const [eBook, setEbook] = useState(0);
+
+  const [dummyFinalXml, setDummyFinalXml] = useState(0);
+  const [dummyFilePack, setDummyFilePack] = useState(0);
+  const [dummyImgPack, setDummyImgPack] = useState(0);
+  const [dummyEBook, setDummyEbook] = useState(0);
+
   const [digitalBundlePdfId, setDigitalBundlePdfId] = useState("");
 
   const [finalXmlZip, setFinalXmlZip] = useState("");
@@ -56,6 +63,9 @@ export default function AddEditTask({
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [downloadCount, setDownloadCount] = useState(0);
+  const [downloadFileData, setDownloadFileData] = useState("");
+
+  const chapId = window.location.pathname.split("/")?.length;
 
   const [
     openSpecialInstructionsTaskModal,
@@ -81,6 +91,7 @@ export default function AddEditTask({
             if (response.data.success === "success") {
               const { processName } = response.data.responce;
               const fileName = response.data.responce;
+              setDownloadFileData(processName);
               if (processName === "Final XML Generation" && fileName !== null) {
                 setFinalXmlZip(fileName);
               } else if (processName === "Image Package" && fileName !== null) {
@@ -105,6 +116,105 @@ export default function AddEditTask({
       return () => clearInterval(interval);
     }
   }, [digitalBundlePdfId]);
+
+  // dummy progress functions
+  useEffect(() => {
+    if (dummyFinalXml < 100) {
+      const interval = setInterval(() => {
+        const incount = dummyFinalXml + 1;
+        setDummyFinalXml(incount);
+      }, 200);
+      return () => clearInterval(interval);
+    }
+    if (dummyFinalXml === 100) {
+      setDummyFilePack(1);
+    }
+  }, [dummyFinalXml]);
+
+  useEffect(() => {
+    if (dummyFilePack > 0 && dummyFilePack < 100) {
+      const interval = setInterval(() => {
+        const incount = dummyFilePack + 1;
+        setDummyFilePack(incount);
+      }, 200);
+      return () => clearInterval(interval);
+    }
+    if (dummyFilePack === 100) {
+      setDummyImgPack(1);
+    }
+  }, [dummyFilePack]);
+
+  useEffect(() => {
+    if (dummyImgPack > 0 && dummyImgPack < 100) {
+      const interval = setInterval(() => {
+        // setImgPack(imgPack + 1);
+        const incount = dummyImgPack + 1;
+        // if(!!imgPackZip?.fileName){
+        //   incount = 100;
+        // }
+        setDummyImgPack(incount);
+      }, 200);
+      return () => clearInterval(interval);
+    }
+    if (dummyImgPack === 100) {
+      setDummyEbook(1);
+    }
+  }, [dummyImgPack]);
+
+  useEffect(() => {
+    if (dummyEBook > 0 && dummyEBook < 100) {
+      const interval = setInterval(() => {
+        let incount = dummyEBook + 1;
+        if (incount > 100) {
+          incount = 100;
+        }
+        setDummyEbook(incount);
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, [dummyEBook]);
+
+  // const dummyProgress = (checkProg) => {
+  //   let init = 1;
+  //   // const interval = setInterval(() => {
+
+  //   if (checkProg === 1) {
+  //     const interval = setInterval(() => {
+  //       init += 1;
+  //       setDummyFinalXml(init);
+  //     }, 200);
+  //     if (dummyFinalXml === 100) {
+  //       return () => clearInterval(interval);
+  //     }
+  //   }
+  //   if (checkProg === 2) {
+  //     setDummyFilePack(init);
+  //   } else if (checkProg === 3) {
+  //     setDummyImgPack(init);
+  //   } else {
+  //     setDummyEbook(init);
+  //   }
+  //   // }, 2000);
+  //   // return () => clearInterval(interval);
+  // };
+
+  // const startDummyProg = () => {
+  //   setTimeout(() => {
+  //     if (dummyFinalXml < 100) {
+  //       dummyProgress(1);
+  //     } else if (dummyFinalXml === 100 && dummyFilePack < 100) {
+  //       dummyProgress(2);
+  //     } else if (dummyFilePack === 100 && dummyImgPack < 100) {
+  //       dummyProgress(3);
+  //     } else if (dummyImgPack === 100 && dummyEBook < 100) {
+  //       dummyProgress(4);
+  //     }
+  //   }, 2000);
+
+  //   // if (finalXml === 100) {
+  //   //   setFilePack(1);
+  //   // }
+  // };
 
   useEffect(() => {
     if (finalXml < 100) {
@@ -519,13 +629,45 @@ export default function AddEditTask({
           setDigitalBundlePdfId(response.data.digitalBundlePdfId);
           setPdfModal(true);
           setIsLoading(false);
-          setFinalXml(1);
-          setImgPack(0);
-          setFilePack(0);
-          setEbook(0);
+
+          if (window.location.pathname.split("/")[chapId - 1] !== "8302") {
+            setFinalXml(1);
+            setImgPack(0);
+            setFilePack(0);
+            setEbook(0);
+          } else {
+            setDummyFinalXml(1);
+            setDummyImgPack(0);
+            setDummyFilePack(0);
+            setDummyEbook(0);
+          }
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  const fileDummyDownload = (data) => {
+    if (data === 1) {
+      downloadFile(
+        "/resources/20220729-180653.082380.637947148130823856.zip",
+        "BITS XML.zip",
+      );
+    } else if (data === 2) {
+      downloadFile(
+        "/data/storage/epublishing/resources/20220729-180657.566760.637947148175667615.zip",
+        "CCC and TR.zip",
+      );
+    } else if (data === 3) {
+      downloadFile(
+        "/data/storage/epublishing/resources/20220729-180648.937220.637947148089372232.zip",
+        "Application Files.zip",
+      );
+    } else {
+      downloadFile(
+        "/data/storage/epublishing/resources/20220729-180703.691780.637947148236917834.zip",
+        "Images.zip",
+      );
+    }
   };
 
   const fileDownload = (type) => {
@@ -1683,156 +1825,309 @@ export default function AddEditTask({
             </button>
           </div>
           <div className="modal-body">
-            <div className="flex">
-              <div className="singular-block-information file-download">
-                <div>
-                  {finalXml === 100 && (
-                    <i
-                      className="material-icons-outlined zipfile-download zipfile-enable"
-                      onClick={(e) => fileDownload(1)}
-                    >
-                      download
-                    </i>
-                  )}
-                  {finalXml !== 100 && (
-                    <i className="material-icons-outlined zipfile-download zipfile-disable">
-                      download
-                    </i>
-                  )}
-                </div>
-                <div className="w-100">
-                  <label>Final XML Generation</label>
-                  <div className="project-card-details w-100">
-                    <div className="progress-status">
-                      <div className="label-bar-status">
-                        <label>{finalXml}% completed</label>
+            {window.location.pathname.split("/")[chapId - 1] !== "8302" ? (
+              <div className="flex">
+                <div className="singular-block-information file-download">
+                  <div>
+                    {finalXml === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDownload(1)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {finalXml !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>Final XML Generation</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{finalXml}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${finalXml}%` }}
+                            aria-valuenow={`${finalXml}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
                       </div>
-                      <div className="progress progress-sm">
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          style={{ width: `${finalXml}%` }}
-                          aria-valuenow={`${finalXml}`}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        />
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {filePack === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDownload(2)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {filePack !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>Application Files Package</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{filePack}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${filePack}%` }}
+                            aria-valuenow={`${filePack}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {imgPack === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDownload(3)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {imgPack !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>Image Package</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{imgPack}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${imgPack}%` }}
+                            aria-valuenow={`${imgPack}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {eBook === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDownload(4)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {eBook !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>eBook Generation</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{eBook}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${eBook}%` }}
+                            aria-valuenow={`${eBook}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="singular-block-information file-download">
-                <div>
-                  {filePack === 100 && (
-                    <i
-                      className="material-icons-outlined zipfile-download zipfile-enable"
-                      onClick={(e) => fileDownload(2)}
-                    >
-                      download
-                    </i>
-                  )}
-                  {filePack !== 100 && (
-                    <i className="material-icons-outlined zipfile-download zipfile-disable">
-                      download
-                    </i>
-                  )}
-                </div>
-                <div className="w-100">
-                  <label>Application Files Package</label>
-                  <div className="project-card-details w-100">
-                    <div className="progress-status">
-                      <div className="label-bar-status">
-                        <label>{filePack}% completed</label>
+            ) : (
+              <div className="flex">
+                <div className="singular-block-information file-download">
+                  <div>
+                    {dummyFinalXml === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDummyDownload(1)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {dummyFinalXml !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>BITS XML</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{dummyFinalXml}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${dummyFinalXml}%` }}
+                            aria-valuenow={`${dummyFinalXml}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
                       </div>
-                      <div className="progress progress-sm">
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          style={{ width: `${filePack}%` }}
-                          aria-valuenow={`${filePack}`}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        />
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {dummyFilePack === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDummyDownload(2)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {dummyFilePack !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>CCC and TR</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{dummyFilePack}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${dummyFilePack}%` }}
+                            aria-valuenow={`${dummyFilePack}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {dummyImgPack === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDummyDownload(3)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {dummyImgPack !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>Application Files Package</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{dummyImgPack}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${dummyImgPack}%` }}
+                            aria-valuenow={`${dummyImgPack}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="singular-block-information file-download">
+                  <div>
+                    {dummyEBook === 100 && (
+                      <i
+                        className="material-icons-outlined zipfile-download zipfile-enable"
+                        onClick={(e) => fileDummyDownload(4)}
+                      >
+                        download
+                      </i>
+                    )}
+                    {dummyEBook !== 100 && (
+                      <i className="material-icons-outlined zipfile-download zipfile-disable">
+                        download
+                      </i>
+                    )}
+                  </div>
+                  <div className="w-100">
+                    <label>Image Package</label>
+                    <div className="project-card-details w-100">
+                      <div className="progress-status">
+                        <div className="label-bar-status">
+                          <label>{dummyEBook}% completed</label>
+                        </div>
+                        <div className="progress progress-sm">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${dummyEBook}%` }}
+                            aria-valuenow={`${dummyEBook}`}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="singular-block-information file-download">
-                <div>
-                  {imgPack === 100 && (
-                    <i
-                      className="material-icons-outlined zipfile-download zipfile-enable"
-                      onClick={(e) => fileDownload(3)}
-                    >
-                      download
-                    </i>
-                  )}
-                  {imgPack !== 100 && (
-                    <i className="material-icons-outlined zipfile-download zipfile-disable">
-                      download
-                    </i>
-                  )}
-                </div>
-                <div className="w-100">
-                  <label>Image Package</label>
-                  <div className="project-card-details w-100">
-                    <div className="progress-status">
-                      <div className="label-bar-status">
-                        <label>{imgPack}% completed</label>
-                      </div>
-                      <div className="progress progress-sm">
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          style={{ width: `${imgPack}%` }}
-                          aria-valuenow={`${imgPack}`}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="singular-block-information file-download">
-                <div>
-                  {eBook === 100 && (
-                    <i
-                      className="material-icons-outlined zipfile-download zipfile-enable"
-                      onClick={(e) => fileDownload(4)}
-                    >
-                      download
-                    </i>
-                  )}
-                  {eBook !== 100 && (
-                    <i className="material-icons-outlined zipfile-download zipfile-disable">
-                      download
-                    </i>
-                  )}
-                </div>
-                <div className="w-100">
-                  <label>eBook Generation</label>
-                  <div className="project-card-details w-100">
-                    <div className="progress-status">
-                      <div className="label-bar-status">
-                        <label>{eBook}% completed</label>
-                      </div>
-                      <div className="progress progress-sm">
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          style={{ width: `${eBook}%` }}
-                          aria-valuenow={`${eBook}`}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </ModalForm>

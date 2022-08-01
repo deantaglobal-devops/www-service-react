@@ -295,14 +295,22 @@ export function Users() {
               </Link>
             )}
 
-            {!!parseInt(permissions?.vxe?.view) && (
-              <Link
-                to={`/vxe/${project?.projectId}/detail/${chapter?.chapter_id}`}
-              >
-                <i className="material-icons-outlined">format_shapes</i>
-                PRO Editor
-              </Link>
-            )}
+            {!!parseInt(permissions?.vxe?.view) &&
+              (project.project_id === "4897" &&
+              chapter.chapter_id === "8302" ? (
+                <Link
+                  to={`/vxe/${project.project_id}/detail/${chapter.chapter_id}`}
+                >
+                  Manage Issue Articles
+                </Link>
+              ) : (
+                <Link
+                  to={`/vxe/${project?.projectId}/detail/${chapter?.chapter_id}`}
+                >
+                  <i className="material-icons-outlined">format_shapes</i>
+                  PRO Editor
+                </Link>
+              ))}
 
             {!!parseInt(permissions?.assets?.view) && (
               <Link
