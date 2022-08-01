@@ -518,14 +518,22 @@ export function ArticleBookMilestone() {
                 </Link>
               )}
 
-              {!!parseInt(permissions?.vxe?.view) && (
-                <Link
-                  to={`/vxe/${project.project_id}/detail/${project.chapter_id}`}
-                >
-                  <i className="material-icons-outlined">format_shapes</i>
-                  PRO Editor
-                </Link>
-              )}
+              {!!parseInt(permissions?.vxe?.view) &&
+                (project.project_id === "4897" &&
+                project.chapter_id === "8302" ? (
+                  <Link
+                    to={`/vxe/${project.project_id}/detail/${project.chapter_id}`}
+                  >
+                    Manage Issue Articles
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/vxe/${project.project_id}/detail/${project.chapter_id}`}
+                  >
+                    <i className="material-icons-outlined">format_shapes</i>
+                    PRO Editor
+                  </Link>
+                ))}
 
               {!!parseInt(permissions?.assets?.view) && (
                 <Link

@@ -21,6 +21,8 @@ export default function ArticleView(props) {
   const { user, permissions } = useAuth();
   const { projectId, chapterId } = useParams();
   const navigate = useNavigate();
+  const projId = "4897";
+  const chapId = "8302";
 
   const handleData = async () => {
     setIsLoading(true);
@@ -389,7 +391,7 @@ export default function ArticleView(props) {
 
           {/* Start NavTag */}
           <nav className="main-project-navigation issueTab">
-            <Link to={`/project/${project.projectId}`}>
+            <Link to={`/project/journal/${projId}/detail/${chapId}`}>
               <i className="material-icons-outlined">view_day</i> Milestones
             </Link>
             <Link to={`/project/toc/${project.projectId}`} className="active">
