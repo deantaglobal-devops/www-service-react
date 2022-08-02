@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 class SingleUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userSearch: '',
+      userSearch: "",
       fliterUser: [],
     };
     this.handleSearch = this.handleSearch.bind(this);
@@ -17,9 +17,9 @@ class SingleUser extends React.Component {
   }
 
   handleSearch(event) {
-    let id = event.target.id;
-    let val = event.target.value;
-    let list = this.props.handldFilter(val);
+    const { id } = event.target;
+    const val = event.target.value;
+    const list = this.props.handldFilter(val);
     this.setState({
       [id]: val,
       fliterUser: list,
@@ -69,7 +69,7 @@ class SingleUser extends React.Component {
             </div>
           </div>
         </div>
-        <div className="user-list">
+        <div className="user-list user-list-config">
           {this.state.fliterUser.length > 0 && (
             <div className="col-sm-12 col-lg-12 mb15">
               <div className="container-content-page mt-4 container-users">

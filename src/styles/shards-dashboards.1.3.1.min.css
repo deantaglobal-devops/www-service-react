@@ -4726,6 +4726,14 @@ a.editing-user {
   width: 11.7%;
 }
 
+.due-col label {
+  display: none !important;
+}
+
+.due-col .wrap-field-label {
+  padding-right: 10px;
+}
+
 .user-col {
   width: 3%;
 }

@@ -77,7 +77,8 @@ export function ArticlesTab({ permissions, navTag, articles, project }) {
                   <div
                     onMouseEnter={(e) => handleTooltip(e)}
                     onMouseLeave={(e) => handleTooltip(e)}
-                    className={`circle-status status-1 ${article.chapterNo}`}
+                    className="circle-status status-1"
+                    title={`${article.chapterNo}`}
                   />
                 </td>
                 <td className="ws">{article.chapterNo}</td>

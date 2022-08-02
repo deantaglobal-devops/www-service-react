@@ -88,7 +88,7 @@ export function JournalOverview() {
       {/* ToolTip when hovering the green circle */}
       <div id="tooltip-black" style={{ display: "none" }}>
         <span id="tooltip-title-black" />
-        <div id="arrow-black" data-popper-arrow />
+        {/* <div id="arrow-black" data-popper-arrow /> */}
       </div>
       {/* End ToolTip */}
 
