@@ -649,7 +649,7 @@ export default function AddEditTask({
   const fileDummyDownload = (data) => {
     if (data === 1) {
       downloadFile(
-        "/resources/20220729-180653.082380.637947148130823856.zip",
+        "/resources/02082022101119-213-0.142043001659435079.zip",
         "BITS XML.zip",
       );
     } else if (data === 2) {
