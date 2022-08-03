@@ -292,7 +292,7 @@ export default function AddEditTask({
             setText("Merging chapters");
           }
           if (incount === 40) {
-            setText("BITS xml conversion");
+            setText("JATS xml conversion");
           }
         }
         if (title === "First Proof ePUB") {
@@ -649,8 +649,8 @@ export default function AddEditTask({
   const fileDummyDownload = (data) => {
     if (data === 1) {
       downloadFile(
-        "/resources/02082022101119-213-0.142043001659435079.zip",
-        "BITS XML.zip",
+        "/resources/03082022110232-214-0.245452001659524552.zip",
+        "JATS XML.zip",
       );
     } else if (data === 2) {
       downloadFile(
@@ -1995,7 +1995,7 @@ export default function AddEditTask({
                     )}
                   </div>
                   <div className="w-100">
-                    <label>BITS XML</label>
+                    <label>JATS XML</label>
                     <div className="project-card-details w-100">
                       <div className="progress-status">
                         <div className="label-bar-status">
